@@ -146,7 +146,7 @@
   /* ===== 3D-эмблема логотипа: стеклянный выпуклый щит с вращающейся монетой ===== */
   .logo-badge {
     position: relative;
-    width: 76px; height: 76px;   /* было 48px → 58px → теперь ещё крупнее */
+    width: 76px; height: 76px;   /* было 48px → 58px → теперь еще крупнее */
     flex-shrink: 0;
     perspective: 640px;
     pointer-events: auto;
@@ -483,11 +483,11 @@
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#D6A93B; --c2:#F3D98A;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D6A93B" data-href="trainers.html"><div class="card-title">Диалоговые тренажёры</div></div>
+      <div class="card" data-color="#D6A93B" data-href="trainers.html"><div class="card-title">Диалоговые тренажеры</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#C1554A; --c2:#EE9A8E;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#C1554A"><div class="card-title">Ассессмент-центр: от разработки до отчётов</div></div>
+      <div class="card" data-color="#C1554A"><div class="card-title">Ассессмент-центр: от разработки до отчетов</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
@@ -1085,7 +1085,7 @@
       tctx.fillText(lines[li], padding, padding + lineHeight * li + lineHeight / 2);
     }
     var img = tctx.getImageData(0, 0, cw, ch).data;
-    var stride = 1.7;
+    var stride = 0.4;
     var pts = [];
     for (var y = 0; y < ch; y += stride) {
       for (var x = 0; x < cw; x += stride) {
@@ -1100,7 +1100,7 @@
     var colArr = new Float32Array(count * 3);
     var phaseArr = new Float32Array(count);
     var delayArr = new Float32Array(count);
-    var baseCol = new THREE.Color(0x9db6e6);
+    var baseCol = new THREE.Color(0x7a8aaa);
     var scatterSpread = 480;
     for (var i3 = 0; i3 < count; i3++) {
       var px = pts[i3][0], py = pts[i3][1];
@@ -1122,7 +1122,7 @@
     geom.setAttribute('color', new THREE.BufferAttribute(colArr, 3));
     var mat = new THREE.PointsMaterial({
       size: 2.5, map: nodeTexture, vertexColors: true, transparent: true,
-      depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.85
+      depthWrite: false, blending: THREE.AdditiveBlending, opacity: 0.2
     });
     var pointsObj = new THREE.Points(geom, mat);
     scene.add(pointsObj);
@@ -1136,26 +1136,84 @@
   function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
   function easeInCubic(t) { return t * t * t; }
 
-  var taglineLines = [
-    'Разум — это самое ценное,',
-    'что есть у человека! Именно здесь',
-    'зарождаются идеи — то, что в конечном',
-    'счёте окружает всё человечество!'
+  // ===== БОЛЬШОЙ СПИСОК ТЕЗИСОВ С АВТОРАМИ =====
+  var allTaglines = [
+      ['Сократ:', '"Неисследованная жизнь', 'не стоит того, чтобы жить"'],
+      ['Сократ:', '"Единственная истинная мудрость —', 'в осознании того, что ты', 'ничего не знаешь"'],
+      ['Протагор:', '"Человек есть мера', 'всех вещей"'],
+      ['Рене Декарт:', '"Я мыслю,', 'следовательно, я существую"'],
+      ['Уильям Шекспир:', '"Не в звездах судьба', 'человека, а в нем самом"'],
+      ['Сократ:', '"Познай самого себя"'],
+      ['Платон:', '"Победа над самим собой —', 'есть первая и лучшая', 'из всех побед"'],
+      ['Аристотель:', '"Воспитывающий свой ум', 'подобен тому, кто', 'возделывает свой сад"'],
+      ['Эпиктет:', '"Не столько то, что происходит с нами,', 'сколько наши суждения', 'о случившемся тревожит нас"'],
+      ['Марк Аврелий:', '"Человек живет лишь той', 'жизнью, которую он', 'сам создает"'],
+      ['Иммануил Кант:', '"Имей мужество пользоваться', 'своим собственным умом"'],
+      ['Фридрих Ницше:', '"Тот, кто имеет зачем жить,', 'может вынести почти', 'любое как"'],
+      ['Блез Паскаль:', '"Человек — всего лишь тростник,', 'слабейшее из творений природы,', 'но он — тростник мыслящий"'],
+      ['Конфуций:', '"Истинное знание — в знании', 'пределов своего незнания"'],
+      ['Лао-цзы:', '"Путешествие в тысячу ли', 'начинается с первого шага"'],
+      ['Гёте:', '"Умри и стань" —', 'призывая к постоянному', 'обновлению'],
+      ['Сенека:', '"Для того чтобы жить долго,', 'нам достаточно лишь мудрости,', 'а не врачей"'],
+      ['Джон Локк:', '"Нет почти ничего такого,', 'что было бы вне возможностей', 'человеческого разума"'],
+      ['Леонардо да Винчи:', '"Железо ржавеет,', 'не находя себе применения,', 'стоячая вода гниет..."'],
+      ['Мишель Монтень:', '"Нет более тяжелого бремени', 'для человека, чем его', 'собственное невежество"'],
+      ['Неизвестный автор:', '"Жизнь не даёт никаких гарантий,', 'однако жизнь всегда', 'предоставляет возможности"'],
+      ['Неизвестный автор:', '"Разум — это самое ценное,', 'что есть у человека.', 'Именно здесь зарождаются идеи"']
   ];
-  var taglineField = buildTextPoints(taglineLines, 230, -95, 30, 430);
+    // ===== ПЕРЕМЕННЫЕ ДЛЯ УПРАВЛЕНИЯ ТЕЗИСАМИ =====
+  var currentTaglineIndex = 0;
+  var previousTaglineIndex = -1;
+  var taglineDisplayTime = 10; // секунды между сменами
+  var taglineTimer = 0;
+
+    // ===== ФУНКЦИЯ ОБНОВЛЕНИЯ ТЕЗИСА =====
+  function updateTagline() {
+      var newIndex;
+      do {
+          newIndex = Math.floor(Math.random() * allTaglines.length);
+      } while (newIndex === previousTaglineIndex);
+      
+      previousTaglineIndex = currentTaglineIndex;
+      currentTaglineIndex = newIndex;
+      
+      // Удаляем старый текст
+      if (taglineField) {
+          scene.remove(taglineField.points);
+          taglineField.points.geometry.dispose();
+          taglineField.points.material.dispose();
+      }
+      
+      // Создаём новый текст
+      taglineField = buildTextPoints(
+          allTaglines[currentTaglineIndex],
+          230, -95, 30, 430
+      );
+      taglineField.cycleStart = clock.getElapsedTime();
+      taglineField.enabled = taglineToggleBtn ? taglineToggleBtn.classList.contains('on') : true;
+      
+      // Показываем текст, если включён
+      if (taglineField.enabled) {
+          taglineField.points.visible = true;
+      } else {
+          taglineField.points.visible = false;
+      }
+  }
+  var taglineField = buildTextPoints(allTaglines[0], 230, -95, 30, 430);
 
   var taglineToggleBtn = document.getElementById('taglineToggle');
   if (taglineToggleBtn) {
-    taglineToggleBtn.addEventListener('click', function () {
-      taglineField.enabled = !taglineField.enabled;
-      taglineToggleBtn.classList.toggle('on', taglineField.enabled);
-      taglineToggleBtn.setAttribute('aria-pressed', taglineField.enabled ? 'true' : 'false');
-      if (taglineField.enabled) {
-        taglineField.cycleStart = clock.getElapsedTime();
-      } else {
-        taglineField.points.visible = false;
-      }
-    });
+      taglineToggleBtn.addEventListener('click', function () {
+          taglineField.enabled = !taglineField.enabled;
+          taglineToggleBtn.classList.toggle('on', taglineField.enabled);
+          taglineToggleBtn.setAttribute('aria-pressed', taglineField.enabled ? 'true' : 'false');
+          if (taglineField.enabled) {
+              taglineField.cycleStart = clock.getElapsedTime();
+              taglineField.points.visible = true;
+          } else {
+              taglineField.points.visible = false;
+          }
+      });
   }
 
   var clock = new THREE.Clock();
@@ -1498,7 +1556,15 @@
     taglineField.points.geometry.attributes.position.needsUpdate = true;
     taglineField.points.geometry.attributes.color.needsUpdate = true;
     }
-
+    // ===== СМЕНА ТЕЗИСОВ КАЖДЫЕ 10 СЕКУНД =====
+    taglineTimer += dt;
+    if (taglineTimer >= taglineDisplayTime) {
+        taglineTimer = 0;
+        if (typeof updateTagline === 'function') {
+            updateTagline();
+        }
+    }
+    // ===== КОНЕЦ =====
     renderer.render(scene, camera);
   }
   animate();
