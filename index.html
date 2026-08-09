@@ -1519,13 +1519,14 @@
         formedness = e;
         visibility = e;
       } else if (cyclePos < T3) {
-        var s = Math.max(0, Math.min(1, (cyclePos - T2 - d * 0.4) / SCATTER));
-        var e2 = easeInCubic(s);
-        ex = tgt[tp*3]   + (scat[tp*3]   - tgt[tp*3])   * e2;
-        ey = tgt[tp*3+1] + (scat[tp*3+1] - tgt[tp*3+1]) * e2;
-        ez = tgt[tp*3+2] + (scat[tp*3+2] - tgt[tp*3+2]) * e2;
-        formedness = 1 - e2;
-        visibility = Math.max(0, 1 - e2 * 1.5); // fades out before it finishes travelling — reads as dissolving, not sliding into place
+          var s = Math.max(0, Math.min(1, (cyclePos - T2 - d * 0.4) / SCATTER));
+          var progress = 1 - s;  // обратный отсчёт
+          var e2 = easeOutCubic(progress);
+          ex = scat[tp*3]   + (tgt[tp*3]   - scat[tp*3])   * e2;
+          ey = scat[tp*3+1] + (tgt[tp*3+1] - scat[tp*3+1]) * e2;
+          ez = scat[tp*3+2] + (tgt[tp*3+2] - scat[tp*3+2]) * e2;
+          formedness = e2;
+          visibility = e2;
       } else {
         var gapT = (cyclePos - T3) / GAP;
         var dirx = scat[tp*3] - tgt[tp*3], diry = scat[tp*3+1] - tgt[tp*3+1];
