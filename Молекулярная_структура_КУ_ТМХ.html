@@ -1,749 +1,1380 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Молекулярная структура КУ ТМХ</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --void: #050810;
-    --void-2: #0a0f1a;
-    --panel-bg: rgba(12, 18, 28, 0.78);
-    --panel-border: rgba(120, 170, 210, 0.14);
-    --core-glow: #6fe0ff;
-    --core-deep: #1478a8;
-    --satellite: #4fa8dc;
-    --satellite-glow: #8fe3ff;
-    --amber: #6fe0ff;
-    --text-primary: #e7edf3;
-    --text-dim: #90a0b2;
-    --text-dimmer: #5b6a7c;
-    --line: rgba(130, 175, 215, 0.16);
-    --panel-w: 400px;
-  }
-  *{ box-sizing: border-box; }
-  html, body{
-    margin:0; padding:0; width:100%; height:100%;
-    background: radial-gradient(ellipse 120% 90% at 68% 45%, #0d1830 0%, var(--void-2) 45%, var(--void) 100%);
-    color: var(--text-primary);
-    font-family: 'IBM Plex Sans', sans-serif;
-    overflow: hidden;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Молекулярная структура КУ ТМХ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #050810;
+            --void-2: #0a0f1a;
+            --panel-bg: rgba(12, 18, 28, 0.78);
+            --panel-border: rgba(120, 170, 210, 0.14);
+            --core-glow: #6fe0ff;
+            --core-deep: #1478a8;
+            --satellite: #4fa8dc;
+            --satellite-glow: #8fe3ff;
+            --amber: #6fe0ff;
+            --text-primary: #e7edf3;
+            --text-dim: #90a0b2;
+            --text-dimmer: #5b6a7c;
+            --line: rgba(130, 175, 215, 0.16);
+            --panel-w: 400px;
+            --toggle-off: #b84a5a;
+            --toggle-on: #6fe0ff;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse 120% 90% at 68% 45%, #0d1830 0%, var(--void-2) 45%, var(--void) 100%);
+            color: var(--text-primary);
+            font-family: 'IBM Plex Sans', sans-serif;
+            overflow: visible;
+        }
 
-  #panel{
-    position: fixed; top:0; left:0; bottom:0;
-    width: var(--panel-w); max-width: 88vw;
-    background: var(--panel-bg);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-right: 1px solid var(--panel-border);
-    padding: 34px 30px 24px 30px;
-    overflow-y: auto;
-    z-index: 20;
-  }
-  #panel::-webkit-scrollbar{ width:6px; }
-  #panel::-webkit-scrollbar-thumb{ background: rgba(130,175,215,0.25); border-radius: 3px; }
+        #panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: var(--panel-w);
+            max-width: 88vw;
+            background: var(--panel-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-right: 1px solid var(--panel-border);
+            padding: 34px 28px 24px 28px;
+            overflow-y: auto;
+            z-index: 20;
+        }
+        #panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        #panel::-webkit-scrollbar-thumb {
+            background: rgba(130, 175, 215, 0.25);
+            border-radius: 3px;
+        }
 
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--core-glow); opacity: 0.85; margin-bottom: 10px;
-  }
-  h1{
-    font-size: 21px; font-weight: 600; line-height: 1.3;
-    margin: 0 0 22px 0; color: #fff;
-    letter-spacing: -0.01em;
-  }
-  .block{ margin-bottom: 18px; }
-  .block-title{
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 12px; font-weight:500; letter-spacing:0.04em;
-    color: var(--satellite-glow); margin-bottom: 6px;
-    display:flex; align-items:center; gap:8px;
-  }
-  .block-title::before{
-    content:''; width:6px; height:6px; border-radius:50%;
-    background: var(--core-glow); box-shadow: 0 0 8px var(--core-glow);
-    flex-shrink:0;
-  }
-  p{
-    font-size: 13.5px; line-height: 1.62; color: var(--text-dim);
-    margin: 0 0 4px 0; font-weight: 300;
-  }
-  .divider{ height:1px; background: var(--line); margin: 20px 0; border:none; }
+        .eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--core-glow);
+            opacity: 0.85;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1.3;
+            margin: 0 0 20px 0;
+            color: #fff;
+            letter-spacing: -0.01em;
+        }
+        .block {
+            margin-bottom: 16px;
+        }
+        .block-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--satellite-glow);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .block-title::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--core-glow);
+            box-shadow: 0 0 8px var(--core-glow);
+            flex-shrink: 0;
+        }
+        p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-dim);
+            margin: 0 0 4px 0;
+            font-weight: 300;
+        }
+        .divider {
+            height: 1px;
+            background: var(--line);
+            margin: 18px 0;
+            border: none;
+        }
 
-  .legend{
-    display:flex; flex-direction:column; gap:8px; margin-top: 22px;
-  }
-  .legend-item{
-    display:flex; align-items:center; gap:9px;
-    font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-dimmer);
-  }
-  .swatch{ width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .swatch.core{ background: var(--core-glow); box-shadow:0 0 6px var(--core-glow); }
-  .swatch.sat{ background: var(--satellite); }
-  .swatch.zone{ border:1px solid var(--satellite); background:transparent; }
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-top: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            color: var(--text-dimmer);
+        }
+        .swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .swatch.core {
+            background: var(--core-glow);
+            box-shadow: 0 0 6px var(--core-glow);
+        }
+        .swatch.sat {
+            background: var(--satellite);
+        }
+        .swatch.zone {
+            border: 1px solid var(--satellite);
+            background: transparent;
+        }
 
-  .doc-card{
-    display:flex; align-items:center; justify-content:space-between;
-    gap: 10px;
-    text-decoration:none;
-    padding: 14px 16px;
-    border-radius: 12px;
-    border: 1px solid var(--panel-border);
-    background: linear-gradient(155deg, rgba(111,224,255,0.10), rgba(111,224,255,0.02));
-    backdrop-filter: blur(6px);
-    color: var(--text-primary);
-    font-size: 13.5px; font-weight:500;
-    transition: all .25s ease;
-    cursor: pointer;
-  }
-  .doc-card:hover{
-    border-color: var(--core-glow);
-    background: linear-gradient(155deg, rgba(111,224,255,0.20), rgba(111,224,255,0.05));
-    box-shadow: 0 0 22px rgba(111,224,255,0.18);
-    transform: translateX(3px);
-  }
-  .doc-card-arrow{
-    font-family:'IBM Plex Mono', monospace;
-    color: var(--core-glow);
-    transition: transform .25s ease;
-    flex-shrink: 0;
-  }
-  .doc-card:hover .doc-card-arrow{ transform: translateX(3px); }
+        .doc-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+            background: linear-gradient(155deg, rgba(111, 224, 255, 0.10), rgba(111, 224, 255, 0.02));
+            backdrop-filter: blur(6px);
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 500;
+            transition: all .25s ease;
+            cursor: pointer;
+        }
+        .doc-card:hover {
+            border-color: var(--core-glow);
+            background: linear-gradient(155deg, rgba(111, 224, 255, 0.20), rgba(111, 224, 255, 0.05));
+            box-shadow: 0 0 22px rgba(111, 224, 255, 0.18);
+            transform: translateX(3px);
+        }
+        .doc-card-arrow {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--core-glow);
+            transition: transform .25s ease;
+            flex-shrink: 0;
+        }
+        .doc-card:hover .doc-card-arrow {
+            transform: translateX(3px);
+        }
 
-  #scene-wrap{
-    position: fixed; top:0; right:0; bottom:0; left: var(--panel-w);
-    overflow: hidden;
-  }
-  canvas{ display:block; touch-action:none; }
+        /* ---------- TOGGLE SWITCH ---------- */
+        .toggle-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 12px 0 16px 0;
+            width: 100%;
+        }
+        .toggle-wrap .toggle-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #6fe0ff;
+            opacity: 0.8;
+        }
+        .toggle-btn {
+            position: relative;
+            width: 100%;
+            height: 40px;
+            border-radius: 60px;
+            background: rgba(12, 18, 28, 0.45);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1.5px solid var(--toggle-off);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            user-select: none;
+            overflow: visible;
+        }
 
-  #top-title{
-    position: absolute; top: 26px; right: 34px; z-index: 15;
-    text-align: right; pointer-events:none;
-  }
-  #top-title .kicker{
-    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.18em;
-    text-transform:uppercase; color: var(--text-dimmer);
-  }
-  #top-title .name{
-    font-size:15px; color: var(--text-dim); margin-top:2px; font-weight:400;
-  }
+        .toggle-btn .knob {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.2), rgba(184, 74, 90, 0.25));
+            backdrop-filter: blur(4px);
+            border: 1.5px solid rgba(184, 74, 90, 0.3);
+            box-shadow: 0 0 20px rgba(184, 74, 90, 0.12), inset 0 0 15px rgba(184, 74, 90, 0.06);
+            transition: all 0.6s cubic-bezier(0.34, 1.2, 0.64, 1);
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(0);
+        }
 
-  #zone-toggles{
-    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
-    display:flex; gap:10px; z-index: 15;
-  }
-  .pill{
-    font-family:'IBM Plex Mono', monospace; font-size: 11.5px;
-    padding: 9px 16px; border-radius: 999px;
-    border: 1px solid var(--line);
-    background: rgba(10,15,24,0.55);
-    backdrop-filter: blur(8px);
-    color: var(--text-dim);
-    cursor:pointer;
-    user-select:none;
-    transition: all 0.3s ease;
-    letter-spacing:0.02em;
-  }
-  .pill:hover{ border-color: var(--satellite-glow); color:#fff; }
-  .pill.active{
-    color: #fff;
-    background: rgba(74, 123, 201, 0.5);
-    border-color: #4a7bc9;
-    font-weight:500;
-    box-shadow: 0 0 20px rgba(74, 123, 201, 0.2);
-  }
+        /* Активное состояние - кноб едет вправо до конца */
+        .toggle-btn.active .knob {
+            transform: translateX(calc(100% - -268px));
+            background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.3), rgba(111, 224, 255, 0.25));
+            border-color: rgba(111, 224, 255, 0.5);
+            box-shadow: 0 0 30px rgba(111, 224, 255, 0.15), inset 0 0 20px rgba(111, 224, 255, 0.08);
+        }
+        .toggle-btn .knob .icon {
+            font-size: 12px;
+            opacity: 0.5;
+            transition: all 0.4s ease;
+            line-height: 1;
+            color: #b84a5a;
+        }
+        .toggle-btn .toggle-text {
+            flex: 1;
+            text-align: center;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            color: var(--text-dimmer);
+            transition: all 0.4s ease;
+        }
+        .toggle-btn.active {
+            border-color: var(--toggle-on);
+            background: rgba(111, 224, 255, 0.06);
+            box-shadow: 0 0 40px rgba(111, 224, 255, 0.06), inset 0 0 40px rgba(111, 224, 255, 0.03);
+        }
+        .toggle-btn.active .knob .icon {
+            opacity: 0.9;
+            color: var(--toggle-on);
+        }
+        .toggle-btn.active .toggle-text {
+            color: var(--core-glow);
+        }
 
-  #hint{
-    position: absolute; bottom: 28px; right: 34px; z-index: 15;
-    font-family:'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-dimmer);
-    text-align:right; line-height:1.6; pointer-events:none;
-  }
+        #scene-wrap {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: var(--panel-w);
+            overflow: visible;
+        }
+        canvas {
+            display: block;
+            touch-action: none;
+        }
 
-  #label-layer{
-    position:absolute; inset:0; z-index: 10; pointer-events:none;
-  }
+        #top-title {
+            position: absolute;
+            top: 26px;
+            right: 34px;
+            z-index: 15;
+            text-align: right;
+            pointer-events: none;
+        }
+        #top-title .kicker {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-dimmer);
+        }
+        #top-title .name {
+            font-size: 15px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            font-weight: 400;
+        }
 
-  .lbl{
-    position:absolute; top:0; left:0;
-    transform: translate(-50%, -50%);
-    font-family:'IBM Plex Mono', monospace;
-    white-space: nowrap; pointer-events:none;
-    transition: opacity 0.35s ease;
-  }
-  .lbl-core{
-    font-size: 14px; font-weight: 600; letter-spacing:0.02em;
-    color: #fff; text-align:center; white-space:normal; width:150px;
-    text-shadow: 0 0 18px rgba(111,224,255,0.8);
-    line-height:1.6;
-    opacity: 0;
-  }
-  .lbl-sat{
-    font-size: 12px; color: var(--text-dim); font-weight:400;
-    padding: 3px 9px; border-radius: 5px;
-    background: rgba(8,12,20,0.5);
-    border: 1px solid transparent;
-  }
-  .lbl-sat.hover, .lbl-sat.selected{ color:#fff; border-color: var(--amber); }
-  .lbl-zone{
-    font-size: 10.5px; letter-spacing:0.14em; text-transform:uppercase;
-    color: var(--text-dimmer);
-  }
+        #zone-toggles {
+            position: absolute;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 15;
+        }
+        .pill {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: rgba(10, 15, 24, 0.55);
+            backdrop-filter: blur(8px);
+            color: var(--text-dim);
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+        }
+        .pill:hover {
+            border-color: var(--satellite-glow);
+            color: #fff;
+        }
+        .pill.active {
+            color: #fff;
+            background: rgba(74, 123, 201, 0.5);
+            border-color: #4a7bc9;
+            font-weight: 500;
+            box-shadow: 0 0 20px rgba(74, 123, 201, 0.2);
+        }
 
-  @media (max-width: 760px){
-    :root{ --panel-w: 100%; }
-    #panel{ height: 46%; bottom:auto; border-right:none; border-bottom:1px solid var(--panel-border); }
-    #scene-wrap{ left:0; top: 46%; }
-    #top-title{ display:none; }
-    #hint{ display:none; }
-  }
-</style>
+        #hint {
+            position: absolute;
+            bottom: 28px;
+            right: 34px;
+            z-index: 15;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dimmer);
+            text-align: right;
+            line-height: 1.6;
+            pointer-events: none;
+        }
+
+        /* ---------- VISION PANEL (vertical, right after text panel) ---------- */
+        #vision-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 30vw;
+            min-width: 280px;
+            max-width: 420px;
+            height: 96vh;
+            max-height: calc(100% - 20px);
+            z-index: 12;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+            transform: translateX(-20px) scale(0.97);
+            background: rgba(8, 14, 26, 0.55);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border-radius: 20px;
+            border: 1px solid rgba(130, 175, 215, 0.08);
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4), 0 0 60px rgba(111, 224, 255, 0.02);
+            padding: 22px 20px 18px 20px;
+            overflow-y: auto;
+            color: var(--text-primary);
+            pointer-events: none;
+            background: rgba(6, 12, 24, 0.92);
+            backdrop-filter: blur(44px);
+            -webkit-backdrop-filter: blur(44px);
+            border: 1.5px solid rgba(111, 224, 255, 0.2);
+            box-shadow: 
+                0 25px 90px rgba(0, 0, 0, 0.75),
+                0 0 80px rgba(111, 224, 255, 0.05),
+                inset 0 0 80px rgba(111, 224, 255, 0.03);
+        }
+        #vision-panel.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0) scale(1);
+        }
+        #vision-panel::-webkit-scrollbar {
+            width: 3px;
+        }
+        #vision-panel::-webkit-scrollbar-thumb {
+            background: rgba(130, 175, 215, 0.15);
+            border-radius: 3px;
+        }
+
+        #vision-panel .vision-eyebrow {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--core-glow);
+            opacity: 0.6;
+            margin-bottom: 3px;
+        }
+        #vision-panel .vision-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 4px 0;
+            letter-spacing: -0.01em;
+        }
+        #vision-panel .vision-tagline {
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--core-glow);
+            opacity: 0.8;
+            margin: 0 0 10px 0;
+            line-height: 1.3;
+            border-left: 2px solid rgba(111, 224, 255, 0.15);
+            padding-left: 10px;
+            font-style: italic;
+        }
+        #vision-panel .vision-block {
+            margin-bottom: 8px;
+        }
+        #vision-panel .vision-block-title {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            color: var(--satellite-glow);
+            margin-bottom: 2px;
+        }
+        #vision-panel .vision-block-text {
+            font-size: 14px;
+            line-height: 1.3;
+            color: var(--text-dim);
+            font-weight: 300;
+            margin: 0 0 2px 0;
+        }
+        #vision-panel .vision-result {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-primary);
+            opacity: 0.7;
+            margin: 0;
+        }
+        #vision-panel .vision-divider {
+            height: 1px;
+            background: rgba(130, 175, 215, 0.06);
+            margin: 6px 0;
+            border: none;
+        }
+
+        #label-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .lbl {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            font-family: 'IBM Plex Mono', monospace;
+            white-space: nowrap;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+        .lbl-core {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            color: #fff;
+            text-align: center;
+            white-space: normal;
+            width: 140px;
+            text-shadow: 0 0 18px rgba(111, 224, 255, 0.8);
+            line-height: 1.6;
+            opacity: 0;
+        }
+        .lbl-sat {
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 400;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(8, 12, 20, 0.5);
+            border: 1px solid transparent;
+        }
+        .lbl-sat.hover,
+        .lbl-sat.selected {
+            color: #fff;
+            border-color: var(--amber);
+        }
+        .lbl-zone {
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-dimmer);
+        }
+
+        @media (max-width: 1200px) {
+            #vision-panel {
+                width: 28vw;
+                min-width: 240px;
+                max-width: 340px;
+                padding: 18px 16px 14px 16px;
+                left: 14px;
+                top: 14px;
+                height: 90vh;
+            }
+            #vision-panel .vision-title {
+                font-size: 17px;
+            }
+            #vision-panel .vision-tagline {
+                font-size: 14px;
+            }
+            #vision-panel .vision-block-text,
+            #vision-panel .vision-result {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+            #vision-panel .vision-block-title {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 900px) {
+            #vision-panel {
+                width: 32vw;
+                min-width: 200px;
+                max-width: 290px;
+                padding: 14px 12px 12px 12px;
+                left: 10px;
+                top: 10px;
+                height: 86vh;
+                border-radius: 16px;
+            }
+            #vision-panel .vision-title {
+                font-size: 16px;
+            }
+            #vision-panel .vision-tagline {
+                font-size: 14px;
+                padding-left: 8px;
+            }
+            #vision-panel .vision-block-text,
+            #vision-panel .vision-result {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+            #vision-panel .vision-block-title {
+                font-size: 14px;
+            }
+        }
+        @media (max-width: 760px) {
+            :root {
+                --panel-w: 100%;
+            }
+            #panel {
+                height: 44%;
+                bottom: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--panel-border);
+                padding: 18px 16px 14px 16px;
+            }
+            #scene-wrap {
+                left: 0;
+                top: 44%;
+            }
+            #top-title {
+                display: none;
+            }
+            #hint {
+                display: none;
+            }
+            #vision-panel {
+                width: 88vw;
+                height: 62vh;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.96);
+                padding: 16px 16px 14px 16px;
+                border-radius: 16px;
+                max-width: 90vw;
+                min-width: unset;
+            }
+            #vision-panel.visible {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            #vision-panel .vision-title {
+                font-size: 14px;
+            }
+            #vision-panel .vision-tagline {
+                font-size: 14px;
+                padding-left: 8px;
+            }
+            #vision-panel .vision-block-text,
+            #vision-panel .vision-result {
+                font-size: 14px;
+                line-height: 1.3;
+            }
+            #vision-panel .vision-block-title {
+                font-size: 14px;
+            }
+            #zone-toggles {
+                bottom: 12px;
+                gap: 6px;
+            }
+            .pill {
+                font-size: 9px;
+                padding: 5px 10px;
+            }
+            .toggle-btn {
+                height: 34px;
+            }
+            .toggle-btn .knob {
+                width: 26px;
+                height: 26px;
+            }
+            .toggle-btn .knob .icon {
+                font-size: 10px;
+            }
+            .toggle-btn .toggle-text {
+                font-size: 9px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div id="panel">
-  <div class="eyebrow">3D-модель · КУ ТМХ</div>
-  <h1>Молекулярная структура<br>Корпоративного университета</h1>
+    <div id="panel">
+        <div class="eyebrow">3D-модель · КУ ТМХ</div>
+        <h1>Молекулярная структура<br>Корпоративного университета</h1>
 
-  <div class="block">
-    <div class="block-title">Ядро</div>
-    <p>То, без чего КУ погибнет — основа жизнедеятельности университета. Ядром считаются цифровые технологии: именно big data и скорость обмена информацией позволяют своевременно реагировать, меняться и принимать управленческие решения.</p>
-  </div>
+        <div class="block">
+            <div class="block-title">Ядро</div>
+            <p>То, без чего КУ погибнет — основа жизнедеятельности университета, ее энергия.</p>
+        </div>
 
-  <div class="block">
-    <div class="block-title">Спутники</div>
-    <p>То, что отчуждаемо — товары, услуги, сервисы. То, за что клиент платит.</p>
-  </div>
+        <div class="block">
+            <div class="block-title">Спутники</div>
+            <p>То, что отчуждаемо — товары, услуги, сервисы. То, за что клиент платит.</p>
+        </div>
 
-  <div class="block">
-    <div class="block-title">Зоны</div>
-    <p>Внутренняя — общества, входящие в холдинг. Отраслевая — компании крупного машиностроения и производственного сектора. Внешняя, рыночная — все, кто потенциально заинтересован в продуктах КУ или подвержен влиянию его деятельности.</p>
-  </div>
+        <div class="block">
+            <div class="block-title">Зоны</div>
+            <p>Внутренняя — общества, входящие в холдинг. Отраслевая — компании крупного машиностроения и производственного сектора. Внешняя, рыночная — все, кто потенциально заинтересован в продуктах КУ или подвержен влиянию его деятельности.</p>
+        </div>
 
-  <hr class="divider">
+        <hr class="divider">
 
-  <div class="block">
-    <p>Ядро уникально для каждой зоны. Для внутренней — это технологии: руководителям холдинга нужна точная информация и скорость решений. Для отраслевой — методология: она ценна тем, что её можно передать и экстраполировать, в отличие от технологий и людей, которые остаются свои. Для внешней — экспертиза: рынок готов внимать и учиться у авторитетов, передача знаний здесь происходит на личностно-ценностном уровне.</p>
-  </div>
+        <div class="block">
+            <p>Ядро уникально для каждой зоны. Для внутренней — это технологии: именно big data и скорость обмена информацией позволяют своевременно реагировать, меняться и принимать управленческие решения. Руководителям холдинга нужна точная информация и скорость решений. Для отраслевой — методология: она ценна тем, что ее можно передать и экстраполировать, в отличие от технологий и людей, которые остаются свои. Для внешней — экспертиза: рынок готов внимать и учиться у авторитетов, передача знаний здесь происходит на личностно-ценностном уровне.</p>
+        </div>
 
-  <div class="block">
-    <p>Наиболее целесообразное движение формирования авторитета и узнаваемости бренда — от внутреннего круга к внешнему: сперва укрепиться внутри, затем выйти на отраслевой круг с совместными образовательными программами, и далее — на рыночный периметр с сервисами для заинтересованных потребителей. Каждый спутник преодолевает зоны самостоятельно: один может остаться во внутреннем контуре, другой — выйти на отраслевой, третий — дойти до внешнего.</p>
-  </div>
+        <div class="block">
+            <p>Наиболее целесообразное движение формирования авторитета и узнаваемости бренда — от внутреннего круга к внешнему: сперва укрепиться внутри, затем выйти на отраслевой круг с совместными образовательными программами, и далее — на рыночный периметр с сервисами для заинтересованных потребителей. Каждый спутник преодолевает зоны самостоятельно: один может остаться во внутреннем контуре, другой — выйти на отраслевой, третий — дойти до внешнего.</p>
+        </div>
 
-  <div class="legend">
-    <div class="legend-item"><span class="swatch core"></span> Ядро — технологии / методология / экспертиза</div>
-    <div class="legend-item"><span class="swatch sat"></span> Спутники — продукты и сервисы</div>
-    <div class="legend-item"><span class="swatch zone"></span> Зоны — внутренняя / отраслевая / внешняя</div>
-  </div>
+        <div class="legend">
+            <div class="legend-item"><span class="swatch core"></span> Ядро — технологии / методология / экспертиза</div>
+            <div class="legend-item"><span class="swatch sat"></span> Спутники — продукты и сервисы</div>
+            <div class="legend-item"><span class="swatch zone"></span> Зоны — внутренняя / отраслевая / внешняя</div>
+        </div>
 
-  <hr class="divider">
+        <hr class="divider">
 
-  <div class="block">
-    <div class="block-title">Документы</div>
-    <div style="display:flex; flex-direction:column; gap:8px;">
-      <a class="doc-card" href="Стратегия_L_D.html">
-        <span>Стратегия L&amp;D</span>
-        <span class="doc-card-arrow">→</span>
-      </a>
-      <a class="doc-card" href="КУ_ТМХ_важно.html">
-        <span>Шаги разработки стратегии</span>
-        <span class="doc-card-arrow">→</span>
-      </a>
+        <div class="toggle-wrap">
+            <div class="toggle-label">Видение через 5 лет</div>
+            <div class="toggle-btn" id="visionToggle" role="button" tabindex="0" aria-label="Показать видение">
+                <div class="knob"><span class="icon">✦</span></div>
+                <span class="toggle-text">Показать</span>
+            </div>
+        </div>
+
+        <div class="block">
+            <div class="block-title">Документы</div>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+                <a class="doc-card" href="Стратегия_L_D.html">
+                    <span>Стратегия L&amp;D</span>
+                    <span class="doc-card-arrow">→</span>
+                </a>
+                <a class="doc-card" href="КУ_ТМХ_важно.html">
+                    <span>Шаги разработки стратегии</span>
+                    <span class="doc-card-arrow">→</span>
+                </a>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div id="scene-wrap">
-  <div id="label-layer"></div>
-  <div id="top-title">
-    <div class="kicker">Корпоративный университет</div>
-    <div class="name">ТМХ</div>
-  </div>
-  <div id="zone-toggles">
-    <div class="pill active" data-zone="0">Внутренний</div>
-    <div class="pill active" data-zone="1">Отраслевой</div>
-    <div class="pill active" data-zone="2">Внешний</div>
-  </div>
-  <div id="hint">Перетащите — поворот · Колесо — приближение<br>Наведите на ядро — подписи · Клик по узлу — фокус</div>
-</div>
+    <div id="scene-wrap">
+        <div id="label-layer"></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-(function(){
+        <!-- Vision Panel - immediately right of text panel, vertical -->
+        <div id="vision-panel">
+            <div class="vision-eyebrow">Видение КУ ТМХ</div>
+            <div class="vision-title">Через 5 лет</div>
+            <div class="vision-tagline">«Технологии превращают цифровой след сотрудника в опережающие показатели, методологии — в альянсы для совместных задач, а экспертиза формирует имидж лидера, который не догоняет тренды, а создает их».</div>
 
-  // ---------------------------------------------------------------
-  // Data
-  // ---------------------------------------------------------------
-  var CORE_LABEL = ['Технологии','Методология','Экспертиза'];
+            <div class="vision-block">
+                <div class="vision-block-title">ВНУТРЕННЯЯ ЗОНА — Технологии</div>
+                <p class="vision-block-text">Каждый сотрудник ТМХ работает внутри цифровой экосистемы, которая фиксирует его действия, анализирует способы достижения результата и в нужный момент предлагает персонализированную помощь — микрообучение, подсказку, корректировку маршрута выполнения задачи. Система не контролирует — она сопровождает. Ошибка становится не поводом для взыскания, а точкой роста. Лучшие практики автоматически фиксируются и масштабируются на смежные подразделения. Руководители получают не отчеты, а прогнозы: где возникнет дефицит компетенций, кто готов к повышению, какое решение даст максимальный эффект.</p>
+                <p class="vision-result"><strong>Результат:</strong> управление человеческим капиталом становится точным, быстрым и справедливым. Мы выходим на опережающие показатели по скорости адаптации, качеству выполнения задач и удержанию ключевых сотрудников.</p>
+            </div>
 
-  // ЦВЕТА ДЛЯ КАЖДОГО СПУТНИКА (уникальные, с сохранением прозрачности)
-  var satColors = [
-    // Внутренняя зона
-    0x4a7bc9, // Корпоративная культура — синий
-    0x4ac9a8, // Открытое обучение — зелёный
-    0xe8b84a, // Кадровый резерв — золотой
-    // Отраслевая зона
-    0xff6b6b, // Оценка персонала — красный
-    0x6b8cff, // Executive Research — сине-фиолетовый
-    // Внешняя зона
-    0xff9f43, // Проф. обучение — оранжевый
-    0x6bc9e8, // ЦОН — голубой
-    0xff6b9d, // Центр работы с ВУЗ/ССУЗ — розовый
-    0x9b6bff  // Центр международных отношений — фиолетовый
-  ];
+            <div class="vision-divider"></div>
 
-  var satellites = [
-    { label: 'Корпоративная культура',                  az: 200, pol: 62,  r: 5.8, breatheAmp: 1.2 },
-    { label: 'Открытое обучение',                        az: 335, pol: 58,  r: 4.2, breatheAmp: 0.9 },
-    { label: 'Кадровый резерв',                          az: 25,  pol: 82,  r: 6.5, breatheAmp: 1.4 },
-    { label: 'Оценка персонала, KPI',                    az: 65,  pol: 118, r: 3.5, breatheAmp: 0.8 },
-    { label: 'Executive Research',                       az: 225, pol: 112, r: 5.0, breatheAmp: 1.0 },
-    { label: 'Профессиональное и обязательное обучение', az: 158, pol: 96,  r: 6.8, breatheAmp: 1.5 },
-    { label: 'ЦОН (Центр общественных настроений)',      az: 280, pol: 78,  r: 6.2, breatheAmp: 1.3 },
-    { label: 'Центр работы с ВУЗ/ССУЗ',                  az: 45,  pol: 105, r: 6.5, breatheAmp: 1.2 },
-    { label: 'Центр работы международных отношений',     az: 310, pol: 45,  r: 6.0, breatheAmp: 1.1 }
-  ];
+            <div class="vision-block">
+                <div class="vision-block-title">ОТРАСЛЕВАЯ ЗОНА — Методологии</div>
+                <p class="vision-block-text">Все внутренние процессы КУ переведены в формат открытой методологии — понятной, воспроизводимой и адаптируемой для компаний машиностроительного сектора. Любое изменение в одном процессе подсвечивает его влияние на всю цепочку: от подбора до развития, от обучения до оценки. Мы не продаем методологии — мы создаем пространство для совместной работы: партнерские программы, экспертные советы, совместные лаборатории по подготовке кадров под новые технологии. Вместе с коллегами по отрасли решаем общие вызовы: унификация стандартов оценки, обмен лучшими практиками, подготовка персонала под новые производственные задачи.</p>
+                <p class="vision-result"><strong>Результат:</strong> отрасль начинает говорить на едином языке. КУ ТМХ становится «фабрикой методологий» и естественным центром для альянсов, где рождаются совместные решения, недостижимые в одиночку.</p>
+            </div>
 
-  // Привязываем цвета к спутникам
-  satellites.forEach(function(s, idx){
-    s.color = satColors[idx % satColors.length];
-  });
+            <div class="vision-divider"></div>
 
-  var zones = [
-    { label: 'Внутренний', radius: 3.0, color: 0x4a7bc9, opacity: 0.14 },
-    { label: 'Отраслевой', radius: 5.0, color: 0x4ac9a8, opacity: 0.14 },
-    { label: 'Внешний',    radius: 7.4, color: 0xe8b84a, opacity: 0.12 }
-  ];
+            <div class="vision-block">
+                <div class="vision-block-title">ВНЕШНЯЯ ЗОНА — Экспертиза</div>
+                <p class="vision-block-text">На внешнем рынке — внутреннем и международном (Азия, СНГ, другие регионы) — КУ ТМХ воспринимается как безусловный носитель экспертизы. К нам приходят не за обучением «для галочки»: мы обучаем сотрудников клиентов эксплуатации и сервисному обслуживанию продуктов ТМХ, создавая отношения, которые длятся дольше контракта. Мы участвуем в тендерах не как исполнители, а как стратегические партнеры. Наши эксперты — желанные спикеры на ключевых отраслевых площадках, наши кейсы изучают в профильных вузах. Бренд ТМХ как работодателя укрепляется: лучшие специалисты отрасли хотят работать с нами, потому что здесь они могут расти, влиять и быть услышанными.</p>
+                <p class="vision-result"><strong>Результат:</strong> мы не догоняем тренды — мы их создаем. Клиенты выбирают нас, таланты стремятся к нам, рынок признает наш голос авторитетным.</p>
+            </div>
+        </div>
 
-  function sph(radius, azDeg, polDeg){
-    var az = azDeg * Math.PI/180, pol = polDeg * Math.PI/180;
-    return new THREE.Vector3(
-      radius * Math.sin(pol) * Math.cos(az),
-      radius * Math.cos(pol),
-      radius * Math.sin(pol) * Math.sin(az)
-    );
-  }
-  
-  satellites.forEach(function(s, idx){
-    s.baseR = s.r;
-    s.pos = sph(s.r, s.az, s.pol);
-    s.breathePhase = idx * 1.1 + 0.3;
-    s.breatheSpeed = 0.075 + (idx % 4) * 0.01;
-  });
+        <div id="top-title">
+            <div class="kicker">Корпоративный университет</div>
+            <div class="name">ТМХ</div>
+        </div>
 
-  // ---------------------------------------------------------------
-  // Renderer / scene / camera
-  // ---------------------------------------------------------------
-  var wrap = document.getElementById('scene-wrap');
-  var W = function(){ return wrap.clientWidth; };
-  var H = function(){ return wrap.clientHeight; };
+        <div id="zone-toggles">
+            <div class="pill active" data-zone="0">Внутренний</div>
+            <div class="pill active" data-zone="1">Отраслевой</div>
+            <div class="pill active" data-zone="2">Внешний</div>
+        </div>
 
-  var scene = new THREE.Scene();
-  var camera = new THREE.PerspectiveCamera(35, W()/H(), 0.1, 200);
-  
-  camera.position.set(2.5, 0, 54);
-  camera.lookAt(0, 0, 0);
+        <div id="hint">Перетащите — поворот · Колесо — приближение<br>Наведите на ядро — подписи · Клик по узлу — фокус</div>
+    </div>
 
-  var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W(), H());
-  renderer.setClearColor(0x000000, 0);
-  if (renderer.outputEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
-  wrap.insertBefore(renderer.domElement, wrap.firstChild);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
+    </script>
+    <script>
+        (function() {
+            // --- Toggle logic ---
+            const toggle = document.getElementById('visionToggle');
+            const panel = document.getElementById('vision-panel');
+            const textEl = toggle.querySelector('.toggle-text');
+            let active = false;
 
-  scene.add(new THREE.AmbientLight(0x1c2c40, 1.3));
-  var coreLight = new THREE.PointLight(0x6fe0ff, 2.0, 34, 2);
-  coreLight.position.set(0,0,0);
-  scene.add(coreLight);
-  var rim = new THREE.PointLight(0x2a5a8a, 1.0, 42, 2);
-  rim.position.set(-8, 6, -6);
-  scene.add(rim);
-  var rim2 = new THREE.PointLight(0x8fe3ff, 0.6, 40, 2);
-  rim2.position.set(9, -5, 7);
-  scene.add(rim2);
+            function setActive(state) {
+                active = state;
+                toggle.classList.toggle('active', active);
+                panel.classList.toggle('visible', active);
+                textEl.textContent = active ? 'Скрыть' : 'Показать';
+            }
 
-  var molecule = new THREE.Group();
-  scene.add(molecule);
+            toggle.addEventListener('click', function(e) {
+                setActive(!active);
+            });
 
-  // ---------------------------------------------------------------
-  // Helpers
-  // ---------------------------------------------------------------
-  function bumpySphere(radius, detail, amp){
-    var geo = new THREE.IcosahedronGeometry(radius, detail);
-    var pos = geo.attributes.position;
-    var v = new THREE.Vector3();
-    for (var i=0; i<pos.count; i++){
-      v.fromBufferAttribute(pos, i);
-      var n = v.clone().normalize();
-      var noise = Math.sin(n.x*6.1 + n.y*3.2) * Math.cos(n.y*5.4 + n.z*2.6) * Math.sin(n.z*4.3 + n.x*1.8);
-      var off = 1 + noise * amp;
-      v.multiplyScalar(off);
-      pos.setXYZ(i, v.x, v.y, v.z);
-    }
-    geo.computeVertexNormals();
-    return geo;
-  }
+            toggle.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setActive(!active);
+                }
+            });
 
-  // ---------------------------------------------------------------
-  // Core — УМЕНЬШЕНО НА 10% (было 1.53 → 1.377)
-  // ---------------------------------------------------------------
-  var CORE_R = 1.377;
-  var coreGeo = bumpySphere(CORE_R, 4, 0.14);
-  
-  var posAttr = coreGeo.attributes.position;
-  var vertexCount = posAttr.count;
-  var coreColorArr = new Float32Array(vertexCount * 3);
-  
-  var lightDir = new THREE.Vector3(0.7, 0.7, 0.3).normalize();
-  var lightColor = new THREE.Color(0x5aa8e8);
-  var darkColor = new THREE.Color(0x052040);
-  
-  for (var i = 0; i < vertexCount; i++) {
-    var vx = posAttr.getX(i);
-    var vy = posAttr.getY(i);
-    var vz = posAttr.getZ(i);
-    var len = Math.sqrt(vx*vx + vy*vy + vz*vz);
-    var nx = vx / len;
-    var ny = vy / len;
-    var nz = vz / len;
-    
-    var normal = new THREE.Vector3(nx, ny, nz);
-    var intensity = normal.dot(lightDir);
-    var t = (intensity + 1) / 2;
-    t = Math.pow(t, 0.5);
-    t = 0.08 + t * 0.92;
-    
-    var color = darkColor.clone().lerp(lightColor, t);
-    coreColorArr[i*3] = color.r;
-    coreColorArr[i*3+1] = color.g;
-    coreColorArr[i*3+2] = color.b;
-  }
-  coreGeo.setAttribute('color', new THREE.BufferAttribute(coreColorArr, 3));
+            // --- Three.js scene ---
+            var CORE_LABEL = ['Технологии', 'Методология', 'Экспертиза'];
 
-  var coreMat = new THREE.MeshPhysicalMaterial({
-    vertexColors: true,
-    transparent: true,
-    opacity: 0.50,
-    roughness: 0.20,
-    metalness: 0.05,
-    clearcoat: 0.6,
-    clearcoatRoughness: 0.18,
-    emissive: 0x1a6890,
-    emissiveIntensity: 0.05,
-    side: THREE.DoubleSide,
-    depthWrite: false
-  });
-  var coreMesh = new THREE.Mesh(coreGeo, coreMat);
-  coreMesh.userData.isCore = true;
-  coreMesh.scale.setScalar(1);
-  molecule.add(coreMesh);
+            var satColors = [
+                0x4a7bc9, // Корпоративная культура
+                0x4ac9a8, // Открытое обучение
+                0xe8b84a, // Кадровый резерв
+                0xc97bc9, // Карьерные треки
+                0xff6b6b, // Оценка персонала
+                0x6b8cff, // Executive Research
+                0xff9f43, // Проф. обучение
+                0x6bc9e8, // ЦОН
+                0xff6b9d, // Центр работы с ВУЗ/ССУЗ
+                0x9b6bff // Центр международных отношений
+            ];
 
-  // ---------------------------------------------------------------
-  // ZONES
-  // ---------------------------------------------------------------
-  var zoneMeshes = [];
-  zones.forEach(function(z, i){
-    var geo = new THREE.SphereGeometry(z.radius, 32, 24);
-    var mat = new THREE.MeshBasicMaterial({
-      color: z.color,
-      transparent: true,
-      opacity: z.opacity,
-      wireframe: true,
-      depthWrite: false
-    });
-    var mesh = new THREE.Mesh(geo, mat);
-    mesh.rotation.x = i * 0.4;
-    mesh.rotation.y = i * 0.7;
-    molecule.add(mesh);
-    zoneMeshes.push(mesh);
+            var satellites = [
+                { label: 'Корпоративная культура', az: 200, pol: 62, r: 5.8, breatheAmp: 1.2 },
+                { label: 'Открытое обучение', az: 335, pol: 58, r: 4.2, breatheAmp: 0.9 },
+                { label: 'Кадровый резерв', az: 25, pol: 82, r: 6.5, breatheAmp: 1.4 },
+                { label: 'Карьерные треки', az: 155, pol: 72, r: 5.0, breatheAmp: 1.0 },
+                { label: 'Оценка персонала, KPI', az: 65, pol: 118, r: 3.5, breatheAmp: 0.8 },
+                { label: 'Executive Research', az: 225, pol: 112, r: 5.0, breatheAmp: 1.0 },
+                { label: 'Профессиональное и обязательное обучение', az: 158, pol: 96, r: 6.8, breatheAmp: 1.5 },
+                { label: 'ЦОН (Центр общественных настроений)', az: 280, pol: 78, r: 6.2, breatheAmp: 1.3 },
+                { label: 'Центр работы с ВУЗ/ССУЗ', az: 45, pol: 105, r: 6.5, breatheAmp: 1.2 },
+                { label: 'Центр работы международных отношений', az: 310, pol: 45, r: 6.0, breatheAmp: 1.1 }
+            ];
 
-    var mat2 = new THREE.MeshBasicMaterial({
-      color: z.color,
-      transparent: true,
-      opacity: z.opacity * 0.25,
-      wireframe: false,
-      depthWrite: false
-    });
-    var mesh2 = new THREE.Mesh(geo.clone(), mat2);
-    mesh2.scale.setScalar(1.02);
-    mesh2.rotation.x = i * 0.4;
-    mesh2.rotation.y = i * 0.7;
-    molecule.add(mesh2);
-    zoneMeshes.push(mesh2);
-  });
+            satellites.forEach(function(s, idx) {
+                s.color = satColors[idx % satColors.length];
+            });
 
-  // ---------------------------------------------------------------
-  // Satellites — РАЗНЫЕ ЦВЕТА, ПРОЗРАЧНЫЕ
-  // ---------------------------------------------------------------
-  var SAT_R = 0.60;
+            var zones = [
+                { label: 'Внутренний', radius: 3.0, color: 0x4a7bc9, opacity: 0.14 },
+                { label: 'Отраслевой', radius: 5.0, color: 0x4ac9a8, opacity: 0.14 },
+                { label: 'Внешний', radius: 7.4, color: 0xe8b84a, opacity: 0.12 }
+            ];
 
-  var satMeshes = [], nitkas = [];
-  var UP = new THREE.Vector3(0,1,0);
+            function sph(radius, azDeg, polDeg) {
+                var az = azDeg * Math.PI / 180,
+                    pol = polDeg * Math.PI / 180;
+                return new THREE.Vector3(
+                    radius * Math.sin(pol) * Math.cos(az),
+                    radius * Math.cos(pol),
+                    radius * Math.sin(pol) * Math.sin(az)
+                );
+            }
 
-  satellites.forEach(function(s, idx){
-    var color = s.color || 0x4a8fc9;
-    
-    var geo = bumpySphere(SAT_R, 3, 0.14);
-    var mat = new THREE.MeshPhysicalMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.35,
-      roughness: 0.22,
-      metalness: 0.05,
-      clearcoat: 0.6,
-      clearcoatRoughness: 0.18,
-      emissive: color,
-      emissiveIntensity: 0.10,
-      side: THREE.DoubleSide,
-      depthWrite: false
-    });
-    var mesh = new THREE.Mesh(geo, mat);
-    mesh.position.copy(s.pos);
-    mesh.userData = { index: idx, isCore:false };
-    molecule.add(mesh);
-    satMeshes.push(mesh);
+            satellites.forEach(function(s, idx) {
+                s.baseR = s.r;
+                s.pos = sph(s.r, s.az, s.pol);
+                s.breathePhase = idx * 1.1 + 0.3;
+                s.breatheSpeed = 0.075 + (idx % 4) * 0.01;
+            });
 
-    var THREAD_RADIUS = 0.10;
-    var thrGeo = new THREE.CylinderGeometry(THREAD_RADIUS * 0.7, THREAD_RADIUS * 1.3, 1, 12, 1, true);
-    var thrMat = new THREE.MeshPhysicalMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.08,
-      roughness: 0.35,
-      clearcoat: 0.3,
-      side: THREE.DoubleSide,
-      depthWrite: false
-    });
-    var thrMesh = new THREE.Mesh(thrGeo, thrMat);
-    molecule.add(thrMesh);
+            var wrap = document.getElementById('scene-wrap');
+            var W = function() { return wrap.clientWidth; };
+            var H = function() { return wrap.clientHeight; };
 
-    nitkas.push({ 
-      thrMesh: thrMesh,
-      satIdx: idx,
-      threadRadius: THREAD_RADIUS
-    });
-  });
+            var scene = new THREE.Scene();
 
-  // ---------------------------------------------------------------
-  // Label layer
-  // ---------------------------------------------------------------
-  var labelLayer = document.getElementById('label-layer');
+            // ===== ПЛАВНО ПЕРЕЛИВАЮЩИЙСЯ ГРАДИЕНТНЫЙ ФОН (ВСТАВЬТЕ СЮДА) =====
+            var bgCanvas = document.createElement('canvas');
+            bgCanvas.width = 1024;
+            bgCanvas.height = 1024;
+            var ctx = bgCanvas.getContext('2d');
 
-  var coreLabelEl = document.createElement('div');
-  coreLabelEl.className = 'lbl lbl-core';
-  coreLabelEl.innerHTML = CORE_LABEL.join('<br>');
-  labelLayer.appendChild(coreLabelEl);
+            function drawGradient(offsetX, offsetY, time) {
+                ctx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+                
+                var grd = ctx.createRadialGradient(
+                    512 + offsetX * 100, 512 + offsetY * 80, 0,
+                    512, 512, 600
+                );
+                
+                var brightness1 = 0.08 + Math.sin(time * 0.15) * 0.04;
+                var brightness2 = 0.15 + Math.sin(time * 0.12 + 1.2) * 0.05;
+                var brightness3 = 0.06 + Math.sin(time * 0.18 + 2.5) * 0.03;
+                var brightness4 = 0.04 + Math.sin(time * 0.1 + 3.8) * 0.02;
+                
+                grd.addColorStop(0, `rgba(111, 224, 255, ${brightness2})`);
+                grd.addColorStop(0.15, `rgba(79, 168, 220, ${brightness1})`);
+                grd.addColorStop(0.4, `rgba(40, 130, 190, ${brightness3})`);
+                grd.addColorStop(0.7, `rgba(20, 80, 140, ${brightness4})`);
+                grd.addColorStop(1, 'rgba(5, 8, 16, 0)');
+                
+                ctx.fillStyle = grd;
+                ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+                
+                var grd2 = ctx.createRadialGradient(
+                    200 + offsetX * 150, 700 + offsetY * 120, 0,
+                    512, 512, 500
+                );
+                grd2.addColorStop(0, `rgba(79, 168, 220, ${brightness1 * 0.6})`);
+                grd2.addColorStop(0.5, `rgba(40, 130, 190, ${brightness3 * 0.5})`);
+                grd2.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = grd2;
+                ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+                
+                var grd3 = ctx.createRadialGradient(
+                    800 + offsetX * 80, 300 + offsetY * 100, 0,
+                    512, 512, 450
+                );
+                grd3.addColorStop(0, `rgba(60, 180, 240, ${brightness1 * 0.4})`);
+                grd3.addColorStop(0.6, `rgba(30, 100, 180, ${brightness4 * 0.3})`);
+                grd3.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = grd3;
+                ctx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+            }
 
-  satellites.forEach(function(s, idx){
-    var el = document.createElement('div');
-    el.className = 'lbl lbl-sat';
-    el.textContent = s.label;
-    el.dataset.idx = idx;
-    labelLayer.appendChild(el);
-    s.el = el;
-  });
+            var bgTexture = new THREE.CanvasTexture(bgCanvas);
+            bgTexture.needsUpdate = true;
 
-  zones.forEach(function(z){
-    var el = document.createElement('div');
-    el.className = 'lbl lbl-zone';
-    el.textContent = z.label;
-    labelLayer.appendChild(el);
-    z.el = el;
-  });
+            var bgMaterial = new THREE.MeshBasicMaterial({
+                map: bgTexture,
+                transparent: true,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
 
-  function project(worldVec){
-    var v = worldVec.clone().project(camera);
-    var x = (v.x * 0.5 + 0.5) * W();
-    var y = (-v.y * 0.5 + 0.5) * H();
-    return { x:x, y:y, visible: v.z < 1 };
-  }
+            var bgPlane = new THREE.Mesh(
+                new THREE.PlaneGeometry(80, 80),
+                bgMaterial
+            );
+            bgPlane.position.set(0, 0, -25);
+            scene.add(bgPlane);
 
-  function updateLabels(){
-    var coreWorld = new THREE.Vector3(0,0,0).applyMatrix4(molecule.matrixWorld);
-    var cp = project(coreWorld);
-    coreLabelEl.style.left = cp.x + 'px';
-    coreLabelEl.style.top = cp.y + 'px';
+            var bgTime = 0;
+            var bgOffsetX = 0;
+            var bgOffsetY = 0;
 
-    satellites.forEach(function(s){
-      var world = s.pos.clone().applyMatrix4(molecule.matrixWorld);
-      var p = project(world);
-      s.el.style.left = p.x + 'px';
-      s.el.style.top = (p.y - 26) + 'px';
-      if (!s.el.classList.contains('focus-dim')) s.el.style.opacity = p.visible ? '1' : '0';
-    });
+            function updateBackground(time) {
+                bgTime += 0.005;
+                bgOffsetX = Math.sin(bgTime * 0.3) * 0.4 + Math.sin(bgTime * 0.7 + 0.5) * 0.2;
+                bgOffsetY = Math.cos(bgTime * 0.25) * 0.4 + Math.sin(bgTime * 0.6 + 1.3) * 0.2;
+                drawGradient(bgOffsetX, bgOffsetY, time);
+                bgTexture.needsUpdate = true;
+            }
+            // ===== КОНЕЦ ФОНА =====
 
-    zones.forEach(function(z){
-      var world = new THREE.Vector3(0, z.radius, 0).applyMatrix4(molecule.matrixWorld);
-      var p = project(world);
-      z.el.style.left = p.x + 'px';
-      z.el.style.top = p.y + 'px';
-      z.el.style.opacity = p.visible ? 0.7 : 0;
-    });
-  }
+            var camera = new THREE.PerspectiveCamera(35, W() / H(), 0.1, 200);
+            camera.position.set(2.5, 0, 54);
+            camera.lookAt(0, 0, 0);
 
-  // ---------------------------------------------------------------
-  // Interaction
-  // ---------------------------------------------------------------
-  var dragging = false, lastX = 0, lastY = 0;
-  var rotVel = { y: 0.0012 };
-  var autoRotate = true;
+            var camera = new THREE.PerspectiveCamera(35, W() / H(), 0.1, 200);
 
-  function pointerDown(x,y){ dragging = true; autoRotate = false; lastX = x; lastY = y; }
-  function pointerMove(x,y){
-    if(!dragging) return;
-    var dx = x - lastX, dy = y - lastY;
-    lastX = x; lastY = y;
-    molecule.rotation.y += dx * 0.0055;
-    molecule.rotation.x += dy * 0.0055;
-    molecule.rotation.x = Math.max(-1.1, Math.min(1.1, molecule.rotation.x));
-  }
-  function pointerUp(){ dragging = false; }
+            camera.position.set(2.5, 0, 54);
+            camera.lookAt(0, 0, 0);
 
-  renderer.domElement.addEventListener('mousedown', function(e){ pointerDown(e.clientX,e.clientY); });
-  window.addEventListener('mousemove', function(e){ pointerMove(e.clientX,e.clientY); });
-  window.addEventListener('mouseup', pointerUp);
-  renderer.domElement.addEventListener('touchstart', function(e){ var t=e.touches[0]; pointerDown(t.clientX,t.clientY); }, {passive:true});
-  renderer.domElement.addEventListener('touchmove', function(e){ var t=e.touches[0]; pointerMove(t.clientX,t.clientY); }, {passive:true});
-  renderer.domElement.addEventListener('touchend', pointerUp);
+            var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(W(), H());
+            renderer.setClearColor(0x000000, 0);
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 0.95;
+            wrap.insertBefore(renderer.domElement, wrap.firstChild);
 
-  renderer.domElement.addEventListener('wheel', function(e){
-    e.preventDefault();
-    camera.position.z += e.deltaY * 0.01;
-    camera.position.z = Math.max(18, Math.min(75, camera.position.z));
-  }, { passive:false });
+            // --- Enhanced dynamic lighting ---
+            // Базовое освещение
+            var ambientLight = new THREE.AmbientLight(0x2a3a5a, 1.6);
+            scene.add(ambientLight);
 
-  var raycaster = new THREE.Raycaster();
-  var mouseNDC = new THREE.Vector2(-10,-10);
-  var hoveredIdx = -1, selectedIdx = -1, coreHovered = false;
+            // Центральный свет (ядро)
+            var coreLight = new THREE.PointLight(0x6fe0ff, 3.5, 40, 2);  // увеличил интенсивность
+            coreLight.position.set(0, 0, 0);
+            scene.add(coreLight);
 
-  function updatePointerNDC(clientX, clientY){
-    var rect = renderer.domElement.getBoundingClientRect();
-    mouseNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    mouseNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-  }
-  renderer.domElement.addEventListener('mousemove', function(e){ updatePointerNDC(e.clientX, e.clientY); });
-  renderer.domElement.addEventListener('click', function(e){
-    updatePointerNDC(e.clientX, e.clientY);
-    raycaster.setFromCamera(mouseNDC, camera);
-    var hits = raycaster.intersectObjects(satMeshes);
-    if (hits.length){
-      var idx = hits[0].object.userData.index;
-      selectedIdx = (selectedIdx === idx) ? -1 : idx;
-    } else {
-      selectedIdx = -1;
-    }
-  });
+            // Боковые света
+            var rim = new THREE.PointLight(0x3a7aaa, 2.0, 45, 2);  // увеличил
+            rim.position.set(-8, 6, -6);
+            scene.add(rim);
 
-  // ---------------------------------------------------------------
-  // Zone toggle
-  // ---------------------------------------------------------------
-  document.querySelectorAll('.pill').forEach(function(pill){
-    pill.addEventListener('click', function(){
-      var zi = parseInt(pill.dataset.zone, 10);
-      pill.classList.toggle('active');
-      var visible = pill.classList.contains('active');
-      zoneMeshes[zi*2].visible = visible;
-      zoneMeshes[zi*2 + 1].visible = visible;
-      zones[zi].el.style.display = visible ? '' : 'none';
-    });
-  });
+            var rim2 = new THREE.PointLight(0x8fe3ff, 1.8, 40, 2);  // увеличил
+            rim2.position.set(9, -5, 7);
+            scene.add(rim2);
 
-  // ---------------------------------------------------------------
-  // Resize
-  // ---------------------------------------------------------------
-  window.addEventListener('resize', function(){
-    camera.aspect = W()/H();
-    camera.updateProjectionMatrix();
-    renderer.setSize(W(), H());
-  });
+            // ===== ФОНОВАЯ ПОДСВЕТКА (УСИЛЕННАЯ) =====
+            // Свет сверху-сзади
+            var topBackLight = new THREE.PointLight(0x6fe0ff, 3.5, 50, 2);  // сильно увеличил
+            topBackLight.position.set(0, 8, -8);  // приблизил
+            scene.add(topBackLight);
 
-  // ---------------------------------------------------------------
-  // Animation loop
-  // ---------------------------------------------------------------
-  var clock = new THREE.Clock();
-  var tmpDir = new THREE.Vector3();
-  var tmpMid = new THREE.Vector3();
-  var tmpQuat = new THREE.Quaternion();
+            // Свет слева-сзади
+            var leftBackLight = new THREE.PointLight(0x4fa8dc, 3.0, 45, 2);
+            leftBackLight.position.set(-8, 2, -6);  // приблизил
+            scene.add(leftBackLight);
 
-  function animate(){
-    requestAnimationFrame(animate);
-    var t = clock.getElapsedTime();
-    var dt = clock.getDelta();
+            // Свет справа-сзади
+            var rightBackLight = new THREE.PointLight(0x8fe3ff, 3.0, 45, 2);
+            rightBackLight.position.set(8, -1, -6);  // приблизил
+            scene.add(rightBackLight);
 
-    if (autoRotate && !dragging){
-      molecule.rotation.y += rotVel.y;
-    }
+            // Свет снизу-сзади
+            var bottomBackLight = new THREE.PointLight(0x1478a8, 2.5, 40, 2);
+            bottomBackLight.position.set(0, -6, -6);  // приблизил
+            scene.add(bottomBackLight);
 
-    coreMat.emissiveIntensity = 0.05 + Math.sin(t * 1.15) * 0.02;
+            // Мягкий заполняющий свет сзади
+            var backFillLight = new THREE.DirectionalLight(0x6fe0ff, 1.2);  // увеличил
+            backFillLight.position.set(0, 0, -10);  // приблизил
+            scene.add(backFillLight);
+            // ===== КОНЕЦ =====
 
-    raycaster.setFromCamera(mouseNDC, camera);
-    var satHits = raycaster.intersectObjects(satMeshes);
-    var coreHits = raycaster.intersectObject(coreMesh);
-    hoveredIdx = satHits.length ? satHits[0].object.userData.index : -1;
-    coreHovered = coreHits.length > 0 && hoveredIdx === -1;
+            // Пульсирующие источники света
+            var pulseLights = [];
+            var pulseConfigs = [
+                { color: 0x4a8fc9, intensity: 1.2, x: 5, y: 3, z: 8, speed: 0.4, amp: 0.6 },
+                { color: 0x2a6a9a, intensity: 0.6, x: -6, y: -2, z: 6, speed: 0.5, amp: 0.4 },
+                { color: 0x6fe0ff, intensity: 0.8, x: 0, y: 8, z: -4, speed: 0.3, amp: 0.5 },
+                { color: 0x3a7aaa, intensity: 0.5, x: 7, y: -4, z: -5, speed: 0.6, amp: 0.3 }
+            ];
 
-    coreLabelEl.style.opacity = coreHovered ? '1' : '0';
+            pulseConfigs.forEach(function(cfg) {
+                var light = new THREE.PointLight(cfg.color, cfg.intensity, 35, 2);
+                light.position.set(cfg.x, cfg.y, cfg.z);
+                scene.add(light);
+                pulseLights.push({
+                    light: light,
+                    config: cfg,
+                    phase: Math.random() * Math.PI * 2
+                });
+            });
 
-    satMeshes.forEach(function(mesh, idx){
-      var s = satellites[idx];
-      var isHover = idx === hoveredIdx;
-      var isSel = idx === selectedIdx;
-      var focusMode = selectedIdx !== -1;
-      var emph = isHover || isSel;
+            var fillLight = new THREE.DirectionalLight(0x4a7aaa, 0.5);
+            fillLight.position.set(0, 10, 5);
+            scene.add(fillLight);
 
-      var breatheOffset = Math.sin(t * s.breatheSpeed + s.breathePhase) * s.breatheAmp;
-      var currentR = Math.max(1.2, Math.min(7.2, s.baseR + breatheOffset));
-      s.pos = sph(currentR, s.az, s.pol);
-      mesh.position.copy(s.pos);
+            var molecule = new THREE.Group();
+            scene.add(molecule);
 
-      var targetScale = emph ? 1.3 : 1.0;
-      mesh.scale.x += (targetScale - mesh.scale.x) * 0.18;
-      mesh.scale.y = mesh.scale.z = mesh.scale.x;
+            function bumpySphere(radius, detail, amp) {
+                var geo = new THREE.IcosahedronGeometry(radius, detail);
+                var pos = geo.attributes.position;
+                var v = new THREE.Vector3();
+                for (var i = 0; i < pos.count; i++) {
+                    v.fromBufferAttribute(pos, i);
+                    var n = v.clone().normalize();
+                    var noise = Math.sin(n.x * 6.1 + n.y * 3.2) * Math.cos(n.y * 5.4 + n.z * 2.6) * Math.sin(n.z * 4.3 + n
+                    .x * 1.8);
+                    var off = 1 + noise * amp;
+                    v.multiplyScalar(off);
+                    pos.setXYZ(i, v.x, v.y, v.z);
+                }
+                geo.computeVertexNormals();
+                return geo;
+            }
 
-      if (emph){
-        mesh.material.emissiveIntensity = 0.5;
-        mesh.material.opacity = 0.6;
-      } else {
-        mesh.material.emissiveIntensity = 0.10;
-        mesh.material.opacity = 0.35;
-      }
+            var CORE_R = 1.377;
+            var coreGeo = bumpySphere(CORE_R, 4, 0.14);
 
-      var dim = (focusMode && !emph);
-      mesh.material.opacity = dim ? 0.08 : mesh.material.opacity;
+            var posAttr = coreGeo.attributes.position;
+            var vertexCount = posAttr.count;
+            var coreColorArr = new Float32Array(vertexCount * 3);
 
-      s.el.classList.toggle('hover', isHover);
-      s.el.classList.toggle('selected', isSel);
-      s.el.classList.toggle('focus-dim', dim);
-      s.el.style.opacity = dim ? '0.28' : '1';
+            var lightDir = new THREE.Vector3(0.7, 0.7, 0.3).normalize();
+            var lightColor = new THREE.Color(0x6aa8e8);
+            var darkColor = new THREE.Color(0x0a2a4a);
 
-      var n = nitkas[idx];
-      var dist = s.pos.length();
-      tmpDir.copy(s.pos).normalize();
-      tmpQuat.setFromUnitVectors(UP, tmpDir);
-      tmpMid.copy(s.pos).multiplyScalar(0.5);
+            for (var i = 0; i < vertexCount; i++) {
+                var vx = posAttr.getX(i);
+                var vy = posAttr.getY(i);
+                var vz = posAttr.getZ(i);
+                var len = Math.sqrt(vx * vx + vy * vy + vz * vz);
+                var nx = vx / len;
+                var ny = vy / len;
+                var nz = vz / len;
 
-      n.thrMesh.quaternion.copy(tmpQuat);
-      n.thrMesh.position.copy(tmpMid);
-      n.thrMesh.scale.set(1, dist, 1);
-      n.thrMesh.material.opacity = (emph ? 0.16 : 0.08);
-    });
+                var normal = new THREE.Vector3(nx, ny, nz);
+                var intensity = normal.dot(lightDir);
+                var t = (intensity + 1) / 2;
+                t = Math.pow(t, 0.5);
+                t = 0.08 + t * 0.92;
 
-    zoneMeshes.forEach(function(mesh, idx){
-      var speed = 0.04 + (idx % 2) * 0.015;
-      mesh.rotation.y += dt * speed;
-    });
+                var color = darkColor.clone().lerp(lightColor, t);
+                coreColorArr[i * 3] = color.r;
+                coreColorArr[i * 3 + 1] = color.g;
+                coreColorArr[i * 3 + 2] = color.b;
+            }
+            coreGeo.setAttribute('color', new THREE.BufferAttribute(coreColorArr, 3));
 
-    updateLabels();
-    renderer.render(scene, camera);
-  }
-  animate();
+            var coreMat = new THREE.MeshPhysicalMaterial({
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.55,
+                roughness: 0.18,
+                metalness: 0.05,
+                clearcoat: 0.7,
+                clearcoatRoughness: 0.15,
+                emissive: 0x1a6890,
+                emissiveIntensity: 0.08,
+                side: THREE.DoubleSide,
+                depthWrite: false
+            });
+            var coreMesh = new THREE.Mesh(coreGeo, coreMat);
+            coreMesh.userData.isCore = true;
+            coreMesh.scale.setScalar(1);
+            molecule.add(coreMesh);
 
-})();
-</script>
+            var zoneMeshes = [];
+            zones.forEach(function(z, i) {
+                var geo = new THREE.SphereGeometry(z.radius, 32, 24);
+                var mat = new THREE.MeshBasicMaterial({
+                    color: z.color,
+                    transparent: true,
+                    opacity: z.opacity,
+                    wireframe: true,
+                    depthWrite: false
+                });
+                var mesh = new THREE.Mesh(geo, mat);
+                mesh.rotation.x = i * 0.4;
+                mesh.rotation.y = i * 0.7;
+                molecule.add(mesh);
+                zoneMeshes.push(mesh);
+
+                var mat2 = new THREE.MeshBasicMaterial({
+                    color: z.color,
+                    transparent: true,
+                    opacity: z.opacity * 0.25,
+                    wireframe: false,
+                    depthWrite: false
+                });
+                var mesh2 = new THREE.Mesh(geo.clone(), mat2);
+                mesh2.scale.setScalar(1.02);
+                mesh2.rotation.x = i * 0.4;
+                mesh2.rotation.y = i * 0.7;
+                molecule.add(mesh2);
+                zoneMeshes.push(mesh2);
+            });
+
+            var SAT_R = 0.60;
+            var satMeshes = [],
+                nitkas = [];
+            var UP = new THREE.Vector3(0, 1, 0);
+
+            satellites.forEach(function(s, idx) {
+                var color = s.color || 0x4a8fc9;
+
+                var geo = bumpySphere(SAT_R, 3, 0.14);
+                var mat = new THREE.MeshPhysicalMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: 0.35,
+                    roughness: 0.22,
+                    metalness: 0.05,
+                    clearcoat: 0.6,
+                    clearcoatRoughness: 0.18,
+                    emissive: color,
+                    emissiveIntensity: 0.10,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                });
+                var mesh = new THREE.Mesh(geo, mat);
+                mesh.position.copy(s.pos);
+                mesh.userData = { index: idx, isCore: false };
+                molecule.add(mesh);
+                satMeshes.push(mesh);
+
+                var THREAD_RADIUS = 0.10;
+                var thrGeo = new THREE.CylinderGeometry(THREAD_RADIUS * 0.7, THREAD_RADIUS * 1.3, 1, 12, 1, true);
+                var thrMat = new THREE.MeshPhysicalMaterial({
+                    color: color,
+                    transparent: true,
+                    opacity: 0.08,
+                    roughness: 0.35,
+                    clearcoat: 0.3,
+                    side: THREE.DoubleSide,
+                    depthWrite: false
+                });
+                var thrMesh = new THREE.Mesh(thrGeo, thrMat);
+                molecule.add(thrMesh);
+
+                nitkas.push({
+                    thrMesh: thrMesh,
+                    satIdx: idx,
+                    threadRadius: THREAD_RADIUS
+                });
+            });
+
+            var labelLayer = document.getElementById('label-layer');
+
+            var coreLabelEl = document.createElement('div');
+            coreLabelEl.className = 'lbl lbl-core';
+            coreLabelEl.innerHTML = CORE_LABEL.join('<br>');
+            labelLayer.appendChild(coreLabelEl);
+
+            satellites.forEach(function(s, idx) {
+                var el = document.createElement('div');
+                el.className = 'lbl lbl-sat';
+                el.textContent = s.label;
+                el.dataset.idx = idx;
+                labelLayer.appendChild(el);
+                s.el = el;
+            });
+
+            zones.forEach(function(z) {
+                var el = document.createElement('div');
+                el.className = 'lbl lbl-zone';
+                el.textContent = z.label;
+                labelLayer.appendChild(el);
+                z.el = el;
+            });
+
+            function project(worldVec) {
+                var v = worldVec.clone().project(camera);
+                var x = (v.x * 0.5 + 0.5) * W();
+                var y = (-v.y * 0.5 + 0.5) * H();
+                return { x: x, y: y, visible: v.z < 1 };
+            }
+
+            function updateLabels() {
+                var coreWorld = new THREE.Vector3(0, 0, 0).applyMatrix4(molecule.matrixWorld);
+                var cp = project(coreWorld);
+                coreLabelEl.style.left = cp.x + 'px';
+                coreLabelEl.style.top = cp.y + 'px';
+
+                satellites.forEach(function(s) {
+                    var world = s.pos.clone().applyMatrix4(molecule.matrixWorld);
+                    var p = project(world);
+                    s.el.style.left = p.x + 'px';
+                    s.el.style.top = (p.y - 26) + 'px';
+                    if (!s.el.classList.contains('focus-dim')) s.el.style.opacity = p.visible ? '1' : '0';
+                });
+
+                zones.forEach(function(z) {
+                    var world = new THREE.Vector3(0, z.radius, 0).applyMatrix4(molecule.matrixWorld);
+                    var p = project(world);
+                    z.el.style.left = p.x + 'px';
+                    z.el.style.top = p.y + 'px';
+                    z.el.style.opacity = p.visible ? 0.7 : 0;
+                });
+            }
+
+            var dragging = false,
+                lastX = 0,
+                lastY = 0;
+            var rotVel = { y: 0.0012 };
+            var autoRotate = true;
+
+            function pointerDown(x, y) { dragging = true;
+                autoRotate = false;
+                lastX = x;
+                lastY = y; }
+
+            function pointerMove(x, y) {
+                if (!dragging) return;
+                var dx = x - lastX,
+                    dy = y - lastY;
+                lastX = x;
+                lastY = y;
+                molecule.rotation.y += dx * 0.0055;
+                molecule.rotation.x += dy * 0.0055;
+                molecule.rotation.x = Math.max(-1.1, Math.min(1.1, molecule.rotation.x));
+            }
+
+            function pointerUp() { dragging = false; }
+
+            renderer.domElement.addEventListener('mousedown', function(e) { pointerDown(e.clientX, e.clientY); });
+            window.addEventListener('mousemove', function(e) { pointerMove(e.clientX, e.clientY); });
+            window.addEventListener('mouseup', pointerUp);
+            renderer.domElement.addEventListener('touchstart', function(e) { var t = e.touches[0];
+                pointerDown(t.clientX, t.clientY); }, { passive: true });
+            renderer.domElement.addEventListener('touchmove', function(e) { var t = e.touches[0];
+                pointerMove(t.clientX, t.clientY); }, { passive: true });
+            renderer.domElement.addEventListener('touchend', pointerUp);
+
+            renderer.domElement.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                camera.position.z += e.deltaY * 0.01;
+                camera.position.z = Math.max(18, Math.min(75, camera.position.z));
+            }, { passive: false });
+
+            var raycaster = new THREE.Raycaster();
+            var mouseNDC = new THREE.Vector2(-10, -10);
+            var hoveredIdx = -1,
+                selectedIdx = -1,
+                coreHovered = false;
+
+            function updatePointerNDC(clientX, clientY) {
+                var rect = renderer.domElement.getBoundingClientRect();
+                mouseNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+                mouseNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+            }
+            renderer.domElement.addEventListener('mousemove', function(e) { updatePointerNDC(e.clientX, e.clientY); });
+            renderer.domElement.addEventListener('click', function(e) {
+                updatePointerNDC(e.clientX, e.clientY);
+                raycaster.setFromCamera(mouseNDC, camera);
+                var hits = raycaster.intersectObjects(satMeshes);
+                if (hits.length) {
+                    var idx = hits[0].object.userData.index;
+                    selectedIdx = (selectedIdx === idx) ? -1 : idx;
+                } else {
+                    selectedIdx = -1;
+                }
+            });
+
+            document.querySelectorAll('.pill').forEach(function(pill) {
+                pill.addEventListener('click', function() {
+                    var zi = parseInt(pill.dataset.zone, 10);
+                    pill.classList.toggle('active');
+                    var visible = pill.classList.contains('active');
+                    zoneMeshes[zi * 2].visible = visible;
+                    zoneMeshes[zi * 2 + 1].visible = visible;
+                    zones[zi].el.style.display = visible ? '' : 'none';
+                });
+            });
+
+            window.addEventListener('resize', function() {
+                camera.aspect = W() / H();
+                camera.updateProjectionMatrix();
+                renderer.setSize(W(), H());
+            });
+
+            var clock = new THREE.Clock();
+            var tmpDir = new THREE.Vector3();
+            var tmpMid = new THREE.Vector3();
+            var tmpQuat = new THREE.Quaternion();
+
+            function animate() {
+                requestAnimationFrame(animate);
+                var t = clock.getElapsedTime();
+                var dt = clock.getDelta();
+
+                if (autoRotate && !dragging) {
+                    molecule.rotation.y += rotVel.y;
+                }
+
+                pulseLights.forEach(function(item, index) {
+                    var cfg = item.config;
+                    var intensity = cfg.intensity + Math.sin(t * cfg.speed + item.phase) * cfg.amp;
+                    item.light.intensity = Math.max(0.1, intensity);
+                    var radius = 6 + Math.sin(t * cfg.speed * 0.5 + item.phase) * 2;
+                    var angle = t * cfg.speed * 0.3 + item.phase;
+                    item.light.position.x = cfg.x + Math.sin(angle) * radius * 0.3;
+                    item.light.position.z = cfg.z + Math.cos(angle * 0.7) * radius * 0.3;
+                    item.light.position.y = cfg.y + Math.sin(angle * 0.5 + 1.2) * 1.5;
+                });
+
+                coreMat.emissiveIntensity = 0.08 + Math.sin(t * 1.15) * 0.04;
+
+                raycaster.setFromCamera(mouseNDC, camera);
+                var satHits = raycaster.intersectObjects(satMeshes);
+                var coreHits = raycaster.intersectObject(coreMesh);
+                hoveredIdx = satHits.length ? satHits[0].object.userData.index : -1;
+                coreHovered = coreHits.length > 0 && hoveredIdx === -1;
+
+                coreLabelEl.style.opacity = coreHovered ? '1' : '0';
+
+                satMeshes.forEach(function(mesh, idx) {
+                    var s = satellites[idx];
+                    var isHover = idx === hoveredIdx;
+                    var isSel = idx === selectedIdx;
+                    var focusMode = selectedIdx !== -1;
+                    var emph = isHover || isSel;
+
+                    var breatheOffset = Math.sin(t * s.breatheSpeed + s.breathePhase) * s.breatheAmp;
+                    var currentR = Math.max(1.2, Math.min(7.2, s.baseR + breatheOffset));
+                    s.pos = sph(currentR, s.az, s.pol);
+                    mesh.position.copy(s.pos);
+
+                    var targetScale = emph ? 1.3 : 1.0;
+                    mesh.scale.x += (targetScale - mesh.scale.x) * 0.18;
+                    mesh.scale.y = mesh.scale.z = mesh.scale.x;
+
+                    if (emph) {
+                        mesh.material.emissiveIntensity = 0.6;
+                        mesh.material.opacity = 0.65;
+                    } else {
+                        mesh.material.emissiveIntensity = 0.12;
+                        mesh.material.opacity = 0.35;
+                    }
+
+                    var dim = (focusMode && !emph);
+                    mesh.material.opacity = dim ? 0.08 : mesh.material.opacity;
+
+                    s.el.classList.toggle('hover', isHover);
+                    s.el.classList.toggle('selected', isSel);
+                    s.el.classList.toggle('focus-dim', dim);
+                    s.el.style.opacity = dim ? '0.28' : '1';
+
+                    var n = nitkas[idx];
+                    var dist = s.pos.length();
+                    tmpDir.copy(s.pos).normalize();
+                    tmpQuat.setFromUnitVectors(UP, tmpDir);
+                    tmpMid.copy(s.pos).multiplyScalar(0.5);
+
+                    n.thrMesh.quaternion.copy(tmpQuat);
+                    n.thrMesh.position.copy(tmpMid);
+                    n.thrMesh.scale.set(1, dist, 1);
+                    n.thrMesh.material.opacity = (emph ? 0.16 : 0.08);
+                });
+
+                zoneMeshes.forEach(function(mesh, idx) {
+                    var speed = 0.04 + (idx % 2) * 0.015;
+                    mesh.rotation.y += dt * speed;
+                });
+
+                updateLabels();
+                updateBackground(t);
+                renderer.render(scene, camera);
+            }
+            animate();
+
+        })();
+    </script>
 </body>
 </html>
