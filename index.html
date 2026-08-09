@@ -142,11 +142,107 @@
     font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
     flex-shrink: 0;
   }
+
+  /* ===== 3D-эмблема логотипа: стеклянный выпуклый щит с вращающейся монетой ===== */
+  .logo-badge {
+    position: relative;
+    width: 76px; height: 76px;   /* было 48px → 58px → теперь ещё крупнее */
+    flex-shrink: 0;
+    perspective: 640px;
+    pointer-events: auto;
+  }
+  .badge-dome {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(64% 60% at 30% 24%, rgba(255,255,255,0.40), rgba(255,255,255,0.04) 55%),
+      radial-gradient(90% 90% at 72% 82%, rgba(0,0,0,0.30), rgba(0,0,0,0) 60%),
+      linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+    backdrop-filter: blur(9px) saturate(160%);
+    -webkit-backdrop-filter: blur(9px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow:
+      inset 0 3px 7px rgba(255,255,255,0.30),
+      inset 0 -7px 15px rgba(0,0,0,0.50),
+      inset 5px 0 10px rgba(0,0,0,0.18),
+      inset -5px 0 10px rgba(0,0,0,0.18),
+      0 8px 20px rgba(0,0,0,0.38);
+  }
+  .badge-rim {
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .logo-coin {
+    position: absolute;
+    inset: 8px;
+    transform-style: preserve-3d;
+    animation: coinSpin 60s linear infinite;
+  }
+  @keyframes coinSpin {
+    0%   { transform: rotateY(0deg); }
+    7%   { transform: rotateY(720deg); }
+    100% { transform: rotateY(720deg); }
+  }
+  .coin-face {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .coin-front { transform: rotateY(0deg) translateZ(0.6px); }
+  .coin-back  { transform: rotateY(180deg) translateZ(0.6px); }
+  .coin-face svg {
+    width: 86%; height: 86%;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45));
+  }
+  .coin-sheen {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.55), transparent 55%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* ===== Название: матовое стекло с мягкими цветными переливами ===== */
   .title-placeholder {
-    font-size: 19px;
-    font-weight: 600;
-    color: var(--text-dim);
-    text-shadow: 0 2px 18px rgba(0,0,0,0.6);
+    font-size: 26px;             /* было 19px → 22px → +20% */
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: transparent;
+    background: linear-gradient(100deg,
+      #eaf2ff 0%, #dfe7ff 12%, #e6d9ff 24%, #f3d9ee 36%,
+      #ffe0e6 48%, #fff0da 60%, #dff5ea 72%, #dbeeff 86%, #eaf2ff 100%);
+    background-size: 320% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0.4px rgba(255,255,255,0.45);
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.35),
+      0 2px 0 rgba(255,255,255,0.18),
+      0 3px 2px rgba(0,0,0,0.20),
+      0 6px 16px rgba(0,0,0,0.35);
+    animation: titleSheen 9s ease-in-out infinite alternate;
+    display: inline-block;
+  }
+  @keyframes titleSheen {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .liquid-letter {
+    display: inline-block;
+    animation: liquidLetter 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.06s);
+    will-change: transform;
+  }
+  @keyframes liquidLetter {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
   }
   .tagline {
     font-size: 18px;
@@ -343,16 +439,33 @@
 
 <div class="top-header">
   <header>
-    <div class="logo-box" style="background: transparent; display: flex; align-items: center; justify-content: center; padding: 2px;">
-      <svg width="44" height="44" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.6353 12C18.9055 12 18.4214 12.7564 18.7271 13.4189L24.0923 25.0342C24.4499 25.8084 25.5501 25.8084 25.9077 25.0342L31.2729 13.4189C31.5786 12.7564 31.0945 12 30.3647 12H36.3999C37.1364 12.0003 37.6197 12.7698 37.3003 13.4336L25.9009 37.127C25.5375 37.8822 24.4625 37.8822 24.0991 37.127L12.6997 13.4336C12.3803 12.7698 12.8635 12.0002 13.6001 12H19.6353Z" fill="#eef1f6"/>
-        <circle cx="25" cy="17" r="2" fill="#eef1f6"/>
-        <path d="M10 16.2361C10 15.1808 11.4225 14.845 11.8944 15.7889L16.8944 25.7889C16.9639 25.9277 17 26.0808 17 26.2361V37C17 37.5523 16.5523 38 16 38H11C10.4477 38 10 37.5523 10 37V16.2361Z" fill="#eef1f6"/>
-        <path d="M40 16.2361C40 15.1808 38.5775 14.845 38.1056 15.7889L33.1056 25.7889C33.0361 25.9277 33 26.0808 33 26.2361V37C33 37.5523 33.4477 38 34 38H39C39.5523 38 40 37.5523 40 37V16.2361Z" fill="#eef1f6"/>
-        <circle opacity="0.25" cx="25" cy="25" r="24.5" fill="none" stroke="#eef1f6" stroke-width="1.5"/>
-      </svg>
+    <div class="logo-badge" id="logoBadge">
+      <div class="badge-dome"></div>
+      <div class="badge-rim"></div>
+      <div class="logo-coin">
+        <div class="coin-face coin-front">
+          <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.6353 12C18.9055 12 18.4214 12.7564 18.7271 13.4189L24.0923 25.0342C24.4499 25.8084 25.5501 25.8084 25.9077 25.0342L31.2729 13.4189C31.5786 12.7564 31.0945 12 30.3647 12H36.3999C37.1364 12.0003 37.6197 12.7698 37.3003 13.4336L25.9009 37.127C25.5375 37.8822 24.4625 37.8822 24.0991 37.127L12.6997 13.4336C12.3803 12.7698 12.8635 12.0002 13.6001 12H19.6353Z" fill="#eef1f6"/>
+            <circle cx="25" cy="17" r="2" fill="#eef1f6"/>
+            <path d="M10 16.2361C10 15.1808 11.4225 14.845 11.8944 15.7889L16.8944 25.7889C16.9639 25.9277 17 26.0808 17 26.2361V37C17 37.5523 16.5523 38 16 38H11C10.4477 38 10 37.5523 10 37V16.2361Z" fill="#eef1f6"/>
+            <path d="M40 16.2361C40 15.1808 38.5775 14.845 38.1056 15.7889L33.1056 25.7889C33.0361 25.9277 33 26.0808 33 26.2361V37C33 37.5523 33.4477 38 34 38H39C39.5523 38 40 37.5523 40 37V16.2361Z" fill="#eef1f6"/>
+            <circle opacity="0.25" cx="25" cy="25" r="24.5" fill="none" stroke="#eef1f6" stroke-width="1.5"/>
+          </svg>
+          <div class="coin-sheen"></div>
+        </div>
+        <div class="coin-face coin-back">
+          <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.6353 12C18.9055 12 18.4214 12.7564 18.7271 13.4189L24.0923 25.0342C24.4499 25.8084 25.5501 25.8084 25.9077 25.0342L31.2729 13.4189C31.5786 12.7564 31.0945 12 30.3647 12H36.3999C37.1364 12.0003 37.6197 12.7698 37.3003 13.4336L25.9009 37.127C25.5375 37.8822 24.4625 37.8822 24.0991 37.127L12.6997 13.4336C12.3803 12.7698 12.8635 12.0002 13.6001 12H19.6353Z" fill="#241a14"/>
+            <circle cx="25" cy="17" r="2" fill="#241a14"/>
+            <path d="M10 16.2361C10 15.1808 11.4225 14.845 11.8944 15.7889L16.8944 25.7889C16.9639 25.9277 17 26.0808 17 26.2361V37C17 37.5523 16.5523 38 16 38H11C10.4477 38 10 37.5523 10 37V16.2361Z" fill="#241a14"/>
+            <path d="M40 16.2361C40 15.1808 38.5775 14.845 38.1056 15.7889L33.1056 25.7889C33.0361 25.9277 33 26.0808 33 26.2361V37C33 37.5523 33.4477 38 34 38H39C39.5523 38 40 37.5523 40 37V16.2361Z" fill="#241a14"/>
+            <circle opacity="0.35" cx="25" cy="25" r="24.5" fill="none" stroke="#b0653a" stroke-width="1.5"/>
+          </svg>
+          <div class="coin-sheen"></div>
+        </div>
+      </div>
     </div>
-    <div class="title-placeholder">Лаборатория Метаморфозиса </div>
+    <div class="title-placeholder" id="titleText">Лаборатория Метаморфозиса</div>
   </header>
 </div>
 
@@ -361,12 +474,16 @@
     <div class="content">
       <div class="cards">
     <div class="card-row">
+      <div class="card-bar-ext" style="--c1:#3EC6E0; --c2:#8FE3FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#3EC6E0" data-href="Молекулярная_структура_КУ_ТМХ.html"><div class="card-title">Стратегия КУ ТМХ</div></div>
+    </div>
+    <div class="card-row">
       <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#3EAA6D"><div class="card-title">Диагностика потенциала команды</div></div>
+      <div class="card" data-color="#3EAA6D" data-href="Потенциал_команды_full_2.html"><div class="card-title">Диагностика потенциала команды</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#D6A93B; --c2:#F3D98A;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D6A93B"><div class="card-title">Диалоговые тренажёры</div></div>
+      <div class="card" data-color="#D6A93B" data-href="trainers.html"><div class="card-title">Диалоговые тренажёры</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#C1554A; --c2:#EE9A8E;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
@@ -374,15 +491,15 @@
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#8B6FE0"><div class="card-title">Опросник: ABC-players</div></div>
+      <div class="card" data-color="#8B6FE0" data-href="ABC-опросник___жидкое_стекло.html"><div class="card-title">Опросник: ABC-players</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#B0653A; --c2:#E3A26F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
       <div class="card" data-color="#B0653A"><div class="card-title">Программа-тренинг: оценка персонала</div></div>
     </div>
     <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#4C7FB0; --c2:#9EC3E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card dim" data-color="#4C7FB0"><div class="card-title">Скоро здесь что-то будет</div></div>
+      <div class="card-bar-ext" style="--c1:#D9B26A; --c2:#F0D9A0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#D9B26A" data-href="Активности_для_развития_резервистов.html"><div class="card-title">Кадровый резерв</div></div>
     </div>
       </div>
 
@@ -1386,6 +1503,33 @@
   }
   animate();
 })();
+</script>
+<script>
+  // Переход по клику на карточки с data-href
+  (function(){
+    document.querySelectorAll('.card[data-href]').forEach(function(card){
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function(){
+        window.location.href = card.getAttribute('data-href');
+      });
+    });
+  })();
+</script>
+<script>
+  // Разбивка названия на буквы для эффекта "жидкого" волнового покачивания
+  (function(){
+    var el = document.getElementById('titleText');
+    if(!el) return;
+    var text = el.textContent.trim();
+    el.textContent = '';
+    Array.from(text).forEach(function(ch, i){
+      var span = document.createElement('span');
+      span.className = 'liquid-letter';
+      span.style.setProperty('--i', i);
+      span.textContent = (ch === ' ') ? '\u00A0' : ch;
+      el.appendChild(span);
+    });
+  })();
 </script>
 </body>
 </html>

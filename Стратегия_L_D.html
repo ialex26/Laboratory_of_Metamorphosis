@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стратегия L&D Развития</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #f0f4f8 0%, #e0e8ef 100%);
+            min-height: 100vh;
+            padding: 35px 20px;
+            color: #1a2f40;
+        }
+
+        .strategy-card {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 48px 48px 32px 32px;
+            padding: 40px 40px 35px 40px;
+            box-shadow: 0 25px 55px rgba(30, 60, 90, 0.10), 0 4px 14px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== СТИЛИ ДЛЯ ПЕЧАТИ ===== */
+        @media print {
+            body {
+                background: white !important;
+                padding: 5mm 8mm !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .strategy-card {
+                max-width: 100% !important;
+                background: white !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                border-radius: 0 !important;
+                padding: 10px 15px !important;
+                margin: 0 !important;
+            }
+
+            /* Принудительное масштабирование для Safari */
+            .strategy-card {
+                transform: scale(0.85) !important;
+                transform-origin: top left !important;
+                width: 117% !important; /* Компенсируем масштаб */
+            }
+
+            .block {
+                flex: 0 0 180px !important;
+                min-width: 140px !important;
+                padding: 6px 8px !important;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                border-radius: 12px !important;
+            }
+
+            .block h3 {
+                font-size: 0.7rem !important;
+                margin-bottom: 2px !important;
+            }
+
+            .block .short-desc {
+                font-size: 0.55rem !important;
+                line-height: 1.2 !important;
+            }
+
+            .block-icon {
+                font-size: 0.9rem !important;
+                width: 24px !important;
+                height: 24px !important;
+                border-radius: 8px !important;
+                margin-bottom: 3px !important;
+            }
+
+            .badge-ai {
+                font-size: 0.4rem !important;
+                padding: 1px 6px !important;
+                margin-top: 4px !important;
+                border-radius: 20px !important;
+            }
+
+            .commentary {
+                font-size: 0.6rem !important;
+                padding: 4px 10px !important;
+                min-height: 30px !important;
+                line-height: 1.3 !important;
+                border-radius: 12px !important;
+            }
+
+            .commentary .q {
+                font-size: 0.5rem !important;
+                display: inline !important;
+            }
+
+            .commentary .answer {
+                display: inline !important;
+                margin-top: 0 !important;
+            }
+
+            .commentary .q i {
+                font-size: 0.5rem !important;
+            }
+
+            .strategy-slogan {
+                font-size: 0.7rem !important;
+                padding: 4px 10px !important;
+                border-radius: 8px !important;
+                margin-bottom: 6px !important;
+                border-left-width: 3px !important;
+            }
+
+            .strategy-slogan i {
+                font-size: 0.6rem !important;
+                margin-right: 4px !important;
+            }
+
+            .intro-text {
+                font-size: 0.62rem !important;
+                padding: 6px 10px !important;
+                line-height: 1.3 !important;
+                border-radius: 10px !important;
+            }
+
+            .intro-text p {
+                margin-top: 4px !important;
+            }
+
+            .cycle-badge {
+                font-size: 0.58rem !important;
+                padding: 2px 10px !important;
+                margin-top: 4px !important;
+                border-radius: 20px !important;
+            }
+
+            .cycle-badge i {
+                font-size: 0.5rem !important;
+            }
+
+            .resources-title {
+                font-size: 0.75rem !important;
+                margin-bottom: 4px !important;
+            }
+
+            .resource-note {
+                font-size: 0.58rem !important;
+                padding: 6px 12px !important;
+                line-height: 1.3 !important;
+                border-radius: 10px !important;
+                border-left-width: 3px !important;
+            }
+
+            .resource-note .note-title {
+                font-size: 0.65rem !important;
+                margin-bottom: 2px !important;
+            }
+
+            .resource-note .note-title i {
+                font-size: 0.6rem !important;
+            }
+
+            .resource-note .factor {
+                padding-left: 10px !important;
+                margin-top: 1px !important;
+                font-size: 0.55rem !important;
+            }
+
+            .resource-note .section-divider {
+                margin: 3px 0 2px 0 !important;
+                font-size: 0.6rem !important;
+            }
+
+            .resource-note .section-divider i {
+                font-size: 0.5rem !important;
+                margin-right: 4px !important;
+            }
+
+            .resource-bars {
+                gap: 4px 12px !important;
+                margin-bottom: 2px !important;
+            }
+
+            .resource-item {
+                flex: 1 1 80px !important;
+            }
+
+            .resource-label {
+                font-size: 0.6rem !important;
+                margin-bottom: 1px !important;
+            }
+
+            .bar-bg {
+                height: 8px !important;
+                border-radius: 20px !important;
+            }
+
+            .bar-fill {
+                border-radius: 20px !important;
+            }
+
+            .resource-desc {
+                font-size: 0.55rem !important;
+                gap: 2px 10px !important;
+            }
+
+            .resource-desc span i {
+                font-size: 0.5rem !important;
+            }
+
+            .intro-header h1 {
+                font-size: 1.2rem !important;
+            }
+
+            .intro-header h1 i {
+                font-size: 1.0rem !important;
+            }
+
+            .intro-header h1 small {
+                font-size: 0.55rem !important;
+                padding: 1px 10px !important;
+                border-radius: 60px !important;
+            }
+
+            .read-direction {
+                font-size: 0.5rem !important;
+                padding: 1px 10px !important;
+                border-radius: 20px !important;
+                gap: 4px !important;
+            }
+
+            .read-direction i {
+                font-size: 0.6rem !important;
+            }
+
+            .intro-section {
+                margin-bottom: 6px !important;
+                padding-bottom: 6px !important;
+                border-bottom-width: 1px !important;
+            }
+
+            .resources-section {
+                margin-top: 6px !important;
+                padding-top: 6px !important;
+                border-top-width: 1px !important;
+            }
+
+            .pipeline-grid {
+                gap: 3px !important;
+                margin-top: 2px !important;
+            }
+
+            .pipeline-row {
+                gap: 4px !important;
+            }
+
+            /* Убираем анимацию при печати */
+            .pipeline-row {
+                opacity: 1 !important;
+                animation: none !important;
+            }
+
+            .block {
+                opacity: 1 !important;
+                animation: none !important;
+            }
+
+            /* Скрываем ховер-эффекты */
+            .block:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+        }
+
+        /* ===== ВВОДНАЯ ЧАСТЬ ===== */
+        .intro-section {
+            margin-bottom: 32px;
+            padding-bottom: 28px;
+            border-bottom: 2px solid rgba(60, 100, 140, 0.10);
+        }
+
+        .intro-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .intro-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #0b253b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .intro-header h1 i {
+            color: #2a6f9c;
+            font-size: 2.0rem;
+        }
+
+        .intro-header h1 small {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #3e607a;
+            background: rgba(60, 100, 140, 0.08);
+            padding: 4px 18px;
+            border-radius: 100px;
+            margin-left: 4px;
+        }
+
+        .read-direction {
+            background: rgba(200, 215, 230, 0.30);
+            border-radius: 40px;
+            padding: 5px 18px 5px 14px;
+            font-size: 0.8rem;
+            color: #2c5270;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .read-direction i {
+            color: #3a799e;
+        }
+
+        .strategy-slogan {
+            background: rgba(42, 111, 156, 0.06);
+            border-left: 4px solid #2a6f9c;
+            padding: 14px 20px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #0b2a40;
+            line-height: 1.5;
+        }
+
+        .strategy-slogan i {
+            color: #2a6f9c;
+            margin-right: 10px;
+        }
+
+        .intro-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #1f405b;
+            background: rgba(255, 255, 255, 0.30);
+            padding: 16px 22px;
+            border-radius: 16px;
+            backdrop-filter: blur(2px);
+        }
+
+        .intro-text strong {
+            color: #0d3a58;
+        }
+
+        .intro-text .highlight {
+            background: rgba(42, 111, 156, 0.06);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .cycle-badge {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.88rem;
+            color: #1f4a66;
+            background: rgba(42, 111, 156, 0.05);
+            padding: 5px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(42, 111, 156, 0.06);
+        }
+
+        .cycle-badge i {
+            color: #2f7baf;
+        }
+
+        /* ===== ОСНОВНАЯ СЕТКА: блоки + комментарии ===== */
+        .pipeline-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .pipeline-row {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+        }
+
+        /* ЛЕВАЯ КОЛОНКА — блок (цветной) */
+        .block {
+            flex: 0 0 260px;
+            min-width: 200px;
+            border-radius: 24px;
+            padding: 18px 16px 16px 16px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 3px 12px rgba(30, 60, 90, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+        }
+
+        .block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(30, 60, 90, 0.08);
+        }
+
+        .block-icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.30);
+        }
+
+        .block h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #0b253b;
+            margin-bottom: 4px;
+            letter-spacing: -0.01em;
+        }
+
+        .block .short-desc {
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: #1f405b;
+            opacity: 0.85;
+            font-weight: 400;
+        }
+
+        .badge-ai {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 40px;
+            letter-spacing: 0.2px;
+            margin-top: 10px;
+            align-self: flex-start;
+            background: rgba(25, 55, 85, 0.70);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .badge-ai i {
+            margin-right: 4px;
+            font-size: 0.6rem;
+        }
+
+        /* ЦВЕТОВАЯ ПАЛИТРА ДЛЯ БЛОКОВ */
+        .block-methodology {
+            background: rgba(180, 210, 235, 0.35);
+            border-color: rgba(130, 180, 215, 0.25);
+        }
+        .block-methodology .block-icon { color: #1a6190; }
+
+        .block-criteria {
+            background: rgba(200, 220, 200, 0.30);
+            border-color: rgba(140, 190, 150, 0.25);
+        }
+        .block-criteria .block-icon { color: #2d7a4a; }
+
+        .block-diagnostics {
+            background: rgba(230, 210, 180, 0.30);
+            border-color: rgba(200, 170, 130, 0.25);
+        }
+        .block-diagnostics .block-icon { color: #a87030; }
+
+        .block-development {
+            background: rgba(210, 200, 235, 0.30);
+            border-color: rgba(160, 140, 205, 0.25);
+        }
+        .block-development .block-icon { color: #6a4f9a; }
+
+        .block-analytics {
+            background: rgba(235, 200, 210, 0.30);
+            border-color: rgba(195, 150, 170, 0.25);
+        }
+        .block-analytics .block-icon { color: #9a4a6a; }
+
+        .block-result {
+            background: rgba(180, 215, 210, 0.30);
+            border-color: rgba(110, 180, 175, 0.25);
+        }
+        .block-result .block-icon { color: #1f7a72; }
+
+        /* ПРАВАЯ КОЛОНКА — пояснение */
+        .commentary {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.30);
+            backdrop-filter: blur(2px);
+            border-radius: 20px;
+            padding: 14px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            color: #1f3f58;
+            min-height: 80px;
+        }
+
+        .commentary .q {
+            font-weight: 600;
+            color: #0d3a58;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            opacity: 0.7;
+            margin-right: 6px;
+        }
+
+        .commentary .q i {
+            margin-right: 4px;
+        }
+
+        .commentary .answer {
+            display: block;
+            margin-top: 2px;
+        }
+
+        /* ===== РЕСУРСЫ ===== */
+        .resources-section {
+            margin-top: 32px;
+            padding-top: 26px;
+            border-top: 2px dashed rgba(60, 100, 140, 0.12);
+        }
+
+        .resources-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #1e405b;
+            margin-bottom: 12px;
+        }
+
+        .resources-title i {
+            color: #2a73a5;
+        }
+
+        .resource-bars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 30px;
+            margin-bottom: 8px;
+        }
+
+        .resource-item {
+            flex: 1 1 160px;
+        }
+
+        .resource-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: #1f3c52;
+            margin-bottom: 4px;
+        }
+
+        .bar-bg {
+            width: 100%;
+            height: 16px;
+            background: rgba(180, 205, 225, 0.25);
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.03);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 40px;
+            width: 0%;
+            transition: width 0.7s ease;
+        }
+
+        .bar-fill.run { width: 75%; background: linear-gradient(90deg, rgba(40, 120, 180, 0.65), rgba(70, 160, 220, 0.50)); }
+        .bar-fill.change { width: 20%; background: linear-gradient(90deg, rgba(200, 150, 40, 0.65), rgba(230, 185, 70, 0.50)); }
+        .bar-fill.disrupt { width: 5%; background: linear-gradient(90deg, rgba(160, 70, 130, 0.60), rgba(200, 110, 170, 0.45)); }
+
+        .resource-desc {
+            display: flex;
+            gap: 8px 22px;
+            flex-wrap: wrap;
+            font-size: 0.82rem;
+            color: #2b4b66;
+        }
+
+        .resource-desc span i {
+            margin-right: 5px;
+            opacity: 0.8;
+        }
+
+        .resource-note {
+            margin-top: 16px;
+            padding: 18px 24px;
+            background: rgba(255, 255, 255, 0.35);
+            border-radius: 16px;
+            border: 1px solid rgba(74, 138, 181, 0.20);
+            border-left: 4px solid #4a8ab5;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: #1f405b;
+        }
+
+        .resource-note .note-title {
+            font-weight: 600;
+            color: #0d3a58;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .resource-note .note-title i {
+            color: #2a73a5;
+            margin-right: 8px;
+        }
+
+        .resource-note .factor {
+            display: block;
+            padding-left: 20px;
+            margin-top: 4px;
+        }
+
+        .resource-note .factor strong {
+            color: #0d3a58;
+        }
+
+        .resource-note .section-divider {
+            display: block;
+            margin: 10px 0 8px 0;
+            color: #3a6a8a;
+            font-weight: 500;
+        }
+
+        .resource-note .section-divider i {
+            color: #2a73a5;
+            margin-right: 8px;
+        }
+
+        /* ===== АДАПТИВ ===== */
+        @media (max-width: 900px) {
+            .strategy-card { padding: 28px 18px; border-radius: 32px; }
+            .pipeline-row { flex-direction: column; gap: 8px; }
+            .block { flex: 1 1 auto; min-width: unset; }
+            .intro-header h1 { font-size: 1.8rem; }
+            .read-direction { white-space: normal; }
+            .strategy-slogan { font-size: 0.95rem; }
+        }
+
+        @media (max-width: 500px) {
+            .intro-header h1 { font-size: 1.5rem; }
+            .intro-text { font-size: 0.88rem; padding: 14px 16px; }
+            .commentary { font-size: 0.82rem; padding: 12px 16px; }
+            .resource-note { padding: 14px 16px; font-size: 0.82rem; }
+            .strategy-slogan { font-size: 0.88rem; padding: 12px 16px; }
+        }
+
+        /* анимация */
+        .pipeline-row {
+            opacity: 0;
+            animation: fadeInRow 0.5s ease forwards;
+        }
+        .pipeline-row:nth-child(1) { animation-delay: 0.05s; }
+        .pipeline-row:nth-child(2) { animation-delay: 0.10s; }
+        .pipeline-row:nth-child(3) { animation-delay: 0.15s; }
+        .pipeline-row:nth-child(4) { animation-delay: 0.20s; }
+        .pipeline-row:nth-child(5) { animation-delay: 0.25s; }
+        .pipeline-row:nth-child(6) { animation-delay: 0.30s; }
+
+        @keyframes fadeInRow {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="strategy-card">
+
+        <!-- ===== ВВОДНАЯ ЧАСТЬ ===== -->
+        <div class="intro-section">
+            <div class="intro-header">
+                <h1>
+                    <i class="fas fa-arrow-trend-up"></i>
+                    Стратегия L&D
+                    <small>Learning & Development</small>
+                </h1>
+                <div class="read-direction">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+            </div>
+
+            <!-- Слоган -->
+            <div class="strategy-slogan">
+                <i class="fas fa-quote-left"></i>
+                Стратегия L&D — обучение и развитие, встроенные в ежедневный рабочий процесс сотрудника на основе непрерывной диагностики его деятельности.
+            </div>
+
+            <div class="intro-text">
+                <p>
+                    Современные технологии позволяют собирать данные о работе сотрудника в реальном времени и на их основе оперативно корректировать его действия через микрообучение — <strong>без отрыва от задач</strong>. Очные форматы не исключаются, но смещаются в сторону смыслов и ценностей, где живое взаимодействие незаменимо. Все остальное автоматизируется с помощью <strong>AI</strong>.
+                </p>
+                <p style="margin-top: 10px;">
+                    Цель стратегии — сделать обучение <span class="highlight">персонализированным, измеримым и непрерывным</span>, напрямую связав его с бизнес-результатами. Ниже — иерархическая структура, показывающая путь от фундаментальных принципов до конкретных выгод.
+                </p>
+                <p style="margin-top: 6px; font-style: italic; color: #2a6f9c; font-size: 0.85rem;">
+                    <i class="fas fa-arrow-right" style="margin-right: 6px;"></i>
+                    Ключевая мысль заключается в том, что если раньше компании сосредоточивали усилия по обучению на комплексных программах (очные тренинги, вебинары, масштабные электронные курсы), то сегодня появляется возможность отслеживать действия сотрудника в ежедневной работе, автоматически диагностировать ошибки и в режиме реального времени предлагать микро-уроки для их устранения. Такой подход решает сразу две задачи: обучение встраивается непосредственно в рабочий процесс, и одновременно формируется прямая связь между обучением и результатами труда.
+                </p>
+                <div class="cycle-badge">
+                    <i class="fas fa-circle" style="font-size: 0.35rem; vertical-align: middle;"></i>
+                    непрерывный цикл: 
+                    <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i> данные 
+                    <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i> диагностика 
+                    <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i> развитие 
+                    <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i> аналитика 
+                    <i class="fas fa-arrow-right" style="font-size: 0.7rem;"></i> результат
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ПИРАМИДА: БЛОКИ + ПОЯСНЕНИЯ ===== -->
+        <div class="pipeline-grid">
+
+            <!-- 1. РЕЗУЛЬТАТ (вершина) -->
+            <div class="pipeline-row">
+                <div class="block block-result">
+                    <div class="block-icon"><i class="fas fa-bullseye"></i></div>
+                    <h3>Результат</h3>
+                    <div class="short-desc">Связь с бизнес-целями, снижение рисков, рост эффективности</div>
+                    <div class="badge-ai"><i class="fas fa-flag-checkered"></i> Бизнес-ценность</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы обучение работало на бизнес, а не было самоцелью. Мы измеряем влияние на текучесть, адаптацию, производительность.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">Только измеримые результаты позволяют обосновать инвестиции в L&D и корректировать стратегию.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Минимизация кадровых рисков, сокращение времени адаптации, рост вовлеченности.</span>
+                </div>
+            </div>
+
+            <!-- 2. HR-аналитика -->
+            <div class="pipeline-row">
+                <div class="block block-analytics">
+                    <div class="block-icon"><i class="fas fa-chart-pie"></i></div>
+                    <h3>HR-аналитика</h3>
+                    <div class="short-desc">Дашборды по сотрудникам, командам, организации</div>
+                    <div class="badge-ai"><i class="fas fa-robot"></i> AI-дашборды</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы видеть картину в реальном времени: кто отстает, кто растет, где есть системные проблемы.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">Без данных мы управляем вслепую. Аналитика дает объективную основу для решений.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Прозрачность, возможность прогнозировать риски, обоснованное планирование.</span>
+                </div>
+            </div>
+
+            <!-- 3. Развитие -->
+            <div class="pipeline-row">
+                <div class="block block-development">
+                    <div class="block-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h3>Развитие</h3>
+                    <div class="short-desc">Микро-курсы, тренажеры, гайды, пособия</div>
+                    <div class="badge-ai"><i class="fas fa-robot"></i> AI-рекомендации</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы устранять пробелы точечно, не перегружая сотрудника общим обучением.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">Обучение должно быть персонализированным и своевременным. AI подбирает контент под конкретную проблему.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Скорость закрытия пробелов, экономия времени, высокая релевантность.</span>
+                </div>
+            </div>
+
+            <!-- 4. Диагностика -->
+            <div class="pipeline-row">
+                <div class="block block-diagnostics">
+                    <div class="block-icon"><i class="fas fa-microscope"></i></div>
+                    <h3>Диагностика</h3>
+                    <div class="short-desc">Сопоставление с целевым уровнем, выявление отклонений</div>
+                    <div class="badge-ai"><i class="fas fa-robot"></i> AI-анализ</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы понять, где реальная проблема, а не гадать на основе субъективного мнения.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">AI позволяет обрабатывать большие массивы данных и находить паттерны, которые не видны человеку.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Точное выявление зон роста, приоритизация задач, объективность.</span>
+                </div>
+            </div>
+
+            <!-- 5. Критерии -->
+            <div class="pipeline-row">
+                <div class="block block-criteria">
+                    <div class="block-icon"><i class="fas fa-database"></i></div>
+                    <h3>Критерии</h3>
+                    <div class="short-desc">Определение данных и настройка сбора</div>
+                    <div class="badge-ai"><i class="fas fa-chart-simple"></i> Data-driven</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы знать, что именно мы измеряем и как интерпретировать результаты.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">Без четких критериев диагностика становится субъективной. Данные должны собираться системно.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Единая система оценки, прозрачность, возможность сравнения.</span>
+                </div>
+            </div>
+
+            <!-- 6. Методология (фундамент) -->
+            <div class="pipeline-row">
+                <div class="block block-methodology">
+                    <div class="block-icon"><i class="fas fa-layer-group"></i></div>
+                    <h3>Методология</h3>
+                    <div class="short-desc">Правила, принципы, стандарты</div>
+                    <div class="badge-ai"><i class="fas fa-chess-queen"></i> Основа</div>
+                </div>
+                <div class="commentary">
+                    <span class="q"><i class="fas fa-question-circle"></i> Зачем?</span>
+                    <span class="answer">Чтобы вся система была устойчивой, воспроизводимой и масштабируемой.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-lightbulb"></i> Почему?</span>
+                    <span class="answer">Без фундамента любая надстройка рухнет. Методология — это язык, на котором говорят все участники процесса.</span>
+                    <span class="q" style="margin-top: 4px;"><i class="fas fa-chart-line"></i> Результат:</span>
+                    <span class="answer">Единые стандарты, снижение хаоса, возможность автоматизации.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ===== РАСПРЕДЕЛЕНИЕ РЕСУРСОВ ===== -->
+        <div class="resources-section">
+            <div class="resources-title">
+                <i class="fas fa-clock"></i> Распределение ресурсов
+                <span style="font-weight: 400; font-size: 0.85rem; color: #2f5a7a; margin-left: 8px;">(баланс операционной деятельности и инноваций)</span>
+            </div>
+
+            <div class="resource-bars">
+                <div class="resource-item">
+                    <div class="resource-label">
+                        <span><i class="fas fa-play" style="color: #2a7ab0;"></i> Run</span>
+                        <span>75%</span>
+                    </div>
+                    <div class="bar-bg"><div class="bar-fill run"></div></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-label">
+                        <span><i class="fas fa-arrows-spin" style="color: #c6882a;"></i> Change</span>
+                        <span>20%</span>
+                    </div>
+                    <div class="bar-bg"><div class="bar-fill change"></div></div>
+                </div>
+                <div class="resource-item">
+                    <div class="resource-label">
+                        <span><i class="fas fa-rocket" style="color: #a64a7a;"></i> Disrupt</span>
+                        <span>5%</span>
+                    </div>
+                    <div class="bar-bg"><div class="bar-fill disrupt"></div></div>
+                </div>
+            </div>
+
+            <div class="resource-desc">
+                <span><i class="fas fa-check-circle" style="color: #2a7ab0;"></i> Run — поддержка и стабильность текущих процессов</span>
+                <span><i class="fas fa-check-circle" style="color: #c6882a;"></i> Change — развитие и улучшение существующих подходов</span>
+                <span><i class="fas fa-check-circle" style="color: #a64a7a;"></i> Disrupt — прорывные инициативы и эксперименты</span>
+            </div>
+
+            <div class="resource-note">
+                <span class="note-title"><i class="fas fa-info-circle"></i> Важное примечание по распределению ресурсов</span>
+                
+                Представленные пропорции (75/20/5) являются <strong>условными</strong> и требуют калибровки под конкретную ситуацию. Это связано с двумя ключевыми факторами:
+                
+                <span class="factor"><strong>1.</strong> Отсутствием данных о реальном объеме доступных ресурсов и актуальных задачах — итоговые цифры определяются текущим контекстом.</span>
+                <span class="factor"><strong>2.</strong> Отсутствием информации о зрелости существующей L&D-стратегии — пропорции зависят от этапа развития системы.</span>
+
+                <span class="section-divider"><i class="fas fa-diamond"></i> Рекомендуемый подход:</span>
+                исходить из целей и задач, стоящих на текущий момент, с обязательным учетом запросов руководства и реального состояния дел в компании.
+
+                <span class="section-divider"><i class="fas fa-diamond"></i> Системный контекст:</span>
+                стратегия направлена на движение к системообразующему управлению персоналом. Это требует баланса между поддержанием текущих процессов в рабочем состоянии и их постепенным совершенствованием через <strong>автоматизацию, цифровизацию и внедрение AI-инструментов</strong> (боты, тренажеры, агенты, оркестры). Развитие — это не разовое событие, а непрерывный процесс.
+            </div>
+        </div>
+        <!-- ===== ФУТЕР ===== -->
+        <footer style="margin-top: 40px; padding-top: 20px; border-top: 1px solid rgba(60, 100, 140, 0.15); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="font-size: 13px; color: #2f5a7a;">
+                © 2026 · Стратегия L&D
+            </div>
+            <div style="font-size: 13px; color: #2f5a7a; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                <i class="fas fa-user" style="color: #2a6f9c;"></i> Алексей Милеев &nbsp;·&nbsp;
+                <i class="fas fa-phone" style="color: #2a6f9c;"></i> +7(926)204 37 09 &nbsp;·&nbsp;
+                <i class="fas fa-print" onclick="window.print();" style="cursor:pointer; color: #2a6f9c;"></i> Печать
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

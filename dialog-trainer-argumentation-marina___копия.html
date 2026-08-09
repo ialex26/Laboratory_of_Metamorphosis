@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр аргументации — Марина</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#060907;
+    --bg-1:#0A0F0C;
+    --paper:rgba(255,255,255,0.055);
+    --paper-strong:rgba(255,255,255,0.09);
+    --ink:#F3F1E9;
+    --ink-soft:#9FA89C;
+    --ink-faint:#69736A;
+    --line:rgba(243,241,233,0.11);
+    --line-strong:rgba(243,241,233,0.20);
+    --teal:#4FC2A6;
+    --teal-dark:#2C6E63;
+    --teal-bright:#6FE0C2;
+    --teal-tint:rgba(79,194,166,0.16);
+    --amber:#E3AA63;
+    --amber-tint:rgba(227,170,99,0.16);
+    --red:#E37768;
+    --red-tint:rgba(227,119,104,0.16);
+    --violet:#9C8CD6;
+    --radius:16px;
+    --blur:22px;
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--bg-0);}
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    position:relative;
+    isolation:isolate;
+    background:
+      radial-gradient(ellipse 60% 50% at 8% -8%, rgba(79,194,166,0.20), transparent 60%),
+      radial-gradient(ellipse 55% 45% at 105% 8%, rgba(156,140,214,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 45% at 15% 105%, rgba(227,170,99,0.10), transparent 60%),
+      radial-gradient(ellipse 65% 55% at 95% 100%, rgba(44,111,99,0.18), transparent 60%),
+      linear-gradient(165deg, #050807 0%, #081210 38%, #070B0D 72%, #05080A 100%);
+    background-attachment:fixed;
+  }
+  #bg-fx{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+    pointer-events:none;
+  }
+  #bg-fx .blob{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(90px);
+    opacity:.55;
+    will-change:transform;
+  }
+  #bg-fx .b1{
+    width:520px;height:520px;top:-140px;left:-120px;
+    background:radial-gradient(circle at 35% 35%, rgba(79,194,166,0.55), transparent 70%);
+    animation:drift1 34s ease-in-out infinite alternate;
+  }
+  #bg-fx .b2{
+    width:600px;height:600px;top:-60px;right:-200px;
+    background:radial-gradient(circle at 60% 40%, rgba(156,140,214,0.42), transparent 70%);
+    animation:drift2 40s ease-in-out infinite alternate;
+  }
+  #bg-fx .b3{
+    width:480px;height:480px;bottom:-160px;left:8%;
+    background:radial-gradient(circle at 50% 50%, rgba(227,170,99,0.30), transparent 70%);
+    animation:drift3 46s ease-in-out infinite alternate;
+  }
+  #bg-fx .b4{
+    width:560px;height:560px;bottom:-220px;right:-140px;
+    background:radial-gradient(circle at 45% 55%, rgba(44,111,99,0.45), transparent 70%);
+    animation:drift1 38s ease-in-out infinite alternate-reverse;
+  }
+  #bg-fx .grain{
+    position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:3px 3px;
+    mix-blend-mode:overlay;
+  }
+  @keyframes drift1{from{transform:translate(0,0) scale(1);}to{transform:translate(60px,40px) scale(1.08);}}
+  @keyframes drift2{from{transform:translate(0,0) scale(1);}to{transform:translate(-50px,60px) scale(0.95);}}
+  @keyframes drift3{from{transform:translate(0,0) scale(1);}to{transform:translate(40px,-50px) scale(1.05);}}
+
+  #app{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+    min-height:100vh;
+    position:relative;
+    z-index:1;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal-bright);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal-bright);box-shadow:0 0 8px var(--teal-bright);}
+  .screen{display:none;}
+  .screen.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .stepper{display:flex;gap:6px;margin-bottom:24px;}
+  .stepper span{
+    flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden;
+  }
+  .stepper span.done, .stepper span.active{background:linear-gradient(90deg,var(--teal),var(--teal-bright));}
+
+  .card{
+    background:linear-gradient(150deg, var(--paper-strong), var(--paper));
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:16px;
+    backdrop-filter:blur(var(--blur)) saturate(150%);
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.10), 0 24px 48px -28px rgba(0,0,0,0.65);
+  }
+  .card h3{font-size:17px;}
+  .card p{line-height:1.55;color:var(--ink);font-size:14.5px;margin:6px 0 0;}
+  .muted{color:var(--ink-soft);font-size:13px;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+
+  .seg{
+    display:flex;border:1px solid var(--line-strong);border-radius:12px;overflow:hidden;
+    background:var(--paper);
+    backdrop-filter:blur(var(--blur));
+    -webkit-backdrop-filter:blur(var(--blur));
+  }
+  .seg button{
+    flex:1;border:none;background:transparent;padding:11px 14px;font-family:'IBM Plex Sans';
+    font-size:13.5px;font-weight:500;color:var(--ink-soft);cursor:pointer;border-right:1px solid var(--line);
+    transition:.15s;
+  }
+  .seg button:last-child{border-right:none;}
+  .seg button.active{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#08110E;font-weight:600;}
+  .seg button:hover:not(.active){background:var(--teal-tint);color:var(--ink);}
+
+  .field-label{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px;display:block;text-transform:uppercase;letter-spacing:.05em;}
+
+  .diff-desc{font-size:13px;color:var(--ink-soft);margin-top:10px;line-height:1.5;min-height:38px;}
+
+  .btn-primary{
+    background:linear-gradient(135deg,var(--teal-bright),var(--teal-dark));
+    color:#07120D;border:1px solid rgba(255,255,255,0.25);border-radius:12px;
+    padding:14px 22px;font-size:15px;font-weight:600;font-family:'IBM Plex Sans';
+    cursor:pointer;width:100%;transition:.15s;
+    box-shadow:0 12px 28px -10px rgba(79,194,166,0.5), inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+  .btn-ghost{
+    background:var(--paper);border:1px solid var(--line-strong);color:var(--ink);
+    border-radius:12px;padding:10px 16px;font-size:13.5px;cursor:pointer;font-family:'IBM Plex Sans';font-weight:500;
+    backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+    transition:.15s;
+  }
+  .btn-ghost:hover{border-color:var(--teal);color:var(--teal-bright);background:var(--teal-tint);}
+
+  /* Session screen */
+  .session-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:16px;}
+  .timer-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0;}
+  .timer-ring-wrap svg{transform:rotate(-90deg);}
+  .timer-num{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono';font-size:13px;font-weight:600;color:var(--ink);
+  }
+  .legend-toggle{cursor:pointer;flex:1;}
+  .legend-toggle h3{color:var(--ink);}
+  .legend-box{display:none;margin-top:12px;}
+  .legend-box.open{display:block;}
+
+  .chat{
+    background:linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+    border:1px solid var(--line-strong);border-radius:var(--radius);
+    padding:16px;height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;
+    backdrop-filter:blur(var(--blur)) saturate(140%);-webkit-backdrop-filter:blur(var(--blur)) saturate(140%);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), inset 0 0 60px rgba(0,0,0,0.25);
+  }
+  .chat::-webkit-scrollbar{width:8px;}
+  .chat::-webkit-scrollbar-track{background:transparent;}
+  .chat::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:8px;}
+  .msg{max-width:80%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5;}
+  .msg.mgr{align-self:flex-end;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#08120D;border-bottom-right-radius:4px;box-shadow:0 8px 20px -10px rgba(79,194,166,0.45);}
+  .msg.emp{align-self:flex-start;background:var(--paper-strong);color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:4px;backdrop-filter:blur(12px);}
+  .msg.sys{align-self:center;color:var(--ink-faint);font-size:12px;font-style:italic;}
+
+  .composer{display:flex;gap:8px;}
+  .composer input[type=text]{
+    flex:1;border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px;font-size:14px;font-family:'IBM Plex Sans';
+    background:var(--paper);color:var(--ink);
+    backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+  }
+  .composer input[type=text]::placeholder{color:var(--ink-faint);}
+  .composer input[type=text]:focus{outline:none;border-color:var(--teal);}
+  .mic-btn{
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line-strong);background:var(--paper);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;
+    backdrop-filter:blur(var(--blur));-webkit-backdrop-filter:blur(var(--blur));
+  }
+  .mic-btn.listening{background:linear-gradient(135deg,var(--red),#B84C3C);border-color:var(--red);}
+  .mic-btn.listening svg{stroke:#fff;}
+  .send-btn{
+    background:linear-gradient(135deg,var(--teal-bright),var(--teal-dark));border:1px solid rgba(255,255,255,0.25);border-radius:12px;color:#07120D;padding:0 18px;font-weight:600;cursor:pointer;
+    box-shadow:0 8px 20px -10px rgba(79,194,166,0.5);
+  }
+  .send-btn:hover{filter:brightness(1.08);}
+
+  /* Report */
+  .score-hero{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+  .score-hero .num{font-family:'Fraunces';font-size:44px;font-weight:600;color:var(--teal-bright);}
+  .crit-row{border-top:1px solid var(--line);padding:14px 0;}
+  .crit-row:first-child{border-top:none;}
+  .crit-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .crit-name{font-weight:600;font-size:13.5px;color:var(--ink);}
+  .crit-score{font-family:'IBM Plex Mono';font-size:13px;color:var(--teal-bright);font-weight:600;}
+  .crit-comment{font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .crit-quote{font-size:12.5px;color:var(--teal-bright);background:var(--teal-tint);border:1px solid var(--line);padding:6px 10px;border-radius:8px;margin-top:6px;font-style:italic;}
+
+  .loading{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:13px;padding:8px 0;}
+  .spinner{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--teal-bright);border-radius:50%;animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .footnote{font-size:11.5px;color:var(--ink-faint);text-align:center;margin-top:28px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div id="bg-fx"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div><div class="grain"></div></div>
+<div id="app">
+
+  <div class="eyebrow"><span class="dot"></span>Тренажёр аргументации и убеждения · рабочие переговоры</div>
+  <div class="stepper">
+    <span id="step1" class="active"></span><span id="step2"></span><span id="step3"></span>
+  </div>
+
+  <!-- SCREEN 1: BRIEFING -->
+  <div class="screen active" id="screen-brief">
+    <h1>Переговоры с Мариной</h1>
+    <p class="muted">Сценарий: ресурсы под дедлайн · 15 минут · роль — тимлид продуктовой команды</p>
+
+    <div class="card">
+      <h3>Легенда</h3>
+      <p>Через 3 недели у вашей продуктовой команды критичный дедлайн — интеграция с крупным партнёром, дата зафиксирована перед клиентом. Своими силами команда не успевает: нужны инфраструктурные доработки, которые умеет делать только команда Марины, руководителя отдела инфраструктуры/платформы.</p>
+      <p>Вы договорились о встрече с Мариной, чтобы попросить выделить двух её инженеров на три недели. Марина уже знает, о чём пойдёт речь.</p>
+      <p><strong>Ваша задача:</strong> убедить Марину выделить ресурсы — конструктивной аргументацией, а не давлением статуса.</p>
+    </div>
+
+    <div class="card">
+      <span class="field-label">Уровень сложности оппонента</span>
+      <div class="seg" id="diff-seg">
+        <button data-v="easy">Лёгкий</button>
+        <button data-v="medium" class="active">Средний</button>
+        <button data-v="hard">Сложный</button>
+      </div>
+      <div class="diff-desc" id="diff-desc"></div>
+    </div>
+
+    <div class="card">
+      <span class="field-label">Модальность</span>
+      <div class="seg" id="mode-seg">
+        <button data-v="text">Только текст</button>
+        <button data-v="voice" class="active">Текст + голос</button>
+      </div>
+      <p class="muted" id="voice-support-note" style="margin-top:10px;"></p>
+    </div>
+
+    <button class="btn-primary" id="start-btn">Начать диалог</button>
+    <div class="footnote">Реплики Марины генерирует Claude в реальном времени — это не сценарий с заготовленными ветками.</div>
+  </div>
+
+  <!-- SCREEN 2: SESSION -->
+  <div class="screen" id="screen-session">
+    <div class="session-top">
+      <div class="timer-ring-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="5"/>
+          <circle id="timer-arc" cx="32" cy="32" r="28" fill="none" stroke="var(--teal)" stroke-width="5"
+            stroke-dasharray="175.9" stroke-dashoffset="0" stroke-linecap="round"/>
+        </svg>
+        <div class="timer-num" id="timer-num">15:00</div>
+      </div>
+      <div class="legend-toggle" id="legend-toggle">
+        <h3 style="font-size:15px;margin-bottom:2px;">Марина · переговоры по ресурсам</h3>
+        <span class="muted">Показать легенду ▾</span>
+      </div>
+      <button class="btn-ghost" id="end-btn">Завершить</button>
+    </div>
+
+    <div class="card legend-box" id="legend-box">
+      <p>Нужно убедить Марину выделить 2 инженеров на 3 недели под дедлайн интеграции с партнёром. Её команда сама перегружена (два инцидента, своя миграция). Ваш тезис: помощь необходима и оправдана для общего результата.</p>
+    </div>
+
+    <div class="chat" id="chat"></div>
+
+    <div class="composer">
+      <button class="mic-btn" id="mic-btn" title="Голосовой ввод">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+      </button>
+      <input type="text" id="text-input" placeholder="Скажи что-нибудь Марине...">
+      <button class="send-btn" id="send-btn">Отправить</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: REPORT -->
+  <div class="screen" id="screen-report">
+    <h1>Разбор диалога</h1>
+    <div id="report-loading" class="card loading"><div class="spinner"></div>Анализирую диалог по критериям...</div>
+    <div id="report-content"></div>
+    <button class="btn-ghost" id="restart-btn" style="width:100%;margin-top:12px;">Начать заново</button>
+  </div>
+
+</div>
+
+<script>
+// ---------- SCENARIO DATA ----------
+const SCENARIO = {
+  name: "Ресурсы под дедлайн — Марина",
+  timingMinutes: 15,
+  userRole: "Тимлид продуктовой команды",
+  opponentRole: "Марина, 34 года, руководитель отдела инфраструктуры/платформы",
+  userThesis: "Марина должна выделить 2 инженеров своей команды на 3 недели ради критичного дедлайна по интеграции с партнёром",
+  known: "Дедлайн через 3 недели, о нём знают оба руководителя, он упоминался на общем митинге с директором. Своими силами продуктовая команда не успевает — нужны инфраструктурные доработки, которые умеет делать только команда Марины.",
+  opponentPosition: "Марина открыто говорит: её команда сама перегружена (два открытых инцидента, её собственная миграция на новую инфраструктуру идёт по своему дедлайну), выделить людей — значит подвинуть её же сроки.",
+  unknown: "4 месяца назад Марина уже одалживала двух инженеров под похожий кросс-командный проект. Тот проект всё равно сорвал сроки не по вине её людей, но у директора создалось впечатление, что «отдел Марины — источник задержек», а её собственный роадмап тогда просел, ей пришлось за это оправдываться. Признания или компенсации она не получила. С тех пор внутренне считает: «помогать другим — значит потом отвечать за чужие косяки и терять своё». Прямо это не произносит — боится выглядеть мелочной или не командным игроком.",
+  boundaries: "Никогда не соглашается под давлением авторитета или ускорения тона — это усиливает сопротивление. Не врёт про загрузку команды — она реальна. Раскрывает историю про прошлый раз только при конкретной эмпатии и ощущении, что её слышат, а не торопят. Реально меняет позицию только при чётких гарантиях (фиксированный объём, дата возврата людей, публичное признание вклада перед директором) — и даже тогда может согласиться на одного инженера вместо двух."
+};
+
+const VALUES_PROFILE = {
+  base: "реальная заинтересованность в общем результате компании — она не циник, ей правда важно, чтобы компания не подвела клиента",
+  personal: "защита своей команды и репутации от повторного «обожглась один раз, обожгусь снова» — нужны конкретные гарантии, не общие слова",
+  ignores: "голое давление авторитетом («это распоряжение сверху») и абстрактное «это же общее благо» без конкретики — именно этим её грузили в прошлый раз, вызывает раздражение, а не согласие",
+  defaultCounterLevel: "чаще всего бьёт по поддержке/примеру (своя загрузка), затем переключает на философию (признание вклада); к подмене тезиса и доведению до абсурда прибегает только на сложном уровне",
+  style: "Эксперт — аргументирует цифрами и компетентностью своей загрузки, близко к стилю Логика"
+};
+
+const DIFFICULTY = {
+  easy: {
+    label: "Лёгкий",
+    desc: "Соглашается после 1–2 весомых доводов; сама, без давления, упоминает прошлый опыт; манипуляций нет.",
+    npcInstructions: "Ты соглашаешься довольно быстро, если пользователь приводит 1-2 весомых, конкретных довода (не голословных). Можешь сама, без давления со стороны пользователя, упомянуть прошлый неудачный опыт помощи другой команде — это объясняет твою осторожность. Манипулятивных тактик не используешь, разговариваешь спокойно и профессионально, по-деловому.",
+    opener: "Привет! Да, я знаю, зачем ты пришёл — по поводу дедлайна интеграции, да?"
+  },
+  medium: {
+    label: "Средний",
+    desc: "Нужно 3+ довода на разных ценностях; сначала отбивается цифрами загрузки; историю раскрывает только на эмпатичный вопрос; изредка — тактика неубедительности.",
+    npcInstructions: "На первый довод пользователя отвечаешь цифрами своей загрузки (два открытых инцидента, своя миграция на новую инфраструктуру) — это удар по поддержке/примеру его аргумента, а не по самой идее помощи как таковой. Историю про прошлый неудачный опыт помощи раскрываешь только если пользователь задаёт конкретный, эмпатичный вопрос про твои сомнения или колебания, а не просто давит фактами. Изредка можешь использовать мягкую тактику неубедительности («не знаю, как-то не очень убедительно звучит»), не переходя на личности. Требуй у пользователя не меньше 3 разных, по-настоящему весомых доводов, прежде чем начать сдвигаться к согласию.",
+    opener: "Привет. Слушай, если это снова про то, чтобы кого-то из моих людей одолжить — у меня прямо сейчас всё горит."
+  },
+  hard: {
+    label: "Сложный",
+    desc: "Активно бьёт по философии и логике; манипулятивные тактики; при давлении — раздражение; соглашается только на реальных гарантиях, по умолчанию — на компромисс.",
+    npcInstructions: "Активно защищаешься на уровне ценностей (переводишь разговор на то, что твой вклад и твоя команда не ценятся) и логики связи между доводом и тезисом. Можешь применить подмену тезиса («вы вообще цените, что делает моя команда?») и доведение до абсурда («то есть каждый раз, когда кто-то не успевает, я должна отдавать своих людей?»). Если пользователь давит авторитетом («это распоряжение сверху», «директор в курсе») или торопит тебя — раздражаешься, отвечаешь короче и жёстче, это признак эскалации с твоей стороны. Реально меняешь позицию только при чётких гарантиях: конкретный объём помощи, дата возврата людей, признание твоего вклада перед директором. Даже тогда по умолчанию соглашаешься не на двух инженеров, а на одного — это ожидаемый компромиссный, а не полный исход. Полный отказ пользователю — тоже реалистичный и допустимый исход, если аргументация была слабой или манипулятивной с его стороны.",
+    opener: "О, привет. Давай сразу честно: я примерно догадываюсь, зачем ты здесь, и у меня для тебя не очень хорошие новости."
+  }
+};
+
+const CRITERIA = [
+  {key:"thesis_discipline", name:"Дисциплина тезиса (не терялся, не подменялся)"},
+  {key:"argument_structure", name:"Структурная полнота аргумента (фабула + поддержка/пример или картинка)"},
+  {key:"logic_correctness", name:"Логическая корректность (без ошибок тезиса/аргумента/связи)"},
+  {key:"philosophy_relevance", name:"Релевантность ценностей (попадание в то, что важно Марине)"},
+  {key:"counter_defense", name:"Реакция на контраргументы (защита нужного уровня)"},
+  {key:"manipulation_resistance", name:"Устойчивость к манипуляциям"},
+  {key:"emotional_regulation", name:"Эмоциональная саморегуляция / деэскалация"},
+  {key:"outcome", name:"Итог переговоров", key_criterion:true}
+];
+
+// ---------- STATE ----------
+let state = {
+  difficulty: "medium",
+  modality: "voice",
+  history: [], // {role:'user'|'assistant', text}
+  timeLeft: SCENARIO.timingMinutes * 60,
+  timerInterval: null,
+  recognizing: false
+};
+
+// ---------- UI: BRIEFING SCREEN ----------
+function renderDiffDesc(){
+  document.getElementById('diff-desc').textContent = DIFFICULTY[state.difficulty].desc;
+}
+renderDiffDesc();
+
+document.getElementById('diff-seg').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  document.querySelectorAll('#diff-seg button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.difficulty = btn.dataset.v;
+  renderDiffDesc();
+});
+
+const hasSpeechRecognition = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+document.getElementById('voice-support-note').textContent = hasSpeechRecognition
+  ? "Голосовой ввод поддерживается этим браузером (лучше всего работает в Chrome)."
+  : "Этот браузер не поддерживает распознавание речи — доступен только текстовый ввод, даже в режиме «текст + голос».";
+
+document.getElementById('mode-seg').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  document.querySelectorAll('#mode-seg button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.modality = btn.dataset.v;
+});
+
+document.getElementById('start-btn').addEventListener('click', startSession);
+
+// ---------- SCREEN SWITCHING ----------
+function goToScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(['screen-brief','screen-session','screen-report'][n-1]).classList.add('active');
+  ['step1','step2','step3'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i < n-1) el.classList.add('done');
+    if(i === n-1) el.classList.add('active');
+  });
+}
+
+// ---------- SESSION ----------
+function startSession(){
+  state.history = [];
+  state.timeLeft = SCENARIO.timingMinutes * 60;
+  document.getElementById('chat').innerHTML = '';
+  goToScreen(2);
+  const opener = DIFFICULTY[state.difficulty].opener;
+  addMsg('emp', opener);
+  state.history.push({role:'assistant', text: opener});
+  if(state.modality === 'voice') speak(opener);
+  startTimer();
+}
+
+function startTimer(){
+  updateTimerUI();
+  state.timerInterval = setInterval(()=>{
+    state.timeLeft--;
+    updateTimerUI();
+    if(state.timeLeft <= 0){
+      clearInterval(state.timerInterval);
+      addMsg('sys', 'Время вышло — 15 минут закончились.');
+      endSession();
+    }
+  }, 1000);
+}
+
+function updateTimerUI(){
+  const m = Math.floor(state.timeLeft/60), s = state.timeLeft%60;
+  document.getElementById('timer-num').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  const total = SCENARIO.timingMinutes*60;
+  const frac = state.timeLeft/total;
+  const circumference = 175.9;
+  document.getElementById('timer-arc').style.strokeDashoffset = circumference*(1-frac);
+  const arc = document.getElementById('timer-arc');
+  if(frac < 0.15) arc.style.stroke = 'var(--red)';
+  else if(frac < 0.4) arc.style.stroke = 'var(--amber)';
+  else arc.style.stroke = 'var(--teal)';
+}
+
+document.getElementById('legend-toggle').addEventListener('click', ()=>{
+  document.getElementById('legend-box').classList.toggle('open');
+});
+
+document.getElementById('end-btn').addEventListener('click', ()=>{
+  clearInterval(state.timerInterval);
+  endSession();
+});
+
+function addMsg(role, text){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role==='user'?'mgr':role==='assistant'?'emp':'sys');
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendUserMessage(text){
+  if(!text.trim()) return;
+  addMsg('user', text);
+  state.history.push({role:'user', text});
+  document.getElementById('text-input').value = '';
+
+  const thinking = document.createElement('div');
+  thinking.className = 'loading';
+  thinking.innerHTML = '<div class="spinner"></div>Марина печатает...';
+  document.getElementById('chat').appendChild(thinking);
+  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+
+  try{
+    const reply = await callNPC();
+    thinking.remove();
+    addMsg('assistant', reply);
+    state.history.push({role:'assistant', text: reply});
+    if(state.modality === 'voice') speak(reply);
+  }catch(err){
+    thinking.remove();
+    addMsg('sys', 'Ошибка связи с моделью: ' + err.message);
+  }
+}
+
+function buildNPCSystemPrompt(){
+  const d = DIFFICULTY[state.difficulty];
+  return `Ты играешь роль руководителя отдела инфраструктуры/платформы по имени Марина в тренажёре аргументации и убеждения для менеджеров. Отвечай ТОЛЬКО репликами Марины, от первого лица, разговорным деловым языком, коротко (1-4 предложения), как в живом рабочем разговоре. Никогда не выходи из роли и не комментируй сценарий, критерии оценки или методику.
+
+ТЕЗИС, КОТОРЫЙ ТЕБЯ ПЫТАЮТСЯ УБЕДИТЬ ПРИНЯТЬ: ${SCENARIO.userThesis}
+
+ИЗВЕСТНО ОБЕИМ СТОРОНАМ: ${SCENARIO.known}
+
+ТВОЯ ИСХОДНАЯ ОТКРЫТАЯ ПОЗИЦИЯ: ${SCENARIO.opponentPosition}
+
+РЕАЛЬНАЯ, НЕ ОЗВУЧИВАЕМАЯ НАПРЯМУЮ ПРИЧИНА ТВОЕГО СОПРОТИВЛЕНИЯ (собеседник этого не знает, ты раскрываешь это только по ходу разговора, если он это заслуживает): ${SCENARIO.unknown}
+
+ГРАНИЦЫ ТВОЕГО ПОВЕДЕНИЯ: ${SCENARIO.boundaries}
+
+ТВОЙ ПРОФИЛЬ ЦЕННОСТЕЙ: базовая ценность, которая на тебя реально действует — ${VALUES_PROFILE.base}. Личная ценность, которая для тебя важнее всего — ${VALUES_PROFILE.personal}. То, что на тебя НЕ действует и скорее раздражает — ${VALUES_PROFILE.ignores}. Твоя манера контраргументации по умолчанию: ${VALUES_PROFILE.defaultCounterLevel}. Твой стиль убеждения: ${VALUES_PROFILE.style}.
+
+ТВОЙ ХАРАКТЕР НА ЭТОМ УРОВНЕ СЛОЖНОСТИ (${d.label}): ${d.npcInstructions}`;
+}
+
+async function callNPC(){
+  const messages = state.history.map(m=>({role:m.role, content:m.text}));
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 300,
+      system: buildNPCSystemPrompt(),
+      messages: messages
+    })
+  });
+  const data = await response.json();
+  if(data.error) throw new Error(data.error.message || 'API error');
+  const textBlock = data.content.find(b=>b.type==='text');
+  return textBlock ? textBlock.text.trim() : '...';
+}
+
+document.getElementById('send-btn').addEventListener('click', ()=>sendUserMessage(document.getElementById('text-input').value));
+document.getElementById('text-input').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') sendUserMessage(e.target.value);
+});
+
+// ---------- VOICE ----------
+let recognition = null;
+if(hasSpeechRecognition){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'ru-RU';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onresult = (e)=>{
+    const transcript = e.results[0][0].transcript;
+    document.getElementById('text-input').value = transcript;
+    sendUserMessage(transcript);
+  };
+  recognition.onend = ()=>{
+    state.recognizing = false;
+    document.getElementById('mic-btn').classList.remove('listening');
+  };
+  recognition.onerror = ()=>{
+    state.recognizing = false;
+    document.getElementById('mic-btn').classList.remove('listening');
+  };
+}
+
+document.getElementById('mic-btn').addEventListener('click', ()=>{
+  if(!recognition){ addMsg('sys', 'Голосовой ввод не поддерживается этим браузером.'); return; }
+  if(state.recognizing){ recognition.stop(); return; }
+  state.recognizing = true;
+  document.getElementById('mic-btn').classList.add('listening');
+  recognition.start();
+});
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU';
+  const voices = window.speechSynthesis.getVoices();
+  const ruVoice = voices.find(v=>v.lang.startsWith('ru'));
+  if(ruVoice) u.voice = ruVoice;
+  window.speechSynthesis.speak(u);
+}
+
+// ---------- REPORT ----------
+async function endSession(){
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  goToScreen(3);
+  document.getElementById('report-loading').style.display = 'flex';
+  document.getElementById('report-content').innerHTML = '';
+  try{
+    const report = await callEvaluator();
+    renderReport(report);
+  }catch(err){
+    document.getElementById('report-content').innerHTML = `<div class="card">Не удалось получить разбор: ${err.message}</div>`;
+  }
+  document.getElementById('report-loading').style.display = 'none';
+}
+
+async function callEvaluator(){
+  const transcript = state.history.map(m=> (m.role==='user'?'Тимлид':'Марина') + ': ' + m.text).join('\n');
+  const criteriaList = CRITERIA.map(c=>`- ${c.key}: ${c.name}`).join('\n');
+  const sys = `Ты — опытный методист по аргументации и деловому убеждению, оцениваешь тренировочный диалог по методике конструктивной аргументации (тезис, аргумент, причинно-следственная связь, философия/ценности, контраргументация, работа с манипуляциями и эскалацией). Оцени РЕПЛИКИ ТИМЛИДА (не Марины) по каждому критерию из списка, по шкале 1-5, где 5 — отлично.
+
+Тезис, который тимлид должен был доказать: ${SCENARIO.userThesis}
+
+Критерии:
+${criteriaList}
+
+Верни ТОЛЬКО валидный JSON, без markdown-обёртки, без пояснений вокруг, строго такой структуры:
+{
+  "overall": <среднее число от 1 до 5, одна десятая>,
+  "summary": "<2-3 предложения общего вывода>",
+  "criteria": [
+    {"key":"thesis_discipline","score":<1-5>,"comment":"<короткий комментарий>","quote":"<короткая цитата тимлида из диалога, иллюстрирующая оценку, или пустая строка>"},
+    ... остальные критерии в том же формате
+  ]
+}`;
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1500,
+      system: sys,
+      messages: [{role:"user", content: `Транскрипт диалога:\n\n${transcript}`}]
+    })
+  });
+  const data = await response.json();
+  if(data.error) throw new Error(data.error.message || 'API error');
+  const textBlock = data.content.find(b=>b.type==='text');
+  let raw = textBlock.text.trim();
+  raw = raw.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+  return JSON.parse(raw);
+}
+
+function renderReport(report){
+  const byKey = {};
+  report.criteria.forEach(c=>byKey[c.key]=c);
+  let html = `
+    <div class="card">
+      <div class="score-hero"><span class="num">${report.overall}</span><span class="muted">/ 5</span></div>
+      <p>${report.summary}</p>
+    </div>
+    <div class="card">`;
+  CRITERIA.forEach(c=>{
+    const r = byKey[c.key] || {score:'—', comment:'', quote:''};
+    html += `
+      <div class="crit-row">
+        <div class="crit-head">
+          <span class="crit-name">${c.name}${c.key_criterion ? ' ★' : ''}</span>
+          <span class="crit-score">${r.score}/5</span>
+        </div>
+        <div class="crit-comment">${r.comment}</div>
+        ${r.quote ? `<div class="crit-quote">«${r.quote}»</div>` : ''}
+      </div>`;
+  });
+  html += `</div>`;
+  document.getElementById('report-content').innerHTML = html;
+}
+
+document.getElementById('restart-btn').addEventListener('click', ()=>{
+  goToScreen(1);
+});
+
+</script>
+</body>
+</html>

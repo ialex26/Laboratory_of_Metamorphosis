@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Активности для развития резервистов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --ink: #12161a;
+  --surface: #1b2127;
+  --surface-2: #232a31;
+  --surface-3: #2a323a;
+  --line: rgba(232,228,220,0.10);
+  --line-strong: rgba(232,228,220,0.18);
+  --text: #e9e5dc;
+  --text-dim: #9aa3ab;
+  --text-dimmer: #6d757d;
+  --copper: #c78a4e;
+  --copper-soft: rgba(199,138,78,0.14);
+  --gold: #d9b26a;
+  --gold-soft: rgba(217,178,106,0.14);
+  --teal: #7fa89a;
+  --teal-soft: rgba(127,168,154,0.14);
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--text);
+  font-family: 'IBM Plex Sans', -apple-system, sans-serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 900px 500px at 15% -5%, rgba(199,138,78,0.10), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 10%, rgba(127,168,154,0.07), transparent 55%);
+}
+
+h1, h2, h3 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: #f4f1ea;
+}
+
+p { margin: 0; }
+
+a { color: inherit; }
+
+.wrap { 
+  position: relative; 
+  z-index: 1;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 6vw;
+}
+
+/* ---------- HEADER ---------- */
+.site-header {
+  position: relative;
+  padding: 100px 0 70px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header::after {
+  display: none;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 26px;
+}
+
+.kicker::before {
+  content: "";
+  width: 26px;
+  height: 1px;
+  background: var(--copper);
+  display: inline-block;
+}
+
+.site-header h1 {
+  font-size: clamp(2.1rem, 4.6vw, 3.6rem);
+  max-width: 15ch;
+  line-height: 1.08;
+}
+
+.site-header .lede {
+  margin-top: 26px;
+  max-width: 100%;
+  font-size: 1.05rem;
+  color: var(--text-dim);
+}
+
+.site-header .lede em {
+  color: var(--text);
+  font-style: normal;
+  border-bottom: 1px solid var(--line-strong);
+}
+
+/* ---------- STRATA / SIGNATURE VISUAL ---------- */
+.strata {
+  margin-top: 56px;
+  max-width: 100%;
+}
+
+.strata-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  color: var(--text-dimmer);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.strata-bar {
+  display: flex;
+  width: 100%;
+  height: 54px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+}
+
+.seam {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(18,22,26,0.82);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: growSeam 1.1s cubic-bezier(.22,.9,.3,1) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 8px;
+}
+
+/* НОВЫЕ ПРОПОРЦИИ: 65% - 22% - 13% */
+.seam.practice { width: 65%; background: linear-gradient(135deg, #d59a5f, #c07f42); animation-delay: 0.05s; }
+.seam.social   { width: 22%; background: linear-gradient(135deg, #8fb3a6, #6f9184); animation-delay: 0.35s; color: rgba(18,22,26,0.85);}
+.seam.training { width: 13%; background: linear-gradient(135deg, #e2c079, #cf9f52); animation-delay: 0.55s; font-size: 12px; letter-spacing: -0.0px; padding: 0 4px; }
+
+@keyframes growSeam {
+  to { transform: scaleX(1); }
+}
+
+.strata-caption {
+  margin-top: 14px;
+  font-size: 13.5px;
+  color: var(--text-dimmer);
+  max-width: 100%;
+}
+
+/* ---------- NAV ---------- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px) saturate(140%);
+  background: rgba(18,22,26,0.78);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: center;
+}
+
+.topnav-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  max-width: 1300px;
+  width: 100%;
+  padding-left: 0;
+}
+.topnav-inner::-webkit-scrollbar { display: none; }
+
+.topnav-mark {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--copper);
+  letter-spacing: 0.08em;
+  margin-right: 18px;
+  flex-shrink: 0;
+}
+
+.navpill {
+  flex-shrink: 0;
+  text-decoration: none;
+  font-size: 13.5px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  color: var(--text-dim);
+  border: 1px solid transparent;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.navpill:hover { color: var(--text); border-color: var(--line-strong); }
+
+.navpill.active {
+  color: var(--ink);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.navpill-cta {
+  margin-left: auto;
+  flex-shrink: 0;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 8px 18px;
+  border-radius: 999px;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--gold), var(--copper));
+  border: 1px solid var(--gold);
+  white-space: nowrap;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 14px rgba(217,178,106,0.28);
+}
+.navpill-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(217,178,106,0.4);
+}
+
+/* ---------- SECTIONS ---------- */
+.block {
+  padding: 90px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.block:nth-of-type(even) { background: rgba(255,255,255,0.012); }
+
+.block-inner { 
+  max-width: 1180px; 
+  margin: 0 auto; 
+}
+
+.block-head {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 28px;
+  margin-bottom: 52px;
+}
+
+.block-num {
+  font-family: 'Fraunces', serif;
+  font-size: 4.6rem;
+  font-weight: 500;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--line-strong);
+  line-height: 1;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin-bottom: 12px;
+}
+
+.band-teal .eyebrow { color: var(--teal); }
+
+.block-head-right h2 {
+  font-size: clamp(1.5rem, 2.6vw, 2.05rem);
+  max-width: 26ch;
+  margin-bottom: 16px;
+}
+
+.block-intro {
+  color: var(--text-dim);
+  max-width: 74ch;
+  font-size: 1rem;
+}
+
+/* ---------- CARDS ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 26px 26px 24px;
+  transition: transform 0.35s cubic-bezier(.2,.7,.3,1), border-color 0.35s ease, background 0.35s ease;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cardIn 0.6s ease forwards;
+  animation-delay: var(--d, 0s);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong);
+  background: var(--surface-2);
+}
+
+@keyframes cardIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-top {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.card-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--copper);
+  flex-shrink: 0;
+  padding-top: 3px;
+}
+
+.band-teal .card-num { color: var(--teal); }
+
+.card-title {
+  font-size: 1.08rem;
+  line-height: 1.32;
+  font-weight: 600;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.card-body .field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  display: inline-block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-dimmer);
+  margin-bottom: 5px;
+}
+
+.field p {
+  font-size: 14.5px;
+  color: var(--text-dim);
+  flex: 1;
+}
+
+.field-goal {
+  padding-top: 12px;
+  border-top: 1px dashed var(--line-strong);
+}
+
+.field-goal .field-label { color: var(--copper); }
+.band-teal .field-goal .field-label { color: var(--teal); }
+
+.field-goal p { color: #d8d3c8; }
+
+/* ---------- БОНУСНАЯ КАРТОЧКА ДЛЯ EXECUTIVE EDUCATION ---------- */
+.bonus-card {
+  background: var(--surface-2);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 26px 26px 24px;
+  transition: transform 0.35s cubic-bezier(.2,.7,.3,1), border-color 0.35s ease, background 0.35s ease;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: cardIn 0.6s ease forwards;
+  animation-delay: 0.3s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(217,178,106,0.08), rgba(217,178,106,0.02));
+}
+.bonus-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  background: rgba(217,178,106,0.12);
+}
+.bonus-card .card-num {
+  color: var(--gold);
+}
+.bonus-card .card-title {
+  color: var(--gold);
+}
+.bonus-card .field-goal .field-label {
+  color: var(--gold);
+}
+.bonus-card .field-goal p {
+  color: #f4f1ea;
+}
+
+/* ---------- INTRO BLOCK ---------- */
+.intro-block .block-head {
+  margin-bottom: 32px;
+}
+.intro-text {
+  max-width: 100%;
+}
+.intro-text p {
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  font-size: 15px;
+  text-align: justify;
+}
+
+/* ---------- FOOTER ---------- */
+.site-footer {
+  padding: 70px 0 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  flex-wrap: wrap;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.footer-left .eyebrow { color: var(--copper); }
+
+.footer-left h3 {
+  font-size: 1.3rem;
+  max-width: 100%;
+  margin-top: 10px;
+  white-space: nowrap;
+}
+
+.footer-right {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dimmer);
+  text-align: right;
+}
+
+.back-to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 60;
+  font-size: 16px;
+}
+.back-to-top.show { opacity: 1; pointer-events: auto; }
+.back-to-top:hover { transform: translateY(-3px); border-color: var(--gold); color: var(--gold); }
+
+/* ---------- MODAL ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active {
+  display: flex;
+}
+.modal-content {
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  max-width: 720px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 36px 40px 32px;
+  color: var(--text);
+  position: relative;
+  animation: modalIn 0.3s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  background: none;
+  border: none;
+  color: var(--text-dimmer);
+  font-size: 28px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 0 0 16px;
+  transition: color 0.2s;
+}
+.modal-close:hover { color: var(--text); }
+.modal-content h3 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  color: var(--gold);
+}
+.modal-content h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--copper);
+  margin: 18px 0 6px;
+}
+.modal-content p, .modal-content li {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.modal-content ul {
+  margin: 6px 0 10px;
+  padding-left: 20px;
+}
+.modal-content ul li { margin-bottom: 4px; }
+
+@media (max-width: 760px) {
+  .block-head { grid-template-columns: 1fr; }
+  .block-num { font-size: 2.6rem; }
+  .site-header { padding: 70px 0 50px; }
+  .block { padding: 60px 0; }
+  .wrap { padding: 0 4vw; }
+  .footer-left h3 {
+    white-space: normal;
+  }
+  .modal-content { padding: 24px 20px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-delay: 0s !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="site-header">
+    <span class="kicker">Каталог активностей · кадровый резерв</span>
+    <h1>Активности для развития резервистов</h1>
+    <p class="lede">Каталог методов, техник и мероприятий для программ развития кадрового резерва топ- и среднего звена управления. <em>На основе анализа российских и мировых практик в области управления персоналом.</em></p>
+
+    <div class="strata">
+      <div class="strata-label-row">
+        <span>Модель развития 70–20–10</span>
+        <span>43 активностей · 5 блоков</span>
+      </div>
+      <div class="strata-bar">
+        <div class="seam practice">Рабочие — 70%</div>
+        <div class="seam social">Социальные — 20%</div>
+        <div class="seam training">Обучающие — 10%</div>
+      </div>
+      <p class="strata-caption">Три пласта развития резервиста: основную массу опыта резервист получает через реальные рабочие задачи, пятую часть — через людей вокруг (менторов, коллег, сообщество), и десятую — через формальное обучение.</p>
+    </div>
+  </header>
+
+  <nav class="topnav">
+    <div class="topnav-inner">
+      <span class="topnav-mark">СОДЕРЖАНИЕ</span>
+      <a href="#intro" class="navpill" data-target="intro">Введение</a>
+      <a href="#training" class="navpill" data-target="training">Обучение</a>
+      <a href="#practice" class="navpill" data-target="practice">Практика</a>
+      <a href="#psychology" class="navpill" data-target="psychology">Психология</a>
+      <a href="#social" class="navpill" data-target="social">Социальное</a>
+      <a href="#tools" class="navpill" data-target="tools">Инструменты</a>
+      <a href="Конструктор_программы_развития.html" class="navpill-cta">🛠 Конструктор программы</a>
+    </div>
+  </nav>
+
+  <!-- Введение -->
+  <section class="block intro-block" id="intro">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">01</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Введение и методология</span>
+          <h2>Систематизированный каталог активностей развития резерва</h2>
+        </div>
+      </div>
+      <div class="intro-text">
+        <p>Документ представляет собой систематизированный каталог активностей, применяемых современными компаниями для развития участников кадрового резерва (резервистов) на позиции топ- и среднего уровня управления. Материал собран на основе анализа практик российского рынка (Сбербанк, Северсталь, РЖД, Мираторг, Лента, Полюс и др.), а также подходов, применяемых в США, Европе (Германия, Великобритания) и Азии (Сингапур, Япония), включая программы международных бизнес-школ (Harvard, INSEAD, Wharton) и глобальных консалтинговых компаний (Korn Ferry, Deloitte, Cornerstone OnDemand, McLean &amp; Company).</p>
+        <p>Активности сгруппированы по пяти блокам: обучающие и образовательные форматы, рабочие (практические) активности, психологические активности, социальные активности, а также сопровождающие оценочно-диагностические инструменты. Такая структура соответствует принципу «70-20-10», широко применяемому в международной практике: 70% развития происходит через практический опыт на рабочем месте, 20% — через социальное взаимодействие (менторинг, обратная связь, нетворкинг), 10% — через формальное обучение.</p>
+        <p>Для каждой активности приведено краткое описание сути, типового формата проведения и развиваемых компетенций/целей, а также, где это уместно, особенности практического применения.</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- БЛОК 02: ОБУЧАЮЩИЕ АКТИВНОСТИ (обновлённая нумерация) -->
+  <section class="block band-gold" id="training">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">02</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Блок I — 10% модели 70-20-10</span>
+          <h2>Обучающие и образовательные активности</h2>
+          <p class="block-intro">Формальные и полуформальные форматы передачи знаний и отработки навыков в группе или индивидуально.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        
+        <!-- 2.1 Тренинги -->
+        <article class="card" style="--d: 0.00s" data-modal="2.1">
+          <div class="card-top">
+            <span class="card-num">2.1</span>
+            <h3 class="card-title">Тренинги и семинары по управленческим компетенциям</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Очные или онлайн занятия по конкретной теме (эмоциональный интеллект, принятие решений, управление изменениями, наставничество, кросс-функциональное взаимодействие, ключевые навыки руководителя, проведение совещаний, системное мышление, влияние без полномочий).</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Блоки от 2 часов, модульная программа с интервалом 1 раз в 1-3 месяца; сочетание теории (20-25%) и практики (75-80%).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Освоение конкретных управленческих hard- и soft-навыков, единый стиль управления в компании.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.2 Книжный клуб -->
+        <article class="card" style="--d: 0.06s" data-modal="2.2">
+          <div class="card-top">
+            <span class="card-num">2.2</span>
+            <h3 class="card-title">Книжный клуб</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Регулярные встречи резервистов для обсуждения прочитанной деловой/управленческой литературы (1-2 книги за модуль обучения), с последующим обменом инсайтами и их применением к рабочим кейсам.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Групповая встреча раз в 3-4 недели, очно или онлайн, с модератором из числа кураторов или самих резервистов.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Расширение управленческого кругозора, развитие навыка критического осмысления и переноса теории в практику, нетворкинг внутри когорты.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.3 Кейс-клуб -->
+        <article class="card" style="--d: 0.12s" data-modal="2.3">
+          <div class="card-top">
+            <span class="card-num">2.3</span>
+            <h3 class="card-title">Кейс-клуб / разбор бизнес-кейсов</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Совместный разбор реальных или адаптированных управленческих кейсов (в том числе из собственной практики участников) с выработкой альтернативных решений.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Формат «Best Practice» или «Кейс-клуб», очно/онлайн, 60-90 минут, 1 раз в модуль.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие аналитического и системного мышления, обмен управленческими «фишками» и решениями между резервистами.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.4 Вебинары -->
+        <article class="card" style="--d: 0.18s" data-modal="2.4">
+          <div class="card-top">
+            <span class="card-num">2.4</span>
+            <h3 class="card-title">Вебинары и мастер-классы приглашенных экспертов и топ-менеджеров</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Короткие тематические онлайн-сессии с внешними экспертами или руководителями компании, включая сессии вопросов-ответов.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>60-минутный вебинар, периодичность 1 раз в модуль или чаще.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Обновление актуальных знаний, прямой контакт резервистов с топ-менеджментом (повышение видимости — «exposure»).</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.5 Action Learning -->
+        <article class="card" style="--d: 0.24s" data-modal="2.5">
+          <div class="card-top">
+            <span class="card-num">2.5</span>
+            <h3 class="card-title">Action Learning (обучение действием)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервисты (индивидуально или в мини-группах) работают над реальной бизнес-задачей компании на протяжении программы, применяя новые знания и получая коучинговую поддержку куратора.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Проектная работа на протяжении 3-12 месяцев параллельно с модулями обучения; защита результата перед руководством в конце программы.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Перенос обучения в практику («learning transfer»), развитие проектного мышления и ответственности за результат.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.6 Бизнес-симуляции -->
+        <article class="card" style="--d: 0.30s" data-modal="2.6">
+          <div class="card-top">
+            <span class="card-num">2.6</span>
+            <h3 class="card-title">Бизнес-симуляции и деловые игры</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Иммерсивные симуляции управления виртуальной компанией/подразделением (например Nuvata Spirits, Celemi), а также деловые и стратегические игры (Marshmallow Challenge, Tower of Power и др.), в которых участники принимают решения и видят их последствия в безопасной среде.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Очный или онлайн формат, от 3-4 часов до нескольких дней; часто используется также для скрытой оценки и отбора в резерв.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие бизнес-мышления, финансовой грамотности, стратегического и командного принятия решений; выявление лидерского потенциала.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.7 E-learning -->
+        <article class="card" style="--d: 0.00s" data-modal="2.7">
+          <div class="card-top">
+            <span class="card-num">2.7</span>
+            <h3 class="card-title">E-learning и цифровые обучающие платформы</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Онлайн-курсы, микрообучение, обучающие приложения с трекингом прогресса по ИПР.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Самостоятельное прохождение в удобном темпе, с элементами геймификации и аналитикой для HR.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Гибкость и масштабируемость обучения, визуализация индивидуальной траектории роста.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 2.8 Хакатоны -->
+        <article class="card" style="--d: 0.06s" data-modal="2.8">
+          <div class="card-top">
+            <span class="card-num">2.8</span>
+            <h3 class="card-title">Хакатоны и конкурсы управленческих/бизнес-проектов</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Соревновательный формат, в котором команды резервистов за ограниченное время разрабатывают решение реальной бизнес-задачи компании и защищают его перед экспертным жюри.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>1-3 дня, командная работа, публичная защита, призовой фонд/карьерные бонусы победителям.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие креативности, работы в сжатые сроки, презентационных навыков; дополнительный канал выявления талантов.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- БОНУСНАЯ ПРОГРАММА: Executive education (бывшая 2.7) -->
+        <article class="bonus-card" data-modal="bonus">
+          <div class="card-top">
+            <span class="card-num">★</span>
+            <h3 class="card-title">Бонусная программа: Executive education в бизнес-школах</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Для малой группы высокопотенциальных сотрудников можно предусмотреть участие во внешних комплексных программах обучения для управленческого уровня в ведущих бизнес-школах, таких как Сколково, ВШЭ, РАНХиГС, СберУниверситет и им подобные.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Модульные программы от нескольких дней до года, очно или гибридно, с элементами ассессмента, коучинга и проектной работы.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие стратегического мышления, управленческих компетенций, формирование кросс-отраслевого нетворкинга и подготовка к высшим руководящим должностям.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 03: ПРАКТИКА -->
+  <section class="block band-copper" id="practice">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">03</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Блок II — 70% модели 70-20-10</span>
+          <h2>Рабочие (практические) активности</h2>
+          <p class="block-intro">Форматы развития непосредственно через выполнение реальных управленческих задач — согласно модели 70-20-10 наиболее весомая часть развития (около 70%).</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        
+        <article class="card" style="--d: 0.00s" data-modal="3.1">
+          <div class="card-top">
+            <span class="card-num">3.1</span>
+            <h3 class="card-title">Стретч-задания (stretch assignments)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Поручение резервисту задачи, заведомо превышающей его текущий уровень ответственности или компетенций, с постепенным нарастанием сложности.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Встраивается в текущую работу, сопровождается коучингом руководителя или куратора.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Ускоренное развитие через выход из зоны комфорта; по данным Center for Creative Leadership — один из самых результативных методов.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.06s" data-modal="3.2">
+          <div class="card-top">
+            <span class="card-num">3.2</span>
+            <h3 class="card-title">Ротация (job rotation)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Временный перевод резервиста в другое подразделение, функцию или регион для расширения кругозора и получения нового опыта.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>От нескольких недель до 1-2 лет; кросс-функциональная или региональная ротация.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Формирование системного видения бизнеса, снижение риска зависимости от одного носителя экспертизы, подготовка к более широкой руководящей роли.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.12s" data-modal="3.3">
+          <div class="card-top">
+            <span class="card-num">3.3</span>
+            <h3 class="card-title">Шедоуинг (job shadowing)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервист в течение определенного периода сопровождает более опытного руководителя, наблюдая за его работой, встречами и решениями.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>От одного дня до нескольких недель; не предполагает смены собственных обязанностей.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Погружение в специфику руководящей роли без формальной передачи ответственности; первый шаг перед ротацией.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.18s" data-modal="3.4">
+          <div class="card-top">
+            <span class="card-num">3.4</span>
+            <h3 class="card-title">Стажировка / секондмент (в т.ч. международный)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Временное направление сотрудника в другое подразделение, дочернюю компанию или страну с сохранением трудовых отношений с основным работодателем.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>От нескольких месяцев до нескольких лет; международный секондмент требует дополнительной подготовки (языковой, культурной, юридической).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие межкультурной компетентности, глобального мышления, передача знаний между локациями.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.24s" data-modal="3.5">
+          <div class="card-top">
+            <span class="card-num">3.5</span>
+            <h3 class="card-title">Временное замещение руководителя (acting-позиция)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервист временно исполняет обязанности вышестоящего руководителя (например, на период отпуска или проекта).</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>От нескольких недель до нескольких месяцев, с последующей обратной связью от команды и вышестоящего руководства.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Проверка готовности к следующему уровню ответственности в реальных условиях.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.30s" data-modal="3.6">
+          <div class="card-top">
+            <span class="card-num">3.6</span>
+            <h3 class="card-title">Руководство кросс-функциональным или стратегическим проектом</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервисту поручается роль руководителя проекта, затрагивающего несколько подразделений компании.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Проектный формат, от 3 месяцев; регулярная отчетность перед спонсором проекта.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие навыков влияния без формальных полномочий, управления проектами и заинтересованными сторонами.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.00s" data-modal="3.7">
+          <div class="card-top">
+            <span class="card-num">3.7</span>
+            <h3 class="card-title">Участие в стратегических сессиях и заседаниях совета директоров (в роли наблюдателя)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Присутствие резервиста на сессиях стратегического планирования компании или в качестве приглашенного наблюдателя на заседании совета директоров.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Разовое или периодическое участие, обычно для наиболее продвинутых резервистов (executive-уровень).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Понимание логики стратегических решений на уровне высшего руководства, повышение видимости (exposure) резервиста.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.06s" data-modal="3.8">
+          <div class="card-top">
+            <span class="card-num">3.8</span>
+            <h3 class="card-title">Презентация результатов проекта топ-менеджменту</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Публичная защита резервистом итогов action learning проекта или стратегической инициативы перед правлением/советом.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Формальная презентация в конце программы или проекта, с обратной связью от топ-менеджмента.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие навыков публичных выступлений и стратегической коммуникации, прямая демонстрация готовности к повышению.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.12s" data-modal="3.9">
+          <div class="card-top">
+            <span class="card-num">3.9</span>
+            <h3 class="card-title">Наставничество над младшими сотрудниками</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервист выступает в роли наставника (ментора) для менее опытных коллег или новых сотрудников.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные встречи 1:1, встроенные в текущую работу.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Отработка навыков передачи опыта, обратной связи и развития других — ключевая управленческая компетенция.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 04: ПСИХОЛОГИЧЕСКИЕ АКТИВНОСТИ (обновлённая нумерация) -->
+  <section class="block band-teal" id="psychology">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">04</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Блок III — 20% модели 70-20-10</span>
+          <h2>Психологические и оценочные активности</h2>
+          <p class="block-intro">Форматы, направленные на развитие самосознания, эмоциональной регуляции, психологической устойчивости, а также инструменты оценки и диагностики.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        
+        <!-- 4.1 Executive-коучинг -->
+        <article class="card" style="--d: 0.00s" data-modal="4.1">
+          <div class="card-top">
+            <span class="card-num">4.1</span>
+            <h3 class="card-title">Индивидуальный executive-коучинг</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Регулярные сессии 1:1 с профессиональным коучем (часто по модели GROW: Goal, Reality, Options, Will) для проработки конкретных управленческих и личных вызовов резервиста.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>5-10 сессий по 60-90 минут на протяжении программы; часто сопровождает результаты ассессмента и 360-обратной связи.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие самосознания, целеполагания, преодоление ограничивающих установок.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.2 Групповой коучинг -->
+        <article class="card" style="--d: 0.06s" data-modal="4.2">
+          <div class="card-top">
+            <span class="card-num">4.2</span>
+            <h3 class="card-title">Групповой коучинг / коуч-группы (пиринг-коучинг)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Мини-группы резервистов (3-6 человек) регулярно встречаются в формате структурированного взаимного коучинга без внешнего эксперта.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные встречи по методологии (например, активное слушание в тройках: субъект — слушающий — наблюдатель).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие навыков активного слушания и коучингового стиля управления, взаимная поддержка когорты.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.3 Психодиагностика -->
+        <article class="card" style="--d: 0.12s" data-modal="4.3">
+          <div class="card-top">
+            <span class="card-num">4.3</span>
+            <h3 class="card-title">Психодиагностика личности (DISC, MBTI, Hogan, Big Five и др.)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Прохождение стандартизированных психометрических тестов с последующей интерпретацией результатов сертифицированным специалистом.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Онлайн-тестирование + индивидуальная сессия разбора результатов (30-60 минут).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Осознание собственного поведенческого стиля, сильных сторон и зон роста, повышение эффективности коммуникации в команде.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.4 Ассессмент-центр -->
+        <article class="card" style="--d: 0.18s" data-modal="4.4">
+          <div class="card-top">
+            <span class="card-num">4.4</span>
+            <h3 class="card-title">Ассессмент-центр</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Комплексная оценка компетенций резервиста через серию упражнений (кейсы, ролевые игры, групповые дискуссии, интервью по компетенциям) с участием нескольких независимых наблюдателей.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>1-2 дня, очно, с участием ассессоров (внутренних или внешних).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Объективная диагностика управленческого потенциала для формирования индивидуального плана развития и решений о включении в резерв.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.5 Психологическое консультирование -->
+        <article class="card" style="--d: 0.24s" data-modal="4.5">
+          <div class="card-top">
+            <span class="card-num">4.5</span>
+            <h3 class="card-title">Индивидуальное психологическое консультирование</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Работа с консультантом/психологом по запросам, не связанным напрямую с управленческими навыками (личная мотивация, баланс работы и жизни, кризисы карьеры).</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>По запросу резервиста, конфиденциально, вне линейной иерархии.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Поддержание психологического благополучия резервиста как основы устойчивого профессионального роста.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.6 Обратная связь 360 -->
+        <article class="card" style="--d: 0.30s" data-modal="4.6">
+          <div class="card-top">
+            <span class="card-num">4.6</span>
+            <h3 class="card-title">Обратная связь 360 градусов</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Сбор структурированной обратной связи о резервисте от руководителя, коллег, подчиненных и (иногда) внешних партнеров с последующим разбором результатов.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Онлайн-опрос + индивидуальная сессия обратной связи с коучем или HR.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Формирование объективной картины восприятия резервиста окружением, база для индивидуального плана развития.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.7 Тесты (НОВАЯ КАРТОЧКА) -->
+        <article class="card" style="--d: 0.00s" data-modal="4.7">
+          <div class="card-top">
+            <span class="card-num">4.7</span>
+            <h3 class="card-title">Тесты способностей, знаний и навыков</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Стандартизированные тесты для оценки профессиональных знаний, управленческих способностей, логического и аналитического мышления, числовых и вербальных способностей.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Онлайн-тестирование с ограничением по времени, автоматическая проверка результатов, последующий разбор с HR или руководителем.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Объективная оценка уровня развития конкретных навыков и знаний, выявление пробелов для включения в ИПР.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.8 Опросы (НОВАЯ КАРТОЧКА) -->
+        <article class="card" style="--d: 0.06s" data-modal="4.8">
+          <div class="card-top">
+            <span class="card-num">4.8</span>
+            <h3 class="card-title">Опросы (пульс-опросы, удовлетворенность, вовлеченность)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Регулярные или разовые опросы для сбора обратной связи от резервистов об удовлетворенности программой развития, уровне вовлеченности, психологическом климате в команде и других аспектах.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Короткие анонимные онлайн-опросы (5-15 вопросов), пульс-опросы (1-2 вопроса еженедельно), глубинные опросы по завершении модулей.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Мониторинг удовлетворенности, оперативная корректировка программы, выявление проблемных зон и повышение вовлеченности резервистов.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 4.9 Интервью (НОВАЯ КАРТОЧКА) -->
+        <article class="card" style="--d: 0.12s" data-modal="4.9">
+          <div class="card-top">
+            <span class="card-num">4.9</span>
+            <h3 class="card-title">Интервью (по компетенциям, глубинное, проективное)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Индивидуальные собеседования с резервистами для оценки компетенций, выявления мотивации, карьерных ожиданий и личностных особенностей.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Структурированное интервью по компетенциям (STAR-методика), глубинное интервью о карьерных целях и ценностях, проективное интервью для выявления скрытых установок.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Глубокое понимание мотивации и потенциала резервиста, выявление лидерских качеств, формирование индивидуальных траекторий развития.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 05: СОЦИАЛЬНЫЕ АКТИВНОСТИ -->
+  <section class="block band-gold" id="social">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">05</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Блок IV — 20% модели 70-20-10</span>
+          <h2>Социальные активности</h2>
+          <p class="block-intro">Форматы, построенные на взаимодействии резервиста с другими людьми — менторами, коллегами по когорте, более широким сообществом — согласно модели 70-20-10 они формируют около 20% развития.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        
+        <article class="card" style="--d: 0.00s" data-modal="5.1">
+          <div class="card-top">
+            <span class="card-num">5.1</span>
+            <h3 class="card-title">Менторинг один на один (традиционный)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Закрепление за резервистом опытного руководителя-ментора (как правило, вне прямой административной подчиненности), с которым проводятся регулярные встречи.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные встречи 1:1 (раз в 2-4 недели) на протяжении программы или дольше.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Передача неформализованных знаний, поддержка в карьерных решениях, психологическая поддержка.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.06s" data-modal="5.2">
+          <div class="card-top">
+            <span class="card-num">5.2</span>
+            <h3 class="card-title">Менторинг-круги (mentoring circles)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Формат группового менторинга: один или несколько менторов работают одновременно с группой из 4-8 резервистов по общей теме.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные групповые встречи; особенно эффективен для интровертов и для ERG/DEI-групп.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Более широкий охват при ограниченном числе менторов, обмен опытом между самими резервистами, кросс-департаментные связи.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.12s" data-modal="5.3">
+          <div class="card-top">
+            <span class="card-num">5.3</span>
+            <h3 class="card-title">Реверсивный менторинг</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Младшие сотрудники (часто более молодого поколения) выступают менторами для резервистов/старших руководителей — как правило, по цифровым и генерационным темам.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные встречи 1:1 в течение нескольких месяцев.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Обновление цифровых компетенций и понимания молодого поколения сотрудников/клиентов у резервистов-руководителей.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.18s" data-modal="5.4">
+          <div class="card-top">
+            <span class="card-num">5.4</span>
+            <h3 class="card-title">Проектный менторинг (project-based mentorship)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Ментор и резервист совместно работают над конкретным рабочим проектом, отрабатывая навыки на реальной задаче.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Встроен в длительность проекта.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Практическое обучение через сотрудничество и решение задач вместе с более опытным коллегой.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.24s" data-modal="5.5">
+          <div class="card-top">
+            <span class="card-num">5.5</span>
+            <h3 class="card-title">Нетворкинг-мероприятия и форумы резервистов</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Регулярные встречи всех участников программы резерва компании (или нескольких компаний отрасли) для обмена опытом и установления связей.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Периодические очные или гибридные мероприятия, конференции, форумы.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Расширение профессиональной сети, ощущение принадлежности к сообществу талантов компании.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.30s" data-modal="5.6">
+          <div class="card-top">
+            <span class="card-num">5.6</span>
+            <h3 class="card-title">Клуб/сообщество выпускников программы (alumni)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Формирование постоянного сообщества из тех, кто прошел программу развития резерва, с продолжающимися мероприятиями и связью с текущими участниками.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Периодические встречи, closed-группа в мессенджере, менторство новых потоков со стороны выпускников.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Долгосрочное удержание и вовлеченность, преемственность культуры программы, дополнительный источник менторов.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.00s" data-modal="5.7">
+          <div class="card-top">
+            <span class="card-num">5.7</span>
+            <h3 class="card-title">Корпоративное волонтерство (skills-based volunteering)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервисты применяют свои профессиональные навыки (управление проектами, финансы, маркетинг) в некоммерческих проектах или социально значимых инициативах.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Проектный формат, от одного дня до нескольких месяцев; возможно участие в качестве члена совета NGO.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие лидерства в условиях неопределенности и ограниченных ресурсов, эмпатии и кросс-культурной чувствительности — по исследованиям сопоставимо по эффективности с элитными executive-программами.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.06s" data-modal="5.8">
+          <div class="card-top">
+            <span class="card-num">5.8</span>
+            <h3 class="card-title">Командные тимбилдинги и стратегические офсайты</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Выездные мероприятия для когорты резервистов, сочетающие стратегическую работу, тимбилдинговые упражнения (Marshmallow Challenge, Human Knot, Blind Square и др.) и неформальное общение.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>1-3 дня, вне офиса.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Укрепление доверия внутри когорты резервистов, отработка коммуникации и совместного решения проблем в нестандартной обстановке.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.12s" data-modal="5.9">
+          <div class="card-top">
+            <span class="card-num">5.9</span>
+            <h3 class="card-title">Участие в отраслевых конференциях и профессиональных сообществах</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Направление резервиста в качестве участника или спикера на внешние отраслевые мероприятия.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Разовое или периодическое участие.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Внешний бенчмаркинг, личный бренд резервиста, актуализация знаний о рынке.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.18s" data-modal="5.10">
+          <div class="card-top">
+            <span class="card-num">5.10</span>
+            <h3 class="card-title">Публичные выступления и внутреннее спикерство</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Резервист готовит и проводит выступление для более широкой аудитории компании (внутренний митап, вебинар, презентация на общем собрании).</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Разовые или регулярные выступления.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Развитие навыков публичной коммуникации, повышение видимости и уверенности резервиста.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- БЛОК 06: ИНСТРУМЕНТЫ (с перенесённой геймификацией) -->
+  <section class="block band-copper" id="tools">
+    <div class="block-inner">
+      <div class="block-head">
+        <div class="block-head-left">
+          <span class="block-num">06</span>
+        </div>
+        <div class="block-head-right">
+          <span class="eyebrow">Блок V – Каркас программы</span>
+          <h2>Сопровождающие инструменты программы</h2>
+          <p class="block-intro">Организационные элементы, обеспечивающие системность и измеримость развития резервиста; сами по себе не являются «активностью» в узком смысле, но необходимы для интеграции всех перечисленных форматов в единую программу.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        
+        <article class="card" style="--d: 0.00s" data-modal="6.1">
+          <div class="card-top">
+            <span class="card-num">6.1</span>
+            <h3 class="card-title">Индивидуальный план развития (ИПР)</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Персональный документ, связывающий текущую позицию резервиста с целевой: конкретные развивающие активности, сроки, ответственные, метрики прогресса.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Разрабатывается по итогам оценки/ассессмента, пересматривается не реже раза в квартал.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Стратегический каркас, объединяющий обучающие, практические, психологические и социальные активности в единую траекторию.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.06s" data-modal="6.2">
+          <div class="card-top">
+            <span class="card-num">6.2</span>
+            <h3 class="card-title">Персональный куратор программы</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Постоянный куратор закреплен за резервистом или когортой на весь период программы: консультирует по выполнению заданий, мотивирует, дает обратную связь.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярный контакт на протяжении всей программы (в дополнение к ментору и коучу).</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Обеспечение непрерывности («бесшовности») обучения между модулями, снижение риска потери мотивации.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" style="--d: 0.12s" data-modal="6.3">
+          <div class="card-top">
+            <span class="card-num">6.3</span>
+            <h3 class="card-title">Регулярные точки сверки (check-in) с HR и линейным руководителем</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Периодические трехсторонние встречи (резервист — руководитель — HR) для отслеживания прогресса по ИПР и своевременной корректировки.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Раз в квартал или чаще.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Прозрачность процесса, вовлеченность линейного руководителя в развитие резервиста, снижение риска восприятия резервиста как «конкурента».</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- 6.4 Геймификация (перенесена из 2.11) -->
+        <article class="card" style="--d: 0.18s" data-modal="6.4">
+          <div class="card-top">
+            <span class="card-num">6.4</span>
+            <h3 class="card-title">Геймификация обучения</h3>
+          </div>
+          <div class="card-body">
+            <div class="field">
+              <span class="field-label">Суть</span>
+              <p>Использование игровых механик (баллы, рейтинги, бейджи, квесты, викторины) в обучающей платформе или закрытой группе резервистов как инструмент повышения вовлеченности.</p>
+            </div>
+            <div class="field">
+              <span class="field-label">Формат</span>
+              <p>Регулярные активности 2-3 раза в неделю: опросы, онлайн-игры и викторины, обсуждение статей и кейсов с начислением баллов.</p>
+            </div>
+            <div class="field field-goal">
+              <span class="field-label">Цель</span>
+              <p>Повышение вовлеченности и регулярности взаимодействия с программой между очными модулями, создание соревновательной среды.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer" style="flex-direction: column; gap: 20px; border-top: 1px solid var(--line); padding-top: 40px;">
+    <!-- Верхняя часть: старая информация -->
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 20px;">
+      <div class="footer-left" style="margin: 0;">
+        <span class="eyebrow">Кадровый резерв</span>
+        <h3 style="font-size: 1.1rem; margin-top: 6px;">Единая траектория развития — от обучения к практике и обратной связи</h3>
+      </div>
+    </div>
+
+    <!-- Разделитель -->
+    <div style="width: 100%; border-top: 1px solid var(--line);"></div>
+
+    <!-- Нижняя часть: копирайт и контакты -->
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+      <div class="footer-left" style="margin: 0;">
+        <span style="font-size: 13px; color: var(--text-dim);">© 2026 · Каталог активностей · Кадровый резерв</span>
+      </div>
+      <div class="footer-right" style="margin: 0;">
+        <span style="font-size: 13px; color: var(--text-dim);">
+          <i class="fas fa-user"></i> Алексей Милеев &nbsp;·&nbsp;
+          <i class="fas fa-phone"></i> +7(926)204 37 09 &nbsp;·&nbsp;
+          <i class="fas fa-print" onclick="window.print();" style="cursor:pointer;"></i> Печать
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-content">
+    <button class="modal-close" id="modalClose">&times;</button>
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<button class="back-to-top" id="toTop" aria-label="Наверх">↑</button>
+
+<script>
+  // scroll spy
+  const pills = document.querySelectorAll('.navpill');
+  const targets = Array.from(pills).map(p => document.getElementById(p.dataset.target)).filter(Boolean);
+
+  function onScroll() {
+    let current = null;
+    const y = window.scrollY + 140;
+    targets.forEach(t => {
+      if (t.offsetTop <= y) current = t.id;
+    });
+    pills.forEach(p => p.classList.toggle('active', p.dataset.target === current));
+
+    const toTop = document.getElementById('toTop');
+    if (window.scrollY > 700) toTop.classList.add('show');
+    else toTop.classList.remove('show');
+  }
+  document.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  document.getElementById('toTop').addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // re-trigger card animation on view
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.card, .bonus-card').forEach(c => {
+    c.style.animationPlayState = 'paused';
+    io.observe(c);
+  });
+
+  // -------- Equal height for card fields --------
+  function equalizeCardFields() {
+    const grids = document.querySelectorAll('.card-grid');
+    grids.forEach(grid => {
+      const cards = grid.querySelectorAll('.card, .bonus-card');
+      if (cards.length === 0) return;
+      for (let i = 0; i < cards.length; i += 3) {
+        const row = Array.from(cards).slice(i, i + 3);
+        const fieldTypes = [
+          { selector: '.field:not(.field-goal)', label: 'суть/формат' },
+          { selector: '.field-goal', label: 'цель' }
+        ];
+        fieldTypes.forEach(({ selector }) => {
+          const items = row.map(card => card.querySelector(selector));
+          if (items.some(el => el === null)) return;
+          items.forEach(el => { el.style.minHeight = ''; });
+          const maxHeight = Math.max(...items.map(el => el.offsetHeight));
+          items.forEach(el => { el.style.minHeight = maxHeight + 'px'; });
+        });
+      }
+    });
+  }
+
+  window.addEventListener('load', () => {
+    setTimeout(equalizeCardFields, 100);
+  });
+  window.addEventListener('resize', () => {
+    setTimeout(equalizeCardFields, 100);
+  });
+
+  // -------- Modal --------
+  const modalOverlay = document.getElementById('modal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  const modalClose = document.getElementById('modalClose');
+
+  // Обновлённые данные для модальных окон (с учётом новой нумерации)
+  const modalData = {
+    '2.1': { title: 'Тренинги и семинары по управленческим компетенциям', content: `<h4>Развернутое объяснение</h4><p>Тренинги и семинары — это формальные образовательные мероприятия, направленные на развитие конкретных управленческих компетенций. Наиболее эффективные программы сочетают теорию (20-25%) и практику (75-80%). Ключевые темы включают эмоциональный интеллект, принятие решений, управление изменениями, наставничество и кросс-функциональное взаимодействие.</p><h4>Рекомендации по организации</h4><ul><li>Проводить модульную программу с интервалом 1 раз в 1-3 месяца для закрепления материала</li><li>Использовать смешанный формат (очный + онлайн) для гибкости</li><li>Привлекать как внутренних, так и внешних экспертов</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Низкая вовлеченность участников из-за отрыва от реальных задач</li><li>Сложность переноса знаний в практическую деятельность</li><li>Разный уровень подготовки резервистов в одной группе</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать кейсы из реальной практики компании</li><li>Внедрить пост-тренинговое сопровождение (коучинг, супервизию)</li><li>Проводить предварительное тестирование для формирования групп по уровню</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать тренинги с индивидуальными планами развития (ИПР)</li><li>Обеспечить поддержку со стороны линейного руководителя</li><li>Использовать геймификацию для повышения мотивации</li></ul>` },
+    '2.2': { title: 'Книжный клуб', content: `<h4>Развернутое объяснение</h4><p>Книжный клуб — это регулярные встречи резервистов для обсуждения деловой литературы. Формат способствует развитию критического мышления, умению формулировать и аргументировать позицию, а также обмену опытом применения теоретических знаний на практике. Рекомендуется обсуждать 1-2 книги за модуль обучения.</p><h4>Рекомендации по организации</h4><ul><li>Проводить встречи раз в 3-4 недели</li><li>Назначать модератора из числа резервистов или кураторов</li><li>Составлять список литературы, связанной с актуальными задачами компании</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Разный уровень подготовки участников</li><li>Нерегулярное чтение (не все успевают прочитать книгу)</li><li>Поверхностное обсуждение без практических выводов</li></ul><h4>Как преодолеть трудности</h4><ul><li>Предлагать книги разного уровня сложности</li><li>Ввести систему "читательских билетов" или кратких рефератов</li><li>Использовать методику "Что я возьму в работу" — каждый участник формулирует 1-2 практических вывода</li></ul><h4>Как повысить эффективность</h4><ul><li>Приглашать авторов или экспертов на отдельные встречи</li><li>Связывать темы книг с текущими бизнес-задачами</li><li>Создавать закрытое сообщество для обмена инсайтами</li></ul>` },
+    '2.3': { title: 'Кейс-клуб / разбор бизнес-кейсов', content: `<h4>Развернутое объяснение</h4><p>Кейс-клуб — это формат совместного разбора реальных или адаптированных управленческих ситуаций. Участники анализируют проблему, генерируют альтернативные решения и выбирают оптимальное. Такой подход развивает аналитическое мышление, системное видение и навыки принятия решений в условиях неопределенности.</p><h4>Рекомендации по организации</h4><ul><li>Проводить сессии в формате "Best Practice" или "Кейс-клуб"</li><li>Длительность: 60-90 минут, 1 раз в модуль</li><li>Использовать кейсы из собственной практики компании</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Кейсы могут быть неактуальны для участников</li><li>Недостаток времени на глубокий анализ</li><li>Доминирование нескольких участников в дискуссии</li></ul><h4>Как преодолеть трудности</h4><ul><li>Собирать кейсы непосредственно от резервистов</li><li>Заранее рассылать материалы для подготовки</li><li>Использовать технику "мозгового штурма" с равным временем для всех</li></ul><h4>Как повысить эффективность</h4><ul><li>Внедрить систему голосования за лучшее решение</li><li>Приглашать экспертов для оценки предложенных решений</li><li>Создавать банк кейсов для дальнейшего использования</li></ul>` },
+    '2.4': { title: 'Вебинары и мастер-классы приглашенных экспертов и топ-менеджеров', content: `<h4>Развернутое объяснение</h4><p>Вебинары и мастер-классы — это короткие тематические онлайн-сессии с участием внешних экспертов или руководителей компании. Формат позволяет резервистам получать актуальную информацию из первых уст, задавать вопросы и расширять профессиональный кругозор. Также это инструмент повышения "видимости" (exposure) резервистов перед топ-менеджментом.</p><h4>Рекомендации по организации</h4><ul><li>Проводить 60-минутные сессии 1 раз в модуль или чаще</li><li>Обеспечить возможность интерактивного взаимодействия (чат, опросы, Q&A)</li><li>Записывать вебинары для последующего просмотра</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Низкая вовлеченность из-за пассивного формата</li><li>Технические проблемы (звук, связь)</li><li>Сложность удержания внимания онлайн-аудитории</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать интерактивные элементы: опросы, квизы, breakout-сессии</li><li>Проводить технические репетиции перед вебинаром</li><li>Делить вебинар на блоки по 15-20 минут с активностями</li></ul><h4>Как повысить эффективность</h4><ul><li>Собирать вопросы от резервистов заранее</li><li>Организовывать "встречи без галстука" с топ-менеджментом</li><li>Создавать серию вебинаров по сквозной теме</li></ul>` },
+    '2.5': { title: 'Action Learning (обучение действием)', content: `<h4>Развернутое объяснение</h4><p>Action Learning — это метод, при котором резервисты работают над реальной бизнес-задачей компании, применяя новые знания и получая коучинговую поддержку. Подход основан на принципе "учись, делая", что обеспечивает высокий уровень переноса обучения в практику (learning transfer). Проект длится 3-12 месяцев с защитой результатов перед руководством.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать задачи, значимые для бизнеса</li><li>Назначать куратора для сопровождения команды</li><li>Проводить регулярные промежуточные презентации</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени на проект из-за текущей загрузки</li><li>Сопротивление со стороны линейных руководителей</li><li>Размытость целей и критериев оценки</li></ul><h4>Как преодолеть трудности</h4><ul><li>Закреплять проектное время в ИПР</li><li>Вовлекать линейных руководителей в процесс согласования</li><li>Четко формулировать бизнес-результат и метрики успеха</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать проект с реальными KPI подразделения</li><li>Внедрить систему наставничества в рамках проекта</li><li>Публиковать результаты проектов во внутренних коммуникациях</li></ul>` },
+    '2.6': { title: 'Бизнес-симуляции и деловые игры', content: `<h4>Развернутое объяснение</h4><p>Бизнес-симуляции — это иммерсивные тренажеры, моделирующие управление компанией или подразделением. Участники принимают решения в безопасной среде и видят их последствия. Формат часто используется для скрытой оценки и отбора в резерв.</p><h4>Рекомендации по организации</h4><ul><li>Проводить в очном или онлайн формате</li><li>Длительность: от 3-4 часов до нескольких дней</li><li>Обеспечить дебрифинг (разбор ошибок и успехов)</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Высокая стоимость качественных симуляций</li><li>Сложность адаптации под специфику компании</li><li>Риск восприятия как "игры", а не обучения</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать комбинацию готовых и кастомизированных решений</li><li>Адаптировать симуляции с помощью внутренних экспертов</li><li>Четко связывать игровые результаты с реальными компетенциями</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать симуляции с программой обучения</li><li>Использовать для оценки лидерского потенциала</li><li>Создавать конкурентную среду между командами</li></ul>` },
+    '2.7': { title: 'E-learning и цифровые обучающие платформы', content: `<h4>Развернутое объяснение</h4><p>E-learning — это онлайн-курсы, микрообучение и обучающие приложения с трекингом прогресса. Формат обеспечивает гибкость и масштабируемость обучения, визуализацию индивидуальной траектории роста. Часто включает элементы геймификации и аналитику для HR.</p><h4>Рекомендации по организации</h4><ul><li>Предоставить доступ к платформе 24/7</li><li>Структурировать контент по темам и уровням</li><li>Использовать мобильные приложения для удобства</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Низкая дисциплина при самостоятельном обучении</li><li>Технические проблемы (интерфейс, доступ)</li><li>Недостаток социального взаимодействия</li></ul><h4>Как преодолеть трудности</h4><ul><li>Ввести систему напоминаний и дедлайнов</li><li>Обеспечить техническую поддержку</li><li>Добавить форумы и чаты для обсуждения</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать с ИПР и системой оценки</li><li>Использовать микросертификацию</li><li>Проводить вебинары для закрепления материала</li></ul>` },
+    '2.8': { title: 'Хакатоны и конкурсы управленческих/бизнес-проектов', content: `<h4>Развернутое объяснение</h4><p>Хакатоны — это соревновательный формат, в котором команды резервистов за ограниченное время разрабатывают решение реальной бизнес-задачи. Участники защищают проект перед экспертным жюри. Формат развивает креативность, работу в сжатые сроки, презентационные навыки и служит дополнительным каналом выявления талантов.</p><h4>Рекомендации по организации</h4><ul><li>Проводить в формате 1-3 дней</li><li>Обеспечить призовой фонд и карьерные бонусы</li><li>Приглашать экспертов для оценки</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени на качественную проработку</li><li>Конфликты внутри команд</li><li>Субъективность оценки</li></ul><h4>Как преодолеть трудности</h4><ul><li>Предоставить четкие критерии оценки</li><li>Проводить командные тренинги перед хакатоном</li><li>Привлекать несколько независимых экспертов</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать темы с реальными проблемами компании</li><li>Обеспечить пост-хакатонное сопровождение проектов</li><li>Создавать кросс-функциональные команды</li></ul>` },
+    'bonus': { title: 'Бонусная программа: Executive education в бизнес-школах', content: `<h4>Развернутое объяснение</h4><p>Executive education — это модульные программы для высокопотенциальных сотрудников в ведущих российских бизнес-школах, таких как Сколково, ВШЭ, РАНХиГС, СберУниверситет и им подобные. Программы сочетают элементы ассессмента, коучинга, проектной работы и обмена опытом с участниками из разных отраслей.</p><h4>Рекомендации по организации</h4><ul><li>Отбирать кандидатов с высоким потенциалом и подтверждёнными результатами</li><li>Обеспечить пост-программное сопровождение (менторство, супервизия проектов)</li><li>Связывать программу с карьерным треком и планами преемственности</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Высокая стоимость и бюджетные ограничения</li><li>Отрыв от работы на длительный период</li><li>Сложность применения полученных знаний в специфике компании</li></ul><h4>Как преодолеть трудности</h4><ul><li>Рассматривать гибридные и онлайн-программы, а также краткосрочные модули</li><li>Выделять время в рамках ИПР и согласовывать с руководителем</li><li>Проводить адаптационные сессии по возвращении с фокусом на применение</li></ul><h4>Как повысить эффективность</h4><ul><li>Создавать сообщество выпускников программы внутри компании</li><li>Интегрировать проекты из программы в реальные рабочие задачи</li><li>Обеспечить менторскую поддержку со стороны топ-менеджмента</li></ul>` },
+    '3.1': { title: 'Стретч-задания (stretch assignments)', content: `<h4>Развернутое объяснение</h4><p>Стретч-задания — это поручение резервисту задачи, заведомо превышающей его текущий уровень ответственности или компетенций, с постепенным нарастанием сложности. По данным Center for Creative Leadership, это один из самых результативных методов развития. Задания встраиваются в текущую работу и сопровождаются коучингом руководителя или куратора.</p><h4>Рекомендации по организации</h4><ul><li>Начинать с малых стретч-задач, постепенно усложняя</li><li>Обеспечить поддержку руководителя</li><li>Давать обратную связь по результатам</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Риск перегрузки и выгорания</li><li>Сопротивление со стороны резервиста</li><li>Недостаточная поддержка со стороны руководителя</li></ul><h4>Как преодолеть трудности</h4><ul><li>Четко обсуждать ожидания и ресурсы</li><li>Внедрить систему наставничества</li><li>Обучать руководителей методике постановки стретч-задач</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать задания с ИПР и карьерными целями</li><li>Проводить рефлексивные сессии после завершения</li><li>Публично признавать достижения</li></ul>` },
+    '3.2': { title: 'Ротация (job rotation)', content: `<h4>Развернутое объяснение</h4><p>Ротация — это временный перевод резервиста в другое подразделение, функцию или регион для расширения кругозора и получения нового опыта. Длительность от нескольких недель до 1-2 лет. Цель — формирование системного видения бизнеса, снижение риска зависимости от одного носителя экспертизы.</p><h4>Рекомендации по организации</h4><ul><li>Планировать ротацию заранее</li><li>Обеспечить наставника на новом месте</li><li>Определить конкретные цели и задачи</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Сопротивление со стороны текущего руководителя</li><li>Адаптационный период на новом месте</li><li>Потеря экспертизы в текущей функции</li></ul><h4>Как преодолеть трудности</h4><ul><li>Вовлекать руководителей в процесс планирования</li><li>Проводить вводные сессии перед ротацией</li><li>Обеспечить передачу дел и документацию</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать ротацию с карьерным треком</li><li>Проводить рефлексивные сессии по итогам</li><li>Создавать ротационные пулы</li></ul>` },
+    '3.3': { title: 'Шедоуинг (job shadowing)', content: `<h4>Развернутое объяснение</h4><p>Шедоуинг — это метод, при котором резервист в течение определенного периода сопровождает более опытного руководителя, наблюдая за его работой, встречами и решениями. Длительность от одного дня до нескольких недель. Формат не предполагает смены собственных обязанностей и является первым шагом перед ротацией.</p><h4>Рекомендации по организации</h4><ul><li>Согласовывать время с сопровождаемым руководителем</li><li>Дать четкие цели наблюдения</li><li>Проводить дебрифинг по итогам</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени у руководителя</li><li>Пассивная позиция резервиста</li><li>Непонимание контекста решений</li></ul><h4>Как преодолеть трудности</h4><ul><li>Планировать шедоуинг заранее</li><li>Поощрять задавание вопросов</li><li>Обеспечить доступ к материалам и документам</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать структурированный бланк наблюдения</li><li>Проводить сессии обратной связи</li><li>Комбинировать с другими форматами</li></ul>` },
+    '3.4': { title: 'Стажировка / секондмент (в т.ч. международный)', content: `<h4>Развернутое объяснение</h4><p>Секондмент — это временное направление сотрудника в другое подразделение, дочернюю компанию или страну с сохранением трудовых отношений. Длительность от нескольких месяцев до нескольких лет. Международный секондмент требует дополнительной языковой, культурной и юридической подготовки. Цель — развитие межкультурной компетентности, глобального мышления.</p><h4>Рекомендации по организации</h4><ul><li>Тщательно отбирать кандидатов</li><li>Обеспечить правовое и финансовое сопровождение</li><li>Проводить подготовительные тренинги</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Культурный шок и адаптация</li><li>Языковой барьер</li><li>Семейные обстоятельства</li></ul><h4>Как преодолеть трудности</h4><ul><li>Проводить предвыездное обучение</li><li>Обеспечить поддержку на месте (ментора)</li><li>Предусмотреть гибкие условия возвращения</li></ul><h4>Как повысить эффективность</h4><ul><li>Четко формулировать цели и задачи</li><li>Проводить регулярные check-in с HR</li><li>Создавать сообщество бывших секондментов</li></ul>` },
+    '3.5': { title: 'Временное замещение руководителя (acting-позиция)', content: `<h4>Развернутое объяснение</h4><p>Acting-позиция — это временное исполнение резервистом обязанностей вышестоящего руководителя (например, на период отпуска или проекта). Длительность от нескольких недель до нескольких месяцев. Метод позволяет проверить готовность к следующему уровню ответственности в реальных условиях.</p><h4>Рекомендации по организации</h4><ul><li>Планировать замещение заранее</li><li>Обеспечить передачу полномочий</li><li>Проводить обратную связь от команды</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Сопротивление команды</li><li>Недостаток авторитета</li><li>Сложность балансировки с текущими задачами</li></ul><h4>Как преодолеть трудности</h4><ul><li>Публично объявлять о полномочиях</li><li>Обеспечить поддержку руководителя</li><li>Предоставить четкие зоны ответственности</li></ul><h4>Как повысить эффективность</h4><ul><li>Проводить предварительную подготовку</li><li>Использовать как часть ИПР</li><li>Оценивать результаты по компетенциям</li></ul>` },
+    '3.6': { title: 'Руководство кросс-функциональным или стратегическим проектом', content: `<h4>Развернутое объяснение</h4><p>Резервисту поручается роль руководителя проекта, затрагивающего несколько подразделений компании. Проектный формат длится от 3 месяцев с регулярной отчетностью перед спонсором. Развивает навыки влияния без формальных полномочий, управления проектами и заинтересованными сторонами.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать проекты с высоким приоритетом</li><li>Назначить спонсора из топ-менеджмента</li><li>Обеспечить ресурсами и бюджетом</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Сопротивление со стороны функциональных руководителей</li><li>Недостаток ресурсов</li><li>Размытость полномочий</li></ul><h4>Как преодолеть трудности</h4><ul><li>Закрепить полномочия в приказе</li><li>Проводить регулярные встречи стейкхолдеров</li><li>Использовать методики управления проектами</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать проект с ИПР</li><li>Обучить проектному менеджменту</li><li>Публиковать промежуточные результаты</li></ul>` },
+    '3.7': { title: 'Участие в стратегических сессиях и заседаниях совета директоров (в роли наблюдателя)', content: `<h4>Развернутое объяснение</h4><p>Присутствие резервиста на сессиях стратегического планирования или в качестве наблюдателя на заседании совета директоров. Формат предназначен для наиболее продвинутых резервистов (executive-уровень). Цель — понимание логики стратегических решений на уровне высшего руководства, повышение видимости (exposure).</p><h4>Рекомендации по организации</h4><ul><li>Отбирать кандидатов с высоким потенциалом</li><li>Предоставить материалы для подготовки</li><li>Проводить дебрифинг после сессии</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Конфиденциальность информации</li><li>Пассивное наблюдение без вовлечения</li><li>Непонимание стратегического контекста</li></ul><h4>Как преодолеть трудности</h4><ul><li>Подписать соглашение о конфиденциальности</li><li>Дать конкретные вопросы для наблюдения</li><li>Провести вводную сессию по стратегии компании</li></ul><h4>Как повысить эффективность</h4><ul><li>Позволить задавать вопросы в конце</li><li>Связывать с реальными бизнес-задачами</li><li>Использовать как этап перед повышением</li></ul>` },
+    '3.8': { title: 'Презентация результатов проекта топ-менеджменту', content: `<h4>Развернутое объяснение</h4><p>Публичная защита резервистом итогов action learning проекта или стратегической инициативы перед правлением или советом директоров. Формат развивает навыки публичных выступлений и стратегической коммуникации, позволяет продемонстрировать готовность к повышению.</p><h4>Рекомендации по организации</h4><ul><li>Проводить в конце программы или проекта</li><li>Обеспечить обратную связь от топ-менеджмента</li><li>Предоставить время на подготовку</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Стресс и волнение перед аудиторией</li><li>Сложность сжатого изложения</li><li>Критика со стороны топ-менеджмента</li></ul><h4>Как преодолеть трудности</h4><ul><li>Провести репетиции с обратной связью</li><li>Обучить структуре эффективной презентации</li><li>Воспринимать критику как возможность роста</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать визуальные материалы</li><li>Включать интерактивные элементы</li><li>Записывать на видео для последующего анализа</li></ul>` },
+    '3.9': { title: 'Наставничество над младшими сотрудниками', content: `<h4>Развернутое объяснение</h4><p>Резервист выступает в роли наставника (ментора) для менее опытных коллег или новых сотрудников. Встречи проводятся регулярно 1:1 в рамках текущей работы. Формат отрабатывает навыки передачи опыта, обратной связи и развития других — ключевую управленческую компетенцию.</p><h4>Рекомендации по организации</h4><ul><li>Обучить резервиста основам наставничества</li><li>Определить цели и ожидания</li><li>Проводить регулярные встречи</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени у резервиста</li><li>Отсутствие навыков наставничества</li><li>Неформальные отношения могут мешать</li></ul><h4>Как преодолеть трудности</h4><ul><li>Выделять время в ИПР</li><li>Провести тренинг по наставничеству</li><li>Четко разделять роли наставника и руководителя</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать структурированные бланки встреч</li><li>Проводить супервизию наставников</li><li>Связывать с системой оценки</li></ul>` },
+    '4.1': { title: 'Индивидуальный executive-коучинг', content: `<h4>Развернутое объяснение</h4><p>Executive-коучинг — это регулярные сессии 1:1 с профессиональным коучем, часто по модели GROW (Goal, Reality, Options, Will). Сессии направлены на проработку управленческих и личных вызовов. Проводится 5-10 сессий по 60-90 минут, часто сопровождает результаты ассессмента и 360-обратной связи.</p><h4>Рекомендации по организации</h4><ul><li>Подбирать коуча с опытом работы в отрасли</li><li>Четко формулировать цели коучинга</li><li>Обеспечить конфиденциальность</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Высокая стоимость коучинга</li><li>Несовместимость коуча и резервиста</li><li>Размытость целей коучинга</li></ul><h4>Как преодолеть трудности</h4><ul><li>Проводить пробные сессии</li><li>Использовать внутренних коучей</li><li>Четко формулировать запрос</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать с ИПР</li><li>Проводить оценку прогресса</li><li>Связывать с бизнес-результатами</li></ul>` },
+    '4.2': { title: 'Групповой коучинг / коуч-группы (пиринг-коучинг)', content: `<h4>Развернутое объяснение</h4><p>Мини-группы резервистов (3-6 человек) регулярно встречаются в формате структурированного взаимного коучинга без внешнего эксперта. Используются методики активного слушания, например, модель: субъект — слушающий — наблюдатель. Развивает навыки активного слушания и коучингового стиля управления.</p><h4>Рекомендации по организации</h4><ul><li>Формировать группы по уровню и целям</li><li>Обучить методике взаимного коучинга</li><li>Проводить встречи регулярно</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток фасилитации</li><li>Неравное участие участников</li><li>Смешение с групповой терапией</li></ul><h4>Как преодолеть трудности</h4><ul><li>Назначать модератора на каждую встречу</li><li>Использовать структурированные протоколы</li><li>Четко разграничивать роли</li></ul><h4>Как повысить эффективность</h4><ul><li>Проводить супервизию групп</li><li>Интегрировать с программой обучения</li><li>Создавать межгрупповые обмены</li></ul>` },
+    '4.3': { title: 'Психодиагностика личности (DISC, MBTI, Hogan, Big Five и др.)', content: `<h4>Развернутое объяснение</h4><p>Психодиагностика — это прохождение стандартизированных психометрических тестов с последующей интерпретацией результатов сертифицированным специалистом. Используются инструменты: DISC, MBTI, Hogan, Big Five. Цель — осознание поведенческого стиля, сильных сторон и зон роста.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать валидные и надежные методики</li><li>Проводить интерпретацию с сертифицированным специалистом</li><li>Обеспечить конфиденциальность</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Искажение результатов (социальная желательность)</li><li>Поверхностная интерпретация</li><li>Некорректное использование в кадровых решениях</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать несколько методик</li><li>Привлекать квалифицированных психологов</li><li>Использовать как инструмент развития, а не отбора</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать результаты с ИПР</li><li>Проводить групповые разборы</li><li>Повторять тестирование для оценки прогресса</li></ul>` },
+    '4.4': { title: 'Ассессмент-центр', content: `<h4>Развернутое объяснение</h4><p>Ассессмент-центр — это комплексная оценка компетенций резервиста через серию упражнений: кейсы, ролевые игры, групповые дискуссии, интервью по компетенциям. Проводится 1-2 дня с участием независимых наблюдателей. Цель — объективная диагностика управленческого потенциала.</p><h4>Рекомендации по организации</h4><ul><li>Разработать упражнения под целевые компетенции</li><li>Обучить ассессоров</li><li>Обеспечить обратную связь участникам</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Субъективность оценки</li><li>Стресс у участников</li><li>Высокая стоимость проведения</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать несколько ассессоров</li><li>Проводить подготовительные тренинги</li><li>Оптимизировать упражнения</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с ИПР</li><li>Проводить пост-ассессмент коучинг</li><li>Повторять для оценки прогресса</li></ul>` },
+    '4.5': { title: 'Индивидуальное психологическое консультирование', content: `<h4>Развернутое объяснение</h4><p>Работа с консультантом/психологом по запросам, не связанным напрямую с управленческими навыками: личная мотивация, баланс работы и жизни, кризисы карьеры. Проводится по запросу резервиста, конфиденциально, вне линейной иерархии.</p><h4>Рекомендации по организации</h4><ul><li>Обеспечить доступ к психологам</li><li>Гарантировать конфиденциальность</li><li>Не связывать с оценкой</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Стигма обращения к психологу</li><li>Низкая обращаемость</li><li>Качество услуг</li></ul><h4>Как преодолеть трудности</h4><ul><li>Информировать о важности ментального здоровья</li><li>Проводить анонимные опросы</li><li>Отбирать проверенных специалистов</li></ul><h4>Как повысить эффективность</h4><ul><li>Внедрить программу EAP</li><li>Проводить профилактические сессии</li><li>Связывать с программой wellbeing</li></ul>` },
+    '4.6': { title: 'Обратная связь 360 градусов', content: `<h4>Развернутое объяснение</h4><p>360-обратная связь — это сбор структурированной обратной связи о резервисте от руководителя, коллег, подчиненных и внешних партнеров. Проводится в формате онлайн-опроса с последующей индивидуальной сессией разбора с коучем или HR. Служит базой для ИПР.</p><h4>Рекомендации по организации</h4><ul><li>Выбрать валидный опросник</li><li>Обеспечить анонимность респондентов</li><li>Провести разбор результатов</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Социальная желательность в ответах</li><li>Негативная реакция резервиста</li><li>Поверхностный анализ результатов</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать проверенные методики</li><li>Обучать восприятию обратной связи</li><li>Привлекать сертифицированных фасилитаторов</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с ИПР</li><li>Проводить регулярно</li><li>Интегрировать с коучингом</li></ul>` },
+    '4.7': { title: 'Тесты способностей, знаний и навыков', content: `<h4>Развернутое объяснение</h4><p>Стандартизированные тесты для оценки профессиональных знаний, управленческих способностей, логического и аналитического мышления, числовых и вербальных способностей. Это объективный инструмент измерения уровня развития конкретных навыков.</p><h4>Рекомендации по организации</h4><ul><li>Использовать валидированные тесты (SHL, Talent Q, HackerRank и др.)</li><li>Проводить тестирование в спокойной обстановке с ограничением по времени</li><li>Обеспечить автоматическую проверку и хранение результатов</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Стресс у тестируемых из-за временных ограничений</li><li>Необъективность при плохой организации (шум, отвлечения)</li><li>Некорректная интерпретация результатов без контекста</li></ul><h4>Как преодолеть трудности</h4><ul><li>Проводить пробное тестирование для знакомства с форматом</li><li>Обеспечить комфортные условия и чёткий инструктаж</li><li>Использовать тесты в комплексе с другими методами оценки</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать результаты тестирования с компетентностной моделью</li><li>Использовать для формирования ИПР и выявления зон роста</li><li>Повторять тестирование для оценки динамики развития</li></ul>` },
+    '4.8': { title: 'Опросы (пульс-опросы, удовлетворенность, вовлеченность)', content: `<h4>Развернутое объяснение</h4><p>Регулярные или разовые опросы для сбора обратной связи от резервистов об удовлетворенности программой развития, уровне вовлеченности, психологическом климате в команде и других аспектах. Позволяют оперативно выявлять проблемы и корректировать программу.</p><h4>Рекомендации по организации</h4><ul><li>Проводить короткие анонимные опросы (5-15 вопросов)</li><li>Использовать пульс-опросы (1-2 вопроса еженедельно)</li><li>Проводить глубинные опросы по завершении модулей</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Низкая вовлеченность в заполнение опросов</li><li>Социально желательные ответы</li><li>Сложность интерпретации и использования результатов</li></ul><h4>Как преодолеть трудности</h4><ul><li>Делать опросы максимально короткими и релевантными</li><li>Обеспечить анонимность и прозрачность использования данных</li><li>Демонстрировать обратную связь по результатам опросов</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать результаты опросов с корректировкой программы</li><li>Использовать для мониторинга вовлеченности в динамике</li><li>Включать вопросы о качестве конкретных активностей</li></ul>` },
+    '4.9': { title: 'Интервью (по компетенциям, глубинное, проективное)', content: `<h4>Развернутое объяснение</h4><p>Индивидуальные собеседования с резервистами для оценки компетенций, выявления мотивации, карьерных ожиданий и личностных особенностей. Позволяют получить глубокое понимание потенциала и ценностей сотрудника.</p><h4>Рекомендации по организации</h4><ul><li>Использовать структурированное интервью по компетенциям (STAR-методика)</li><li>Проводить глубинное интервью о карьерных целях и ценностях</li><li>Использовать проективное интервью для выявления скрытых установок</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Субъективность интервьюера</li><li>Социально желательные ответы кандидата</li><li>Недостаток времени на качественное интервью</li></ul><h4>Как преодолеть трудности</h4><ul><li>Обучать интервьюеров методикам оценки</li><li>Использовать структурированные бланки и чек-листы</li><li>Проводить интервью с несколькими оценщиками</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать результаты интервью с ИПР</li><li>Использовать для карьерного консультирования</li><li>Проводить регулярно для отслеживания динамики</li></ul>` },
+    '5.1': { title: 'Менторинг один на один (традиционный)', content: `<h4>Развернутое объяснение</h4><p>Традиционный менторинг — это закрепление за резервистом опытного руководителя-ментора (вне прямой административной подчиненности). Встречи проводятся 1:1 раз в 2-4 недели. Цель — передача неформализованных знаний, поддержка в карьерных решениях, психологическая поддержка.</p><h4>Рекомендации по организации</h4><ul><li>Подбирать ментора под цели резервиста</li><li>Структурировать встречи</li><li>Обучить менторов</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени у ментора</li><li>Неформальные отношения мешают</li><li>Разочарование в менторе</li></ul><h4>Как преодолеть трудности</h4><ul><li>Четко планировать встречи</li><li>Разграничивать роли наставника и руководителя</li><li>Давать возможность сменить ментора</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать структурированные бланки</li><li>Проводить супервизию менторов</li><li>Связывать с ИПР</li></ul>` },
+    '5.2': { title: 'Менторинг-круги (mentoring circles)', content: `<h4>Развернутое объяснение</h4><p>Групповой менторинг: один или несколько менторов работают с группой из 4-8 резервистов по общей теме. Встречи проводятся регулярно. Особенно эффективен для интровертов и для ERG/DEI-групп. Обеспечивает широкий охват при ограниченном числе менторов.</p><h4>Рекомендации по организации</h4><ul><li>Формировать группы по интересам</li><li>Обучить менторов работе в группе</li><li>Проводить регулярные встречи</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Доминирование одних участников</li><li>Сложность управления группой</li><li>Неравное внимание ментора</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать фасилитацию</li><li>Ввести правила участия</li><li>Назначать ассистента ментора</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать ротацию тем</li><li>Интегрировать с программой обучения</li><li>Создавать межгрупповые обмены</li></ul>` },
+    '5.3': { title: 'Реверсивный менторинг', content: `<h4>Развернутое объяснение</h4><p>Младшие сотрудники выступают менторами для резервистов/старших руководителей, как правило, по цифровым и генерационным темам. Встречи 1:1 в течение нескольких месяцев. Цель — обновление цифровых компетенций и понимания молодого поколения.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать темы, где младшие эксперты</li><li>Обучить младших основам менторинга</li><li>Четко определить цели</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Сопротивление старших руководителей</li><li>Недостаток уверенности у младших</li><li>Смешение с генерационными конфликтами</li></ul><h4>Как преодолеть трудности</h4><ul><li>Провести пилотные группы</li><li>Обучить навыкам наставничества</li><li>Четко разграничивать роли</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с цифровой трансформацией</li><li>Публично признавать вклад младших</li><li>Создавать межпоколенческие проекты</li></ul>` },
+    '5.4': { title: 'Проектный менторинг (project-based mentorship)', content: `<h4>Развернутое объяснение</h4><p>Ментор и резервист совместно работают над конкретным рабочим проектом. Обучение происходит через сотрудничество и решение задач вместе с опытным коллегой. Формат встроен в длительность проекта.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать проекты с менторской составляющей</li><li>Четко определить роли</li><li>Проводить регулярные встречи</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Проектное давление ограничивает обучение</li><li>Конфликт ролей ментора и руководителя</li><li>Недостаток времени на рефлексию</li></ul><h4>Как преодолеть трудности</h4><ul><li>Разделять проектную и обучающую части</li><li>Назначать отдельного ментора</li><li>Проводить регулярные дебрифинги</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать с ИПР</li><li>Документировать обучение</li><li>Создавать менторские пары</li></ul>` },
+    '5.5': { title: 'Нетворкинг-мероприятия и форумы резервистов', content: `<h4>Развернутое объяснение</h4><p>Регулярные встречи всех участников программы резерва компании (или нескольких компаний отрасли) для обмена опытом и установления связей. Проводятся в очном или гибридном формате. Расширяет профессиональную сеть и дает ощущение принадлежности к сообществу талантов.</p><h4>Рекомендации по организации</h4><ul><li>Планировать мероприятия регулярно</li><li>Использовать разные форматы (конференции, форумы)</li><li>Обеспечить интерактивность</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Формальный характер общения</li><li>Недостаток времени на нетворкинг</li><li>Стеснительность участников</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать ice-breaker активности</li><li>Выделять время на свободное общение</li><li>Организовывать тематические столы</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать приложения для нетворкинга</li><li>Связывать с профессиональными темами</li><li>Создавать постоянные группы по интересам</li></ul>` },
+    '5.6': { title: 'Клуб/сообщество выпускников программы (alumni)', content: `<h4>Развернутое объяснение</h4><p>Постоянное сообщество из тех, кто прошел программу развития резерва. Проводятся периодические встречи, существует closed-группа в мессенджере, выпускники выступают менторами для новых потоков. Цель — долгосрочное удержание и вовлеченность, преемственность культуры.</p><h4>Рекомендации по организации</h4><ul><li>Создать инфраструктуру для сообщества</li><li>Проводить регулярные встречи</li><li>Вовлекать выпускников в развитие программы</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Снижение активности со временем</li><li>Отсутствие ценности для выпускников</li><li>Конфликт с текущими программами</li></ul><h4>Как преодолеть трудности</h4><ul><li>Предлагать эксклюзивные возможности</li><li>Назначать лидеров сообщества</li><li>Интегрировать с HR-активностями</li></ul><h4>Как повысить эффективность</h4><ul><li>Создавать карьерные возможности</li><li>Использовать цифровые инструменты</li><li>Проводить ежегодные встречи</li></ul>` },
+    '5.7': { title: 'Корпоративное волонтерство (skills-based volunteering)', content: `<h4>Развернутое объяснение</h4><p>Резервисты применяют профессиональные навыки в некоммерческих проектах или социально значимых инициативах. Формат длится от одного дня до нескольких месяцев. Исследования показывают, что эффективность сопоставима с элитными executive-программами.</p><h4>Рекомендации по организации</h4><ul><li>Находить партнеров среди НКО</li><li>Связывать проекты с профессиональными навыками</li><li>Обеспечить поддержку компании</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени у резервистов</li><li>Низкая мотивация</li><li>Сложность измерения влияния</li></ul><h4>Как преодолеть трудности</h4><ul><li>Предусмотреть время в ИПР</li><li>Показывать социальное влияние</li><li>Использовать story-telling</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с корпоративной стратегией</li><li>Проводить рефлексивные сессии</li><li>Создавать команды волонтеров</li></ul>` },
+    '5.8': { title: 'Командные тимбилдинги и стратегические офсайты', content: `<h4>Развернутое объяснение</h4><p>Выездные мероприятия для когорты резервистов, сочетающие стратегическую работу, тимбилдинговые упражнения (Marshmallow Challenge, Human Knot, Blind Square) и неформальное общение. Проводятся 1-3 дня вне офиса. Цель — укрепление доверия, отработка коммуникации и совместного решения проблем.</p><h4>Рекомендации по организации</h4><ul><li>Планировать программу заранее</li><li>Сочетать работу и отдых</li><li>Привлекать профессиональных фасилитаторов</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Поверхностный характер упражнений</li><li>Недостаток времени на рефлексию</li><li>Конфликты в командах</li></ul><h4>Как преодолеть трудности</h4><ul><li>Связывать упражнения с реальными задачами</li><li>Проводить дебрифинг после каждого упражнения</li><li>Обучать фасилитаторов работе с конфликтами</li></ul><h4>Как повысить эффективность</h4><ul><li>Использовать методологию "Learning by doing"</li><li>Интегрировать с программой развития</li><li>Проводить пост-офсайтные встречи</li></ul>` },
+    '5.9': { title: 'Участие в отраслевых конференциях и профессиональных сообществах', content: `<h4>Развернутое объяснение</h4><p>Направление резервиста в качестве участника или спикера на внешние отраслевые мероприятия. Цель — внешний бенчмаркинг, личный бренд, актуализация знаний о рынке. Формат — разовое или периодическое участие.</p><h4>Рекомендации по организации</h4><ul><li>Отбирать мероприятия под цели развития</li><li>Поощрять активное участие</li><li>Проводить пост-конференционные сессии</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Высокая стоимость участия</li><li>Отрыв от работы</li><li>Пассивное участие</li></ul><h4>Как преодолеть трудности</h4><ul><li>Использовать бюджетные варианты</li><li>Планировать заранее</li><li>Ставить конкретные цели участия</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с ИПР</li><li>Поощрять выступления</li><li>Создавать отчеты и делиться инсайтами</li></ul>` },
+    '5.10': { title: 'Публичные выступления и внутреннее спикерство', content: `<h4>Развернутое объяснение</h4><p>Резервист готовит и проводит выступление для широкой аудитории компании: внутренний митап, вебинар, презентация на общем собрании. Формат развивает навыки публичной коммуникации, повышает видимость и уверенность.</p><h4>Рекомендации по организации</h4><ul><li>Предоставлять площадки для выступлений</li><li>Обучить основам публичных выступлений</li><li>Давать обратную связь</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Страх публичных выступлений</li><li>Недостаток времени на подготовку</li><li>Сложность удержания внимания</li></ul><h4>Как преодолеть трудности</h4><ul><li>Провести тренинг по ораторскому искусству</li><li>Выделять время в ИПР</li><li>Использовать интерактивные форматы</li></ul><h4>Как повысить эффективность</h4><ul><li>Записывать на видео для анализа</li><li>Создавать клуб спикеров</li><li>Связывать с профессиональным развитием</li></ul>` },
+    '6.1': { title: 'Индивидуальный план развития (ИПР)', content: `<h4>Развернутое объяснение</h4><p>ИПР — это персональный документ, связывающий текущую позицию резервиста с целевой. Включает конкретные развивающие активности, сроки, ответственных и метрики прогресса. Разрабатывается по итогам оценки/ассессмента, пересматривается не реже раза в квартал.</p><h4>Рекомендации по организации</h4><ul><li>Связывать с целевой позицией</li><li>Определить измеримые метрики</li><li>Регулярно пересматривать</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Формальный подход к разработке</li><li>Недостаток ресурсов для выполнения</li><li>Отсутствие контроля выполнения</li></ul><h4>Как преодолеть трудности</h4><ul><li>Вовлекать самого резервиста в разработку</li><li>Обеспечить поддержку руководителя</li><li>Проводить регулярные check-in</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать с системой оценки</li><li>Использовать цифровые инструменты</li><li>Связывать с карьерным треком</li></ul>` },
+    '6.2': { title: 'Персональный куратор программы', content: `<h4>Развернутое объяснение</h4><p>Куратор закреплен за резервистом или когортой на весь период программы. Консультирует по выполнению заданий, мотивирует, дает обратную связь. Основные функции: корректировка ИПР, проведение занятий, контроль выполнения плана, содействие в развитии управленческих качеств.</p><h4>Рекомендации по организации</h4><ul><li>Выбирать опытных руководителей</li><li>Обучить кураторов</li><li>Обеспечить регулярный контакт</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Недостаток времени у куратора</li><li>Конфликт интересов</li><li>Непонимание роли куратора</li></ul><h4>Как преодолеть трудности</h4><ul><li>Четко определить функции куратора</li><li>Разграничивать с ролью ментора</li><li>Проводить обучение кураторов</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с ИПР</li><li>Проводить супервизию кураторов</li><li>Оценивать эффективность кураторства</li></ul>` },
+    '6.3': { title: 'Регулярные точки сверки (check-in) с HR и линейным руководителем', content: `<h4>Развернутое объяснение</h4><p>Трехсторонние встречи (резервист — руководитель — HR) для отслеживания прогресса по ИПР и корректировки. Проводятся раз в квартал или чаще. Обеспечивают прозрачность процесса, вовлеченность руководителя, снижение риска восприятия резервиста как "конкурента".</p><h4>Рекомендации по организации</h4><ul><li>Проводить регулярно</li><li>Использовать структурированную повестку</li><li>Фиксировать решения</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Отсутствие времени у руководителя</li><li>Формальный характер встреч</li><li>Конфликт интересов</li></ul><h4>Как преодолеть трудности</h4><ul><li>Планировать встречи заранее</li><li>Готовить материалы для встречи</li><li>Вовлекать руководителя в процесс развития</li></ul><h4>Как повысить эффективность</h4><ul><li>Связывать с ИПР и оценкой</li><li>Использовать цифровые инструменты</li><li>Проводить обратную связь по процессу</li></ul>` },
+    '6.4': { title: 'Геймификация обучения', content: `<h4>Развернутое объяснение</h4><p>Геймификация — это использование игровых механик (баллы, рейтинги, бейджи, квесты, викторины) в обучающей платформе или закрытой группе резервистов как инструмент повышения вовлеченности. Формат повышает регулярность взаимодействия с программой между очными модулями.</p><h4>Рекомендации по организации</h4><ul><li>Проводить активности 2-3 раза в неделю</li><li>Использовать опросы, онлайн-игры, викторины</li><li>Вести рейтинг и публиковать результаты</li></ul><h4>Часто встречающиеся трудности</h4><ul><li>Снижение интереса к механике со временем</li><li>Соревновательный аспект может демотивировать</li><li>Сложность интеграции с основным обучением</li></ul><h4>Как преодолеть трудности</h4><ul><li>Регулярно обновлять механики и контент</li><li>Ввести командные и индивидуальные достижения</li><li>Связывать баллы с реальными призами или бонусами</li></ul><h4>Как повысить эффективность</h4><ul><li>Интегрировать с мобильным приложением</li><li>Создавать "легенду" и сюжетную линию</li><li>Поощрять социальное взаимодействие (комментарии, лайки)</li></ul>` }
+  };
+
+  // Открытие модального окна
+  document.querySelectorAll('.card, .bonus-card').forEach(card => {
+    card.addEventListener('click', function(e) {
+      const id = this.dataset.modal;
+      const data = modalData[id];
+      if (!data) return;
+      modalTitle.textContent = data.title;
+      modalBody.innerHTML = data.content;
+      modalOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Закрытие модального окна
+  function closeModal() {
+    modalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+
+</script>
+
+</body>
+</html>

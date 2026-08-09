@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренажёр обратной связи — Дмитрий</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF1EE;
+    --paper:#FFFFFF;
+    --ink:#1C2321;
+    --ink-soft:#5B655F;
+    --line:#DCE2DD;
+    --teal:#2C6E63;
+    --teal-dark:#1F4F47;
+    --teal-tint:#E4EEEC;
+    --amber:#C08A3E;
+    --amber-tint:#F5EBDA;
+    --red:#B84C3C;
+    --red-tint:#F6E4E0;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  #app{
+    max-width:760px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+    min-height:100vh;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0 0 6px;
+    letter-spacing:-0.01em;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--teal-dark);
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--teal);}
+  .screen{display:none;}
+  .screen.active{display:block;animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .stepper{display:flex;gap:6px;margin-bottom:24px;}
+  .stepper span{
+    flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden;
+  }
+  .stepper span.done, .stepper span.active{background:var(--teal);}
+
+  .card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:16px;
+  }
+  .card h3{font-size:17px;}
+  .card p{line-height:1.55;color:var(--ink);font-size:14.5px;margin:6px 0 0;}
+  .muted{color:var(--ink-soft);font-size:13px;}
+
+  .row{display:flex;gap:10px;flex-wrap:wrap;}
+
+  .seg{
+    display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper);
+  }
+  .seg button{
+    flex:1;border:none;background:transparent;padding:11px 14px;font-family:'IBM Plex Sans';
+    font-size:13.5px;font-weight:500;color:var(--ink-soft);cursor:pointer;border-right:1px solid var(--line);
+    transition:.15s;
+  }
+  .seg button:last-child{border-right:none;}
+  .seg button.active{background:var(--teal);color:#fff;}
+  .seg button:hover:not(.active){background:var(--teal-tint);}
+
+  .field-label{font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:8px;display:block;text-transform:uppercase;letter-spacing:.05em;}
+
+  .diff-desc{font-size:13px;color:var(--ink-soft);margin-top:10px;line-height:1.5;min-height:38px;}
+
+  .btn-primary{
+    background:var(--teal);color:#fff;border:none;border-radius:10px;
+    padding:14px 22px;font-size:15px;font-weight:600;font-family:'IBM Plex Sans';
+    cursor:pointer;width:100%;transition:.15s;
+  }
+  .btn-primary:hover{background:var(--teal-dark);}
+  .btn-primary:disabled{opacity:.5;cursor:not-allowed;}
+
+  .btn-ghost{
+    background:transparent;border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:10px 16px;font-size:13.5px;cursor:pointer;font-family:'IBM Plex Sans';font-weight:500;
+  }
+  .btn-ghost:hover{border-color:var(--teal);color:var(--teal-dark);}
+
+  /* Session screen */
+  .session-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:16px;}
+  .timer-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0;}
+  .timer-ring-wrap svg{transform:rotate(-90deg);}
+  .timer-num{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono';font-size:13px;font-weight:600;
+  }
+  .legend-toggle{cursor:pointer;flex:1;}
+  .legend-box{display:none;margin-top:12px;}
+  .legend-box.open{display:block;}
+
+  .chat{
+    background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;height:380px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px;
+  }
+  .msg{max-width:80%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.5;}
+  .msg.mgr{align-self:flex-end;background:var(--teal);color:#fff;border-bottom-right-radius:4px;}
+  .msg.emp{align-self:flex-start;background:var(--bg);color:var(--ink);border-bottom-left-radius:4px;}
+  .msg.sys{align-self:center;color:var(--ink-soft);font-size:12px;font-style:italic;}
+
+  .composer{display:flex;gap:8px;}
+  .composer input[type=text]{
+    flex:1;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14px;font-family:'IBM Plex Sans';
+  }
+  .mic-btn{
+    width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;
+  }
+  .mic-btn.listening{background:var(--red);border-color:var(--red);}
+  .mic-btn.listening svg{stroke:#fff;}
+  .send-btn{
+    background:var(--teal);border:none;border-radius:10px;color:#fff;padding:0 18px;font-weight:600;cursor:pointer;
+  }
+
+  /* Report */
+  .score-hero{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+  .score-hero .num{font-family:'Fraunces';font-size:44px;font-weight:600;color:var(--teal-dark);}
+  .crit-row{border-top:1px solid var(--line);padding:14px 0;}
+  .crit-row:first-child{border-top:none;}
+  .crit-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .crit-name{font-weight:600;font-size:13.5px;}
+  .crit-score{font-family:'IBM Plex Mono';font-size:13px;color:var(--teal-dark);font-weight:600;}
+  .crit-comment{font-size:13.5px;color:var(--ink-soft);line-height:1.5;}
+  .crit-quote{font-size:12.5px;color:var(--teal-dark);background:var(--teal-tint);padding:6px 10px;border-radius:6px;margin-top:6px;font-style:italic;}
+
+  .loading{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:13px;padding:8px 0;}
+  .spinner{width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:spin 0.8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .footnote{font-size:11.5px;color:var(--ink-soft);text-align:center;margin-top:28px;line-height:1.6;}
+
+  /* ================================================================================
+     ЖИДКОЕ СТЕКЛО — GLASSMORPHISM OVERRIDE (тренажёр)
+     ================================================================================ */
+  :root{
+    --glass:        rgba(255,255,255,0.55);
+    --glass-strong: rgba(255,255,255,0.78);
+    --glass-soft:   rgba(255,255,255,0.34);
+    --glass-border: rgba(255,255,255,0.65);
+    --glass-border-soft: rgba(255,255,255,0.42);
+    --glass-lg: blur(26px) saturate(180%);
+    --glass-md: blur(14px) saturate(160%);
+    --glass-sm: blur(8px) saturate(145%);
+    --line: rgba(255,255,255,0.5);
+    --teal-tint: rgba(44,110,99,0.16);
+    --amber-tint: rgba(192,138,62,0.18);
+    --red-tint: rgba(184,76,60,0.16);
+  }
+
+  html,body{min-height:100%;}
+
+  body{
+    background:
+      radial-gradient(640px 460px at 88% -6%, rgba(44,110,99,0.24), transparent 60%),
+      radial-gradient(560px 420px at -6% 10%, rgba(192,138,62,0.18), transparent 60%),
+      radial-gradient(620px 460px at 96% 78%, rgba(184,76,60,0.14), transparent 60%),
+      radial-gradient(540px 400px at 4% 96%, rgba(44,110,99,0.16), transparent 60%),
+      linear-gradient(165deg, #f0f4ef 0%, #eef3f2 45%, #f6f0e6 100%);
+    background-attachment:fixed;
+    position:relative;
+    overflow-x:hidden;
+  }
+
+  body::before, body::after{
+    content:''; position:fixed; border-radius:50%; filter:blur(75px);
+    z-index:-1; opacity:.55; pointer-events:none;
+    animation:gtBlob 23s ease-in-out infinite;
+  }
+  body::before{
+    width:380px; height:380px; top:-120px; right:-110px;
+    background:radial-gradient(circle, rgba(44,110,99,0.5), transparent 70%);
+  }
+  body::after{
+    width:340px; height:340px; bottom:-110px; left:-100px;
+    background:radial-gradient(circle, rgba(192,138,62,0.4), transparent 70%);
+    animation-delay:6s; animation-duration:27s;
+  }
+  @keyframes gtBlob{
+    0%,100%{transform:translate(0,0) scale(1);}
+    50%{transform:translate(-24px,22px) scale(1.1);}
+  }
+
+  /* Более "стеклянный" переход между экранами: материализация из тумана */
+  @keyframes fadeIn{
+    from{opacity:0; transform:translateY(10px) scale(.985); filter:blur(6px);}
+    to{opacity:1; transform:none; filter:blur(0);}
+  }
+
+  .eyebrow .dot{
+    box-shadow:0 0 0 0 rgba(44,110,99,0.6);
+    animation:gtPulseDot 2.2s ease-in-out infinite;
+  }
+  @keyframes gtPulseDot{
+    0%{box-shadow:0 0 0 0 rgba(44,110,99,0.55);}
+    70%{box-shadow:0 0 0 8px rgba(44,110,99,0);}
+    100%{box-shadow:0 0 0 0 rgba(44,110,99,0);}
+  }
+
+  /* ===== ПРОГРЕСС-СТЕППЕР ===== */
+  .stepper span{
+    background:rgba(255,255,255,0.4) !important;
+    backdrop-filter:blur(4px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+    transition:background .35s ease;
+  }
+  .stepper span.done, .stepper span.active{
+    background:linear-gradient(90deg, var(--teal), var(--teal-dark)) !important;
+    box-shadow:0 0 10px rgba(44,110,99,0.5);
+  }
+
+  /* ===== КАРТОЧКИ ===== */
+  .card{
+    background:var(--glass-soft) !important;
+    border:1px solid var(--glass-border-soft) !important;
+    backdrop-filter:var(--glass-md); -webkit-backdrop-filter:var(--glass-md);
+    box-shadow:0 8px 26px rgba(28,35,33,0.07), inset 0 1px 0 rgba(255,255,255,.55);
+    position:relative; overflow:hidden;
+  }
+  .card::before{
+    content:''; position:absolute; inset:0; border-radius:inherit; padding:1px;
+    background:linear-gradient(160deg, rgba(255,255,255,.85), rgba(255,255,255,0) 35%, rgba(255,255,255,0) 65%, rgba(255,255,255,.35));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor; mask-composite:exclude; pointer-events:none;
+  }
+
+  h1{ text-shadow:0 4px 26px rgba(44,110,99,0.2); }
+
+  /* ===== СЕГМЕНТ-ПЕРЕКЛЮЧАТЕЛИ ===== */
+  .seg{
+    background:var(--glass-soft) !important;
+    border:1px solid var(--glass-border-soft) !important;
+    backdrop-filter:var(--glass-sm);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  .seg button{ position:relative; transition:.25s ease; }
+  .seg button.active{
+    background:linear-gradient(150deg, var(--teal), var(--teal-dark)) !important;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.35), 0 4px 14px rgba(44,110,99,.4);
+  }
+  .seg button:hover:not(.active){ background:var(--teal-tint) !important; }
+
+  /* ===== КНОПКИ ===== */
+  .btn-primary{
+    background:linear-gradient(150deg, var(--teal), var(--teal-dark)) !important;
+    box-shadow:0 10px 26px -6px rgba(44,110,99,0.55), inset 0 1px 0 rgba(255,255,255,.35);
+    position:relative; overflow:hidden;
+  }
+  .btn-primary::after{
+    content:''; position:absolute; top:-80%; left:-40%; width:60%; height:260%;
+    background:linear-gradient(120deg, rgba(255,255,255,.35), transparent 60%);
+    transform:rotate(20deg); pointer-events:none;
+  }
+  .btn-primary:hover{
+    background:linear-gradient(150deg, var(--teal-dark), var(--teal)) !important;
+    box-shadow:0 14px 34px -6px rgba(44,110,99,0.6), inset 0 1px 0 rgba(255,255,255,.4);
+    transform:translateY(-2px);
+  }
+  .btn-ghost{
+    background:var(--glass-soft) !important;
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.45);
+    transition:.2s ease;
+  }
+  .btn-ghost:hover{ background:var(--teal-tint) !important; transform:translateY(-1px); }
+
+  /* ===== СЕССИЯ / ЧАТ ===== */
+  .timer-ring-wrap{ position:relative; }
+  .timer-ring-wrap::before{
+    content:''; position:absolute; inset:-8px; border-radius:50%;
+    background:radial-gradient(circle, rgba(44,110,99,0.22), transparent 70%);
+    filter:blur(6px); z-index:-1;
+  }
+  .legend-box{ background:var(--teal-tint) !important; border-color:transparent !important; }
+
+  .chat{
+    background:var(--glass-soft) !important;
+    border:1px solid var(--glass-border-soft) !important;
+    backdrop-filter:var(--glass-md); -webkit-backdrop-filter:var(--glass-md);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5), 0 8px 26px rgba(28,35,33,0.06);
+  }
+  .msg{ animation:gtMsgIn .35s ease both; box-shadow:0 3px 10px rgba(28,35,33,0.08); }
+  @keyframes gtMsgIn{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+  .msg.mgr{
+    background:linear-gradient(150deg, var(--teal), var(--teal-dark)) !important;
+    box-shadow:0 4px 14px rgba(44,110,99,0.35), inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .msg.emp{
+    background:var(--glass-strong) !important;
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 3px 10px rgba(28,35,33,0.06);
+  }
+
+  .composer input[type=text]{
+    background:var(--glass-soft) !important;
+    border:1px solid var(--glass-border-soft) !important;
+    backdrop-filter:blur(6px);
+    transition:.2s ease;
+  }
+  .composer input[type=text]:focus{
+    outline:none; border-color:var(--teal) !important;
+    box-shadow:0 0 0 3px var(--teal-tint);
+    background:var(--glass-strong) !important;
+  }
+  .mic-btn{
+    background:var(--glass-soft) !important;
+    border:1px solid var(--glass-border-soft) !important;
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.5);
+    transition:.2s ease;
+  }
+  .mic-btn:hover{ transform:translateY(-1px); }
+  .mic-btn.listening{
+    background:linear-gradient(150deg, var(--red), #8f392c) !important;
+    animation:gtMicPulse 1.4s ease-in-out infinite;
+  }
+  @keyframes gtMicPulse{
+    0%{box-shadow:0 0 0 0 rgba(184,76,60,0.55);}
+    70%{box-shadow:0 0 0 12px rgba(184,76,60,0);}
+    100%{box-shadow:0 0 0 0 rgba(184,76,60,0);}
+  }
+  .send-btn{
+    background:linear-gradient(150deg, var(--teal), var(--teal-dark)) !important;
+    box-shadow:0 6px 16px -4px rgba(44,110,99,0.5), inset 0 1px 0 rgba(255,255,255,.3);
+    transition:.2s ease;
+  }
+  .send-btn:hover{ transform:translateY(-1px); }
+
+  /* ===== ОТЧЁТ ===== */
+  .score-hero .num{
+    background:linear-gradient(150deg, var(--teal-dark), var(--teal));
+    -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .crit-quote{
+    background:var(--teal-tint) !important;
+    backdrop-filter:blur(4px);
+  }
+  .crit-row{ border-top-color:var(--glass-border-soft) !important; }
+
+  .spinner{ border-color:rgba(44,110,99,0.2); border-top-color:var(--teal); }
+
+  @media (max-width:480px){
+    body::before, body::after{ filter:blur(48px); opacity:.4; }
+  }
+
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="eyebrow"><span class="dot"></span>Тренажёр конструктивной обратной связи · прототип 1</div>
+  <div class="stepper">
+    <span id="step1" class="active"></span><span id="step2"></span><span id="step3"></span>
+  </div>
+
+  <!-- SCREEN 1: BRIEFING -->
+  <div class="screen active" id="screen-brief">
+    <h1>Встреча с Дмитрием</h1>
+    <p class="muted">Сценарий: снижение вовлечённости · 15 минут · роль — руководитель</p>
+
+    <div class="card">
+      <h3>Легенда</h3>
+      <p>Дмитрий, 29 лет, ведущий frontend-разработчик, в команде 2,5 года. Раньше — один из самых проактивных: сам предлагал технические улучшения, брал на себя менторство новичков, активно высказывался на груминге и ретро.</p>
+      <p>За последние 6 недель ты заметил: он почти не высказывается на созвонах, делает ровно то, что написано в задаче, без инициативы, неделю назад впервые сорвал промежуточный дедлайн на день. На вопрос коллеги «всё ок?» ответил формальным «да, всё норм».</p>
+      <p>Ты назначил встречу 1-на-1, повод не озвучивал прямо — сказал, что хочешь «сверить часы».</p>
+    </div>
+
+    <div class="card">
+      <span class="field-label">Уровень сложности сотрудника</span>
+      <div class="seg" id="diff-seg">
+        <button data-v="easy">Лёгкий</button>
+        <button data-v="medium" class="active">Средний</button>
+        <button data-v="hard">Сложный</button>
+      </div>
+      <div class="diff-desc" id="diff-desc"></div>
+    </div>
+
+    <div class="card">
+      <span class="field-label">Модальность</span>
+      <div class="seg" id="mode-seg">
+        <button data-v="text">Только текст</button>
+        <button data-v="voice" class="active">Текст + голос</button>
+      </div>
+      <p class="muted" id="voice-support-note" style="margin-top:10px;"></p>
+    </div>
+
+    <button class="btn-primary" id="start-btn">Начать диалог</button>
+    <div class="footnote">Реплики Дмитрия генерирует Claude в реальном времени — это не сценарий с заготовленными ветками.</div>
+  </div>
+
+  <!-- SCREEN 2: SESSION -->
+  <div class="screen" id="screen-session">
+    <div class="session-top">
+      <div class="timer-ring-wrap">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="28" fill="none" stroke="var(--line)" stroke-width="5"/>
+          <circle id="timer-arc" cx="32" cy="32" r="28" fill="none" stroke="var(--teal)" stroke-width="5"
+            stroke-dasharray="175.9" stroke-dashoffset="0" stroke-linecap="round"/>
+        </svg>
+        <div class="timer-num" id="timer-num">15:00</div>
+      </div>
+      <div class="legend-toggle" id="legend-toggle">
+        <h3 style="font-size:15px;margin-bottom:2px;">Дмитрий · встреча 1-на-1</h3>
+        <span class="muted">Показать легенду ▾</span>
+      </div>
+      <button class="btn-ghost" id="end-btn">Завершить</button>
+    </div>
+
+    <div class="card legend-box" id="legend-box">
+      <p>Раньше проактивен, сейчас 6 недель тише на созвонах, минимум инициативы, впервые сорвал промежуточный дедлайн на день назад.</p>
+    </div>
+
+    <div class="chat" id="chat"></div>
+
+    <div class="composer">
+      <button class="mic-btn" id="mic-btn" title="Голосовой ввод">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+      </button>
+      <input type="text" id="text-input" placeholder="Скажи что-нибудь Дмитрию...">
+      <button class="send-btn" id="send-btn">Отправить</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: REPORT -->
+  <div class="screen" id="screen-report">
+    <h1>Разбор диалога</h1>
+    <div id="report-loading" class="card loading"><div class="spinner"></div>Анализирую диалог по критериям...</div>
+    <div id="report-content"></div>
+    <button class="btn-ghost" id="restart-btn" style="width:100%;margin-top:12px;">Начать заново</button>
+  </div>
+
+</div>
+
+<script>
+// ---------- SCENARIO DATA ----------
+const SCENARIO = {
+  name: "Снижение вовлечённости — Дмитрий",
+  timingMinutes: 15,
+  known: "Дмитрий, 29 лет, ведущий frontend-разработчик, в команде 2,5 года. Раньше проактивный: предлагал улучшения, менторил новичков, активно высказывался на груминге и ретро. Последние 6 недель: тише на созвонах, минимум инициативы, неделю назад впервые сорвал промежуточный дедлайн на день. На вопрос коллеги «всё ок?» ответил формально.",
+  unknown: "2 месяца назад в команде открылась позиция тимлида. Дмитрий неформально показывал интерес, но роль отдали специалисту со стороны без личного объяснения причин Дмитрию. Последние 1,5 месяца Дмитрий закрывает часть задач заболевшего коллеги без формального пересмотра нагрузки или признания этого вклада. Считает это несправедливым (угроза статусу и справедливости), но никому не говорил напрямую — боится показаться нытиком.",
+  boundaries: "Никогда не начинает разговор с этой темы сам — ждёт, когда руководитель спросит открыто и без оценочных суждений. Не врёт, но раскрывается постепенно, пропорционально качеству вопросов и ощущению безопасности. Не устраивает ультиматумов и не грозит увольнением. Остаётся профессиональным. Если руководитель оценивает личность или додумывает мотивы за него — включает защитную реакцию, может замкнуться."
+};
+
+const DIFFICULTY = {
+  easy: {
+    label: "Лёгкий",
+    desc: "Дмитрий открывается быстро при одном открытом, неоценочном вопросе. Дружелюбен, ценит, что его спросили.",
+    npcInstructions: "Ты довольно быстро открываешься, если руководитель задаёт открытый вопрос без осуждения — достаточно одного хорошего вопроса. Ты дружелюбен и в глубине души рад, что тебя наконец спросили. Не набрасываешься с жалобами сразу, но и не сопротивляешься долго.",
+    opener: "Привет! Заходи, у тебя есть минутка?"
+  },
+  medium: {
+    label: "Средний",
+    desc: "Первые ответы обтекаемые («всё нормально, просто устал»). Нужно 2–3 качественных уточняющих вопроса.",
+    npcInstructions: "На первые один-два вопроса отвечаешь обтекаемо и уклончиво («да всё нормально», «просто устал в последнее время») — не потому что врёшь, а потому что не уверен, что это уместно обсуждать. Раскрываешься только после 2-3 качественных, конкретных и не осуждающих вопросов подряд. Если руководитель формулирует вопрос как готовое утверждение о тебе («тебе явно что-то не нравится») — слегка настораживаешься и на секунду закрываешься сильнее.",
+    opener: "Привет. Ты писал, что хочешь сверить часы — всё в порядке, что-то случилось?"
+  },
+  hard: {
+    label: "Сложный",
+    desc: "Активно защищается, может застрять на «всё в порядке». Раскрывается только при явной эмпатии и терпении.",
+    npcInstructions: "Ты активно закрываешься и по умолчанию повторяешь варианты «всё в порядке», «я справляюсь», «дедлайн — это разовая история» — до трёх раз, если руководитель не меняет подход. Если руководитель давит, обобщает («ты в последнее время совсем не стараешься»), формулирует вопросы как обвинения или проявляет нетерпение — ты раздражаешься, коротко отвечаешь и уходишь в защиту ещё сильнее. Открываешься ТОЛЬКО если руководитель проявляет конкретную эмпатию, опирается на факты (а не оценки) и даёт тебе пространство и время. Если за отведённое время runway разговор так и не дойдёт до сути — ты можешь так и остаться закрытым, это нормальный и реалистичный исход.",
+    opener: "О, привет. Если что, по дедлайну — это разовая история, я уже всё закрыл."
+  }
+};
+
+const CRITERIA = [
+  {key:"facts", name:"Фактологичность (опора на наблюдения, а не ярлыки)"},
+  {key:"person_vs_behavior", name:"Персона vs поведение"},
+  {key:"dialogue", name:"Диалоговость (открытые вопросы, пауза, не перебивает)"},
+  {key:"root_cause", name:"Дошёл до корневой причины", key_criterion:true},
+  {key:"scarf", name:"SCARF-осторожность (не задел статус/автономию)"},
+  {key:"actionable", name:"Actionable-результат (конкретная договорённость)"},
+  {key:"future", name:"Ориентация на будущее (feedforward)"},
+  {key:"closure", name:"Завершение и follow-up"}
+];
+
+// ---------- STATE ----------
+let state = {
+  difficulty: "medium",
+  modality: "voice",
+  history: [], // {role:'user'|'assistant', text}
+  timeLeft: SCENARIO.timingMinutes * 60,
+  timerInterval: null,
+  recognizing: false
+};
+
+// ---------- UI: BRIEFING SCREEN ----------
+function renderDiffDesc(){
+  document.getElementById('diff-desc').textContent = DIFFICULTY[state.difficulty].desc;
+}
+renderDiffDesc();
+
+document.getElementById('diff-seg').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  document.querySelectorAll('#diff-seg button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.difficulty = btn.dataset.v;
+  renderDiffDesc();
+});
+
+const hasSpeechRecognition = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+document.getElementById('voice-support-note').textContent = hasSpeechRecognition
+  ? "Голосовой ввод поддерживается этим браузером (лучше всего работает в Chrome)."
+  : "Этот браузер не поддерживает распознавание речи — доступен только текстовый ввод, даже в режиме «текст + голос».";
+
+document.getElementById('mode-seg').addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  document.querySelectorAll('#mode-seg button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  state.modality = btn.dataset.v;
+});
+
+document.getElementById('start-btn').addEventListener('click', startSession);
+
+// ---------- SCREEN SWITCHING ----------
+function goToScreen(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(['screen-brief','screen-session','screen-report'][n-1]).classList.add('active');
+  ['step1','step2','step3'].forEach((id,i)=>{
+    const el = document.getElementById(id);
+    el.classList.remove('active','done');
+    if(i < n-1) el.classList.add('done');
+    if(i === n-1) el.classList.add('active');
+  });
+}
+
+// ---------- SESSION ----------
+function startSession(){
+  state.history = [];
+  state.timeLeft = SCENARIO.timingMinutes * 60;
+  document.getElementById('chat').innerHTML = '';
+  goToScreen(2);
+  const opener = DIFFICULTY[state.difficulty].opener;
+  addMsg('emp', opener);
+  state.history.push({role:'assistant', text: opener});
+  if(state.modality === 'voice') speak(opener);
+  startTimer();
+}
+
+function startTimer(){
+  updateTimerUI();
+  state.timerInterval = setInterval(()=>{
+    state.timeLeft--;
+    updateTimerUI();
+    if(state.timeLeft <= 0){
+      clearInterval(state.timerInterval);
+      addMsg('sys', 'Время вышло — 15 минут закончились.');
+      endSession();
+    }
+  }, 1000);
+}
+
+function updateTimerUI(){
+  const m = Math.floor(state.timeLeft/60), s = state.timeLeft%60;
+  document.getElementById('timer-num').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  const total = SCENARIO.timingMinutes*60;
+  const frac = state.timeLeft/total;
+  const circumference = 175.9;
+  document.getElementById('timer-arc').style.strokeDashoffset = circumference*(1-frac);
+  const arc = document.getElementById('timer-arc');
+  if(frac < 0.15) arc.style.stroke = 'var(--red)';
+  else if(frac < 0.4) arc.style.stroke = 'var(--amber)';
+  else arc.style.stroke = 'var(--teal)';
+}
+
+document.getElementById('legend-toggle').addEventListener('click', ()=>{
+  document.getElementById('legend-box').classList.toggle('open');
+});
+
+document.getElementById('end-btn').addEventListener('click', ()=>{
+  clearInterval(state.timerInterval);
+  endSession();
+});
+
+function addMsg(role, text){
+  const chat = document.getElementById('chat');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role==='user'?'mgr':role==='assistant'?'emp':'sys');
+  div.textContent = text;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function sendUserMessage(text){
+  if(!text.trim()) return;
+  addMsg('user', text);
+  state.history.push({role:'user', text});
+  document.getElementById('text-input').value = '';
+
+  const thinking = document.createElement('div');
+  thinking.className = 'loading';
+  thinking.innerHTML = '<div class="spinner"></div>Дмитрий печатает...';
+  document.getElementById('chat').appendChild(thinking);
+  document.getElementById('chat').scrollTop = document.getElementById('chat').scrollHeight;
+
+  try{
+    const reply = await callNPC();
+    thinking.remove();
+    addMsg('assistant', reply);
+    state.history.push({role:'assistant', text: reply});
+    if(state.modality === 'voice') speak(reply);
+  }catch(err){
+    thinking.remove();
+    addMsg('sys', 'Ошибка связи с моделью: ' + err.message);
+  }
+}
+
+function buildNPCSystemPrompt(){
+  const d = DIFFICULTY[state.difficulty];
+  return `Ты играешь роль сотрудника по имени Дмитрий в тренажёре обратной связи для руководителей. Отвечай ТОЛЬКО репликами Дмитрия, от первого лица, разговорным языком, коротко (1-4 предложения), как в живом разговоре. Никогда не выходи из роли и не комментируй сценарий.
+
+ИЗВЕСТНО СОБЕСЕДНИКУ (руководителю): ${SCENARIO.known}
+
+РЕАЛЬНАЯ ПРИЧИНА ТВОЕГО СОСТОЯНИЯ (руководитель этого не знает, ты раскрываешь это только по ходу разговора, если он это заслуживает): ${SCENARIO.unknown}
+
+ГРАНИЦЫ ТВОЕГО ПОВЕДЕНИЯ: ${SCENARIO.boundaries}
+
+ТВОЙ ХАРАКТЕР НА ЭТОМ УРОВНЕ СЛОЖНОСТИ (${d.label}): ${d.npcInstructions}`;
+}
+
+async function callNPC(){
+  const messages = state.history.map(m=>({role:m.role, content:m.text}));
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 300,
+      system: buildNPCSystemPrompt(),
+      messages: messages
+    })
+  });
+  const data = await response.json();
+  if(data.error) throw new Error(data.error.message || 'API error');
+  const textBlock = data.content.find(b=>b.type==='text');
+  return textBlock ? textBlock.text.trim() : '...';
+}
+
+document.getElementById('send-btn').addEventListener('click', ()=>sendUserMessage(document.getElementById('text-input').value));
+document.getElementById('text-input').addEventListener('keydown', e=>{
+  if(e.key === 'Enter') sendUserMessage(e.target.value);
+});
+
+// ---------- VOICE ----------
+let recognition = null;
+if(hasSpeechRecognition){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'ru-RU';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.onresult = (e)=>{
+    const transcript = e.results[0][0].transcript;
+    document.getElementById('text-input').value = transcript;
+    sendUserMessage(transcript);
+  };
+  recognition.onend = ()=>{
+    state.recognizing = false;
+    document.getElementById('mic-btn').classList.remove('listening');
+  };
+  recognition.onerror = ()=>{
+    state.recognizing = false;
+    document.getElementById('mic-btn').classList.remove('listening');
+  };
+}
+
+document.getElementById('mic-btn').addEventListener('click', ()=>{
+  if(!recognition){ addMsg('sys', 'Голосовой ввод не поддерживается этим браузером.'); return; }
+  if(state.recognizing){ recognition.stop(); return; }
+  state.recognizing = true;
+  document.getElementById('mic-btn').classList.add('listening');
+  recognition.start();
+});
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'ru-RU';
+  const voices = window.speechSynthesis.getVoices();
+  const ruVoice = voices.find(v=>v.lang.startsWith('ru'));
+  if(ruVoice) u.voice = ruVoice;
+  window.speechSynthesis.speak(u);
+}
+
+// ---------- REPORT ----------
+async function endSession(){
+  window.speechSynthesis && window.speechSynthesis.cancel();
+  goToScreen(3);
+  document.getElementById('report-loading').style.display = 'flex';
+  document.getElementById('report-content').innerHTML = '';
+  try{
+    const report = await callEvaluator();
+    renderReport(report);
+  }catch(err){
+    document.getElementById('report-content').innerHTML = `<div class="card">Не удалось получить разбор: ${err.message}</div>`;
+  }
+  document.getElementById('report-loading').style.display = 'none';
+}
+
+async function callEvaluator(){
+  const transcript = state.history.map(m=> (m.role==='user'?'Руководитель':'Дмитрий') + ': ' + m.text).join('\n');
+  const criteriaList = CRITERIA.map(c=>`- ${c.key}: ${c.name}`).join('\n');
+  const sys = `Ты — опытный методист по управленческим коммуникациям, оцениваешь тренировочный диалог руководителя с сотрудником по методике конструктивной обратной связи. Оцени РЕПЛИКИ РУКОВОДИТЕЛЯ (не сотрудника) по каждому критерию из списка, по шкале 1-5, где 5 — отлично.
+
+Критерии:
+${criteriaList}
+
+Верни ТОЛЬКО валидный JSON, без markdown-обёртки, без пояснений вокруг, строго такой структуры:
+{
+  "overall": <среднее число от 1 до 5, одна десятая>,
+  "summary": "<2-3 предложения общего вывода>",
+  "criteria": [
+    {"key":"facts","score":<1-5>,"comment":"<короткий комментарий>","quote":"<короткая цитата руководителя из диалога, иллюстрирующая оценку, или пустая строка>"},
+    ... остальные критерии в том же формате
+  ]
+}`;
+
+  const response = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      model: "claude-sonnet-4-6",
+      max_tokens: 1500,
+      system: sys,
+      messages: [{role:"user", content: `Транскрипт диалога:\n\n${transcript}`}]
+    })
+  });
+  const data = await response.json();
+  if(data.error) throw new Error(data.error.message || 'API error');
+  const textBlock = data.content.find(b=>b.type==='text');
+  let raw = textBlock.text.trim();
+  raw = raw.replace(/^```json/i,'').replace(/^```/,'').replace(/```$/,'').trim();
+  return JSON.parse(raw);
+}
+
+function renderReport(report){
+  const byKey = {};
+  report.criteria.forEach(c=>byKey[c.key]=c);
+  let html = `
+    <div class="card">
+      <div class="score-hero"><span class="num">${report.overall}</span><span class="muted">/ 5</span></div>
+      <p>${report.summary}</p>
+    </div>
+    <div class="card">`;
+  CRITERIA.forEach(c=>{
+    const r = byKey[c.key] || {score:'—', comment:'', quote:''};
+    html += `
+      <div class="crit-row">
+        <div class="crit-head">
+          <span class="crit-name">${c.name}${c.key_criterion ? ' ★' : ''}</span>
+          <span class="crit-score">${r.score}/5</span>
+        </div>
+        <div class="crit-comment">${r.comment}</div>
+        ${r.quote ? `<div class="crit-quote">«${r.quote}»</div>` : ''}
+      </div>`;
+  });
+  html += `</div>`;
+  document.getElementById('report-content').innerHTML = html;
+}
+
+document.getElementById('restart-btn').addEventListener('click', ()=>{
+  goToScreen(1);
+});
+
+</script>
+</body>
+</html>

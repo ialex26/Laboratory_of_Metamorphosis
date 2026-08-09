@@ -1,0 +1,3641 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Методический паспорт оценки потенциала команды</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        /* ===== ПЕРЕМЕННЫЕ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --green: #7AB66B;
+            --green-dark: #5A8E4B;
+            --green-light: #B5D9AA;
+            --green-bg: #F0F8ED;
+            --orange: #EEA24C;
+            --orange-dark: #D4892E;
+            --orange-light: #FAD19E;
+            --orange-bg: #FEF7EE;
+            --red: #E8746B;
+            --red-dark: #C0392B;
+            --red-bg: #FDEEEC;
+            --blue: #5B9BD5;
+            --blue-bg: #E8F2FA;
+            --purple: #6C5CE7;
+            --purple-light: #A29BFE;
+            --purple-bg: #F4F0FF;
+            --gray-100: #F7F9F8;
+            --gray-200: #E9EDEA;
+            --gray-300: #D0D7D2;
+            --gray-500: #88958B;
+            --gray-700: #3F4A44;
+            --gray-900: #1E261F;
+            --white: #FFFFFF;
+            --shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 20px 60px rgba(0, 0, 0, 0.12);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.95);
+            --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--gray-100);
+            color: var(--gray-900);
+            line-height: 1.7;
+            padding: 30px 20px;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            padding: 0 40px 50px;
+        }
+
+        /* ===== ТИПОГРАФИКА ===== */
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(145deg, var(--green-dark), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--green-dark);
+            margin: 48px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 4px solid var(--green-light);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        h2 i {
+            color: var(--orange);
+            font-size: 1.6rem;
+            -webkit-text-fill-color: initial;
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            color: var(--gray-700);
+            margin: 30px 0 14px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 i {
+            color: var(--orange);
+            width: 28px;
+            text-align: center;
+        }
+
+        p,
+        li {
+            color: var(--gray-700);
+            font-size: 1.04rem;
+        }
+
+        /* ===== КАРТОЧКИ ===== */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            padding: 24px 22px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--green-light);
+        }
+
+        .card-green {
+            border-left: 6px solid var(--green);
+            background: var(--green-bg);
+        }
+
+        .card-orange {
+            border-left: 6px solid var(--orange);
+            background: var(--orange-bg);
+        }
+
+        .card-red {
+            border-left: 6px solid var(--red);
+            background: var(--red-bg);
+        }
+
+        .card-blue {
+            border-left: 6px solid var(--blue);
+            background: var(--blue-bg);
+        }
+
+        .card-purple {
+            border-left: 6px solid var(--purple);
+            background: var(--purple-bg);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--green-light);
+            color: var(--green-dark);
+            font-weight: 700;
+            font-size: 0.75rem;
+            padding: 2px 14px;
+            border-radius: 40px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .badge-orange {
+            background: var(--orange-light);
+            color: var(--orange-dark);
+        }
+
+        .badge-red {
+            background: var(--red-bg);
+            color: var(--red);
+        }
+
+        .badge-blue {
+            background: var(--blue-bg);
+            color: var(--blue);
+        }
+
+        .badge-purple {
+            background: var(--purple-bg);
+            color: var(--purple);
+        }
+
+        /* ===== ГРИДЫ ===== */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 28px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 720px) {
+            .container {
+                padding: 0 18px 30px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 10px;
+            }
+        }
+
+        /* ===== МАТРИЦА 2×2 С ТРАПЕЦИЕВИДНЫМИ ШКАЛАМИ ===== */
+        .matrix-wrapper {
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 30px 20px 20px 20px;
+            margin: 18px 0 10px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 60px 1fr 1fr 60px;
+            grid-template-rows: auto 1fr 1fr auto;
+            gap: 4px;
+            min-width: 550px;
+        }
+
+        .matrix-quadrant {
+            padding: 18px 16px;
+            border-radius: var(--radius-sm);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+
+        .matrix-quadrant:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .matrix-quadrant strong {
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .matrix-quadrant small {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        .matrix-quadrant .sub {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        /* Квадранты с цветами */
+        .q-gray {
+            background: linear-gradient(145deg, #EAEAEA, #D5D5D5);
+            border-color: #A0A0A0;
+        }
+        .q-gray strong {
+            color: #666;
+        }
+
+        .q-red {
+            background: linear-gradient(145deg, #FDE8D0, #FCD5B8);
+            border-color: var(--orange);
+        }
+        .q-red strong {
+            color: #B85C00;
+        }
+
+        .q-blue {
+            background: linear-gradient(145deg, #D4ECFA, #B8DDF5);
+            border-color: var(--blue);
+        }
+        .q-blue strong {
+            color: #2B6B8F;
+        }
+
+        .q-green {
+            background: linear-gradient(145deg, #E8F5E0, #D4EDC9);
+            border-color: var(--green);
+        }
+        .q-green strong {
+            color: var(--green-dark);
+        }
+
+        /* Размещение квадрантов в сетке */
+        .q-gray {
+            grid-column: 2;
+            grid-row: 3;
+        }
+        .q-red {
+            grid-column: 3;
+            grid-row: 3;
+        }
+        .q-blue {
+            grid-column: 2;
+            grid-row: 2;
+        }
+        .q-green {
+            grid-column: 3;
+            grid-row: 2;
+        }
+
+        /* Трапециевидные шкалы — визуальный рост */
+        .trapezoid-scale-x {
+            grid-row: 4;
+            grid-column: 2 / 4;
+            height: 18px;
+            display: flex;
+            margin: 4px 0 0 0;
+        }
+
+        .trapezoid-scale-x .segment {
+            flex: 1;
+            height: 100%;
+            clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 5% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.04em;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .trapezoid-scale-x .segment:first-child {
+            clip-path: polygon(0% 0%, 100% 0%, 98% 100%, 0% 100%);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .trapezoid-scale-x .segment:last-child {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 2% 100%);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .trapezoid-scale-y {
+            grid-column: 4;
+            grid-row: 2 / 4;
+            width: 18px;
+            display: flex;
+            flex-direction: column;
+            margin: 0 0 0 4px;
+            justify-self: end;
+        }
+
+        .trapezoid-scale-y .segment {
+            flex: 1;
+            width: 100%;
+            clip-path: polygon(0% 0%, 100% 5%, 100% 95%, 0% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.04em;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .trapezoid-scale-y .segment:first-child {
+            clip-path: polygon(0% 0%, 100% 0%, 100% 98%, 0% 100%);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .trapezoid-scale-y .segment:last-child {
+            clip-path: polygon(0% 2%, 100% 0%, 100% 100%, 0% 100%);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .seg-red {
+            background: var(--red);
+        }
+        .seg-yellow {
+            background: var(--orange);
+        }
+        .seg-green {
+            background: var(--green);
+        }
+
+        /* Подписи осей */
+        .axis-label-x {
+            grid-column: 2 / 4;
+            grid-row: 4;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            padding-top: 28px;
+            letter-spacing: 0.06em;
+        }
+
+        .axis-label-y {
+            grid-column: 1;
+            grid-row: 2 / 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            letter-spacing: 0.06em;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .axis-label-y span,
+        .axis-label-x span {
+            background: var(--white);
+            padding: 4px 14px;
+            border-radius: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== ТАБЫ ===== */
+        .tab-group {
+            margin: 18px 0 10px 0;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .tab-label {
+            background: var(--gray-100);
+            padding: 16px 22px;
+            font-weight: 700;
+            font-size: 1.08rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            border-bottom: 1px solid transparent;
+        }
+
+        .tab-label:hover {
+            background: var(--green-bg);
+        }
+
+        .tab-label i {
+            transition: var(--transition);
+            color: var(--green);
+            font-size: 1.2rem;
+        }
+
+        .tab-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.6s ease, padding 0.3s ease;
+            padding: 0 22px;
+            background: var(--white);
+        }
+
+        .tab-content.open {
+            max-height: 2000px;
+            padding: 18px 22px 26px;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .tab-label.open i {
+            transform: rotate(180deg);
+        }
+
+        /* ===== ТАБЛИЦЫ ===== */
+        .table-wrap {
+            overflow-x: auto;
+            margin: 18px 0 10px 0;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--gray-200);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            min-width: 600px;
+        }
+
+        th {
+            background: var(--green);
+            color: var(--white);
+            font-weight: 700;
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-200);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-striped tbody tr:nth-child(even) {
+            background: var(--gray-100);
+        }
+
+        /* ===== ШКАЛА ОЦЕНИВАНИЯ (над опросником) ===== */
+        .rating-scale {
+            display: flex;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin: 12px 0 18px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .rating-scale .segment {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+            padding: 2px 4px;
+            text-align: center;
+            line-height: 1.2;
+            transition: var(--transition);
+        }
+
+        .rating-scale .segment:hover {
+            transform: scale(1.04);
+            z-index: 2;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .rating-scale .segment .number {
+            font-size: 0.85rem;
+        }
+
+        .rating-scale .segment .label {
+            font-weight: 400;
+            font-size: 0.6rem;
+            opacity: 0.85;
+        }
+
+        /* 1-2 — темно-красный, 3-4 — светлее */
+        .rating-scale .seg-1-2 {
+            background: #B03A2E;
+        }
+        .rating-scale .seg-3-4 {
+            background: #E8746B;
+        }
+        .rating-scale .seg-5-6 {
+            background: var(--orange);
+        }
+        .rating-scale .seg-7-8 {
+            background: #7AB66B;
+        }
+        .rating-scale .seg-9-10 {
+            background: var(--green-dark);
+        }
+
+        /* ===== УРОВНЕВАЯ ШКАЛА (горизонтальная) ===== */
+        .level-scale-horizontal {
+            display: flex;
+            height: 32px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin: 8px 0 12px 0;
+            border: 1px solid var(--gray-200);
+        }
+
+        .level-scale-horizontal .segment {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .level-scale-horizontal .seg-critical {
+            background: var(--red);
+        }
+        .level-scale-horizontal .seg-developing {
+            background: var(--orange);
+        }
+        .level-scale-horizontal .seg-mature {
+            background: var(--green);
+        }
+
+        /* ===== ВСПЛЫВАЮЩАЯ ПОДСКАЗКА ДЛЯ СЛАЙДЕРА ===== */
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .slider-tooltip {
+            position: absolute;
+            top: -34px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-900);
+            color: var(--white);
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .slider-tooltip.show {
+            opacity: 1;
+        }
+
+        .slider-tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid var(--gray-900);
+        }
+
+        /* ===== КАЛЬКУЛЯТОР ===== */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 32px;
+        }
+
+        .calc-grid .calc-header {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px 32px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: var(--gray-700);
+            padding-bottom: 6px;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 4px;
+        }
+
+        .calc-grid .calc-header span:first-child {
+            color: var(--green-dark);
+        }
+        .calc-grid .calc-header span:last-child {
+            color: var(--orange-dark);
+        }
+
+        .calc-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .calc-item label {
+            font-weight: 600;
+            font-size: 0.88rem;
+            color: var(--gray-700);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .calc-item input[type="range"] {
+            width: 100%;
+            accent-color: var(--green);
+            height: 6px;
+            border-radius: 40px;
+            background: var(--gray-200);
+            transition: var(--transition);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .calc-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--green);
+            cursor: pointer;
+            border: 2px solid var(--white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            transition: var(--transition);
+        }
+
+        .calc-item input[type="range"]::-webkit-slider-thumb:hover {
+            background: var(--green-dark);
+            transform: scale(1.1);
+        }
+
+        .calc-item input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--green);
+            cursor: pointer;
+            border: 2px solid var(--white);
+        }
+
+        .calc-value {
+            font-weight: 700;
+            color: var(--green-dark);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        .calc-value-leader {
+            font-weight: 700;
+            color: var(--purple);
+            min-width: 32px;
+            text-align: right;
+        }
+
+        .result-panel {
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            padding: 28px 30px;
+            margin-top: 28px;
+            border: 2px solid var(--green-light);
+        }
+
+        .result-panel .big-number {
+            font-size: 3.6rem;
+            font-weight: 800;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+
+        .result-panel .cluster-badge {
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        /* Динамическая подсветка для продуктивности и вовлеченности */
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+
+        /* ===== КНОПКИ РЕЖИМОВ ===== */
+        .mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 16px 0 20px 0;
+            padding: 12px 20px;
+            background: var(--gray-100);
+            border-radius: var(--radius-sm);
+            flex-wrap: wrap;
+        }
+
+        .mode-toggle .label {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+
+        .btn-mode {
+            padding: 6px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            border: none;
+            background: var(--gray-200);
+            color: var(--gray-700);
+        }
+
+        .btn-mode:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-mode.active {
+            background: var(--green) !important;
+            color: var(--white) !important;
+        }
+
+        .btn-mode.leader-active {
+            background: var(--purple) !important;
+            color: var(--white) !important;
+        }
+
+        .mode-hint {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            margin-left: auto;
+        }
+
+        .mode-hint i {
+            color: var(--orange);
+        }
+
+        .leader-grid {
+            display: none;
+            margin-top: 12px;
+            border-top: 2px dashed var(--gray-200);
+            padding-top: 16px;
+        }
+
+        .leader-grid.visible {
+            display: grid;
+        }
+
+        .leader-header {
+            grid-column: 1 / -1;
+            font-weight: 700;
+            color: var(--gray-700);
+            padding: 4px 0 8px 0;
+            border-bottom: 2px solid var(--purple);
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leader-header i {
+            color: var(--purple);
+        }
+
+        /* ===== СПАЙДЕР-ГРАФИК ===== */
+        .spider-container {
+            width: 100%;
+            margin: 12px auto 0;
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            padding: 8px;
+        }
+
+        .spider-container canvas {
+            width: 100% !important;
+            height: auto !important;
+            aspect-ratio: 1/1;
+            max-width: 600px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* ===== ВЫДЕЛЕНИЕ ===== */
+        .highlight-box {
+            background: var(--green-bg);
+            border-radius: var(--radius-sm);
+            padding: 20px 26px;
+            border-left: 6px solid var(--green);
+            margin: 18px 0;
+        }
+
+        .highlight-box-orange {
+            background: var(--orange-bg);
+            border-left-color: var(--orange);
+        }
+
+        .highlight-box-red {
+            background: var(--red-bg);
+            border-left-color: var(--red);
+        }
+
+        .highlight-box-blue {
+            background: var(--blue-bg);
+            border-left-color: var(--blue);
+        }
+
+        .highlight-box-purple {
+            background: var(--purple-bg);
+            border-left-color: var(--purple);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--green-light), var(--orange-light), var(--green-light));
+            margin: 40px 0 30px 0;
+            border: none;
+            opacity: 0.5;
+        }
+
+        .mt-12 {
+            margin-top: 12px;
+        }
+        .mt-20 {
+            margin-top: 20px;
+        }
+        .mb-12 {
+            margin-bottom: 12px;
+        }
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .fade-up {
+            animation: fadeUp 0.6s ease forwards;
+        }
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== ШАПКА ===== */
+        .header {
+            padding: 30px 0 14px 0;
+            border-bottom: 2px solid var(--gray-200);
+            margin-bottom: 20px;
+        }
+
+        .header-meta {
+            font-size: 0.9rem;
+            color: var(--gray-500);
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .header-meta i {
+            margin-right: 6px;
+            color: var(--orange);
+        }
+
+        /* ===== КНОПКИ ===== */
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--green);
+            color: var(--white);
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .btn-download:hover {
+            background: var(--green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(122, 182, 107, 0.35);
+        }
+
+        .btn-download-orange {
+            background: var(--orange);
+        }
+        .btn-download-orange:hover {
+            background: var(--orange-dark);
+            box-shadow: 0 8px 24px rgba(238, 162, 76, 0.35);
+        }
+        .btn-download-gray {
+            background: var(--gray-500);
+        }
+        .btn-download-gray:hover {
+            background: var(--gray-700);
+            box-shadow: 0 8px 24px rgba(136, 149, 139, 0.35);
+        }
+
+        .download-section .card {
+            text-align: center;
+        }
+        .download-section .card i {
+            font-size: 2.6rem;
+            margin-bottom: 6px;
+        }
+
+        /* ===== СКРОЛЛ-ТОП ===== */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--green);
+            color: var(--white);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 24px rgba(122, 182, 107, 0.4);
+            cursor: pointer;
+            transition: var(--transition);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .scroll-top:hover {
+            background: var(--green-dark);
+            transform: scale(1.08);
+        }
+
+        /* ===== ФУТЕР ===== */
+        .footer {
+            padding: 30px 0 10px;
+            border-top: 1px solid var(--gray-200);
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+
+        .footer i {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .footer i:hover {
+            color: var(--green);
+        }
+
+        /* ===== ПЕЧАТЬ ===== */
+        @media print {
+            .scroll-top {
+                display: none !important;
+            }
+            .card {
+                box-shadow: none !important;
+                border: 1px solid var(--gray-200) !important;
+            }
+            .tab-content {
+                max-height: none !important;
+                padding: 18px 22px 26px !important;
+                border-top: 1px solid var(--gray-200);
+            }
+            .tab-label i {
+                display: none;
+            }
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0 30px 30px;
+            }
+            .btn-download {
+                display: none;
+            }
+            .matrix-quadrant:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            .rating-scale .segment:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+            .btn-mode:hover {
+                transform: none !important;
+                box-shadow: none !important;
+            }
+        }
+
+        /* ================================================================================
+           ЖИДКОЕ СТЕКЛО — GLASSMORPHISM OVERRIDE (добавлено поверх исходных стилей)
+           ================================================================================ */
+        :root {
+            --gray-100: rgba(255, 255, 255, 0.32);
+            --gray-200: rgba(255, 255, 255, 0.45);
+            --green-bg: rgba(122, 182, 107, 0.16);
+            --orange-bg: rgba(238, 162, 76, 0.16);
+            --red-bg: rgba(232, 116, 107, 0.14);
+            --blue-bg: rgba(91, 155, 213, 0.14);
+            --shadow: 0 8px 32px rgba(31, 42, 38, 0.10), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+            --shadow-hover: 0 22px 55px rgba(31, 42, 38, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+            --glass: rgba(255, 255, 255, 0.55);
+            --glass-strong: rgba(255, 255, 255, 0.78);
+            --glass-soft: rgba(255, 255, 255, 0.30);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-border-soft: rgba(255, 255, 255, 0.42);
+            --blur-lg: blur(30px) saturate(180%);
+            --blur-md: blur(16px) saturate(160%);
+            --blur-sm: blur(10px) saturate(150%);
+        }
+
+        html, body { min-height: 100%; }
+
+        body {
+            background:
+                radial-gradient(circle at 10% 6%, rgba(122, 182, 107, 0.32), transparent 42%),
+                radial-gradient(circle at 90% 4%, rgba(238, 162, 76, 0.28), transparent 44%),
+                radial-gradient(circle at 92% 80%, rgba(91, 155, 213, 0.30), transparent 46%),
+                radial-gradient(circle at 6% 88%, rgba(139, 123, 214, 0.26), transparent 46%),
+                linear-gradient(160deg, #eef6ea 0%, #eef4fb 45%, #f8f1e6 100%);
+            background-attachment: fixed;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before, body::after {
+            content: '';
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+            animation: glassBlobFloat 24s ease-in-out infinite;
+        }
+
+        body::before {
+            width: 480px;
+            height: 480px;
+            top: -140px;
+            left: -150px;
+            background: radial-gradient(circle, rgba(122, 182, 107, 0.55), transparent 70%);
+        }
+
+        body::after {
+            width: 520px;
+            height: 520px;
+            bottom: -170px;
+            right: -150px;
+            background: radial-gradient(circle, rgba(91, 155, 213, 0.5), transparent 70%);
+            animation-delay: 7s;
+            animation-duration: 28s;
+        }
+
+        @keyframes glassBlobFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(45px, -35px) scale(1.08); }
+        }
+
+        @keyframes glassContainerIn {
+            from { opacity: 0; transform: translateY(16px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ---- Панель-контейнер ---- */
+        .container {
+            background: var(--glass) !important;
+            backdrop-filter: var(--blur-lg);
+            -webkit-backdrop-filter: var(--blur-lg);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(31, 42, 38, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            position: relative;
+            animation: glassContainerIn 0.7s ease both;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 32px;
+            padding: 1px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 0.45));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        h1 { text-shadow: 0 4px 34px rgba(122, 182, 107, 0.28); }
+
+        /* ---- Общая "стеклянность" всех поверхностей ---- */
+        .card, .table-wrap, .tab-group, .tab-content, .matrix-wrapper, .bridge-model,
+        .result-panel, .mode-toggle, .highlight-box, .highlight-box-orange, .highlight-box-red,
+        .highlight-box-blue, .highlight-box-purple, .spider-container, .bridge-team,
+        .bridge-priorities, .calc-item, .axis-label-x span, .axis-label-y span, .axis-label,
+        .badge, .badge-orange, .badge-red, .badge-blue, .badge-purple, .badge-bridge, .input-field,
+        .matrix-quadrant, .q-gray, .q-red, .q-blue, .q-green,
+        .mq-ideal, .mq-oneway-a, .mq-oneway-b, .mq-crisis {
+            backdrop-filter: var(--blur-md);
+            -webkit-backdrop-filter: var(--blur-md);
+        }
+
+        .card {
+            background: var(--glass-soft) !important;
+            border: 1px solid var(--glass-border-soft) !important;
+            box-shadow: 0 4px 22px rgba(31, 42, 38, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -60%;
+            left: -30%;
+            width: 55%;
+            height: 220%;
+            background: linear-gradient(120deg, rgba(255, 255, 255, 0.35), transparent 60%);
+            transform: rotate(18deg);
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            background: var(--glass-strong) !important;
+            box-shadow: var(--shadow-hover);
+            backdrop-filter: blur(20px) saturate(190%);
+        }
+
+        .card-green   { background: linear-gradient(150deg, rgba(122, 182, 107, 0.30), rgba(122, 182, 107, 0.06)) !important; }
+        .card-orange  { background: linear-gradient(150deg, rgba(238, 162, 76, 0.30), rgba(238, 162, 76, 0.06)) !important; }
+        .card-red     { background: linear-gradient(150deg, rgba(232, 116, 107, 0.28), rgba(232, 116, 107, 0.06)) !important; }
+        .card-blue    { background: linear-gradient(150deg, rgba(91, 155, 213, 0.28), rgba(91, 155, 213, 0.06)) !important; }
+        .card-gray    { background: linear-gradient(150deg, rgba(160, 170, 164, 0.26), rgba(160, 170, 164, 0.05)) !important; }
+
+        .badge, .badge-orange, .badge-red, .badge-blue, .badge-purple, .badge-bridge {
+            border: 1px solid rgba(255, 255, 255, 0.55);
+        }
+
+        /* ---- Таблицы ---- */
+        .table-wrap {
+            background: var(--glass-soft);
+            border: 1px solid var(--glass-border-soft) !important;
+        }
+        th {
+            backdrop-filter: blur(6px);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        }
+        td { background: transparent; }
+        .table-striped tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.22) !important; }
+
+        /* ---- Табы ---- */
+        .tab-group {
+            border: 1px solid var(--glass-border-soft) !important;
+            background: var(--glass-soft);
+            overflow: visible;
+        }
+        .tab-label { background: transparent !important; }
+        .tab-label:hover { background: rgba(255, 255, 255, 0.35) !important; }
+        .tab-content { background: transparent !important; }
+        .tab-content.open { background: rgba(255, 255, 255, 0.18) !important; border-top: 1px solid var(--glass-border-soft) !important; }
+
+        /* ---- Стеклянные подписи/точки/входы ---- */
+        .axis-label-x span, .axis-label-y span, .axis-label {
+            background: var(--glass-strong) !important;
+            border: 1px solid var(--glass-border-soft);
+        }
+        .input-field { background: rgba(255, 255, 255, 0.5) !important; }
+        .spider-container { background: var(--glass-soft) !important; border: 1px solid var(--glass-border-soft); }
+        .bridge-priorities { background: linear-gradient(150deg, rgba(139, 123, 214, 0.20), rgba(139, 123, 214, 0.04)) !important; }
+        .bridge-team { background: linear-gradient(150deg, rgba(91, 155, 213, 0.24), rgba(91, 155, 213, 0.05)) !important; }
+        .bridge-team.team-b { background: linear-gradient(150deg, rgba(139, 123, 214, 0.24), rgba(139, 123, 214, 0.05)) !important; }
+
+        /* ---- Полосы-шкалы: глянцевая подсветка ---- */
+        .rating-scale, .level-scale-horizontal {
+            border: 1px solid var(--glass-border-soft) !important;
+            box-shadow: 0 6px 20px rgba(31, 42, 38, 0.08);
+        }
+        .rating-scale .segment, .level-scale-horizontal .segment {
+            box-shadow: inset 0 12px 14px -8px rgba(255, 255, 255, 0.45), inset 0 -10px 14px -10px rgba(0, 0, 0, 0.14);
+        }
+
+        .slider-tooltip {
+            background: rgba(30, 38, 31, 0.82) !important;
+            backdrop-filter: blur(6px);
+        }
+
+        /* ---- Кнопки и плавающие элементы ---- */
+        .btn-download, .btn-mode, .scroll-top, .bridge-plus {
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+        .btn-download:hover, .scroll-top:hover {
+            box-shadow: 0 12px 30px rgba(122, 182, 107, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        }
+
+        .header { border-bottom: 1px solid var(--glass-border-soft) !important; }
+        .footer { border-top: 1px solid var(--glass-border-soft) !important; }
+        .divider { opacity: 0.7; }
+
+        @media (max-width: 720px) {
+            .container { border-radius: 22px; }
+            body::before, body::after { filter: blur(50px); opacity: 0.4; }
+        }
+
+        @media print {
+            body::before, body::after { display: none !important; }
+            .container, .card, .tab-group, .table-wrap, .matrix-wrapper, .bridge-model {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: white !important;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <div class="container">
+
+        <!-- ===== ШАПКА ===== -->
+        <div class="header fade-up">
+            <div>
+                <h1>Оценка потенциала команды</h1>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px 20px; margin-top:-4px;">
+                    <p style="font-size:1.2rem; color:var(--gray-500); margin:0;">
+                        Методический паспорт
+                    </p>
+                    <div class="header-meta" style="display:flex; gap:16px; flex-wrap:wrap; font-size:0.85rem; color:var(--gray-500);">
+                        <span><i class="fas fa-users" style="color:var(--orange);"></i> HR-инструмент</span>
+                        <span><i class="fas fa-calendar-alt" style="color:var(--orange);"></i> Версия 1.0</span>
+                        <span><i class="fas fa-clock" style="color:var(--orange);"></i> ~15 мин на оценку</span>
+                    </div>
+                </div>
+                <div style="margin-top:8px; font-size:0.85rem; color:var(--gray-500);">
+                    <i class="fas fa-info-circle" style="color:var(--orange);"></i>
+                    Методологический паспорт построен на исследованиях и разработках Филлипа Сандала и Алексис Филлипс — признанных мировых экспертов в области командного коучинга, сооснователей Team Coaching International (TCI). Опираясь на 15-летний опыт работы с тысячами команд по всему миру, они создали модель 14 факторов эффективности и систему оценки TeamDiagnostic™, которая используется в более чем 50 странах и переведена на 20+ языков.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 1. ВВЕДЕНИЕ ===== -->
+        <section class="fade-up delay-1">
+            <h2><i class="fas fa-bullseye"></i> 1. Введение</h2>
+            <p>
+                Методический паспорт предназначен для HR-специалистов, внутренних и внешних коучей,
+                руководителей, которые хотят провести системную оценку потенциала команды и получить
+                практические рекомендации для ее развития.
+            </p>
+            <div class="grid-2 mt-12">
+                <div class="card card-green">
+                    <h4 style="display:flex; gap:10px; align-items:center;">
+                        <i class="fas fa-flag-checkered" style="color:var(--green);"></i> Цель
+                    </h4>
+                    <p style="font-size:0.98rem;">
+                        Предоставить готовый, воспроизводимый инструмент для количественной и качественной
+                        оценки потенциала команды, выявления зон роста и формирования стратегии развития.
+                    </p>
+                </div>
+                <div class="card card-orange">
+                    <h4 style="display:flex; gap:10px; align-items:center;">
+                        <i class="fas fa-tasks" style="color:var(--orange);"></i> Задачи
+                    </h4>
+                    <ul style="font-size:0.98rem; padding-left:20px; margin-top:4px;">
+                        <li>Измерить 14 ключевых факторов эффективности</li>
+                        <li>Определить баланс продуктивности и вовлеченности</li>
+                        <li>Отнести команду к одному из 4 кластеров</li>
+                        <li>Предложить точечные рекомендации по развитию</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <i class="fas fa-lightbulb" style="color:var(--orange); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Ключевая идея</strong>
+                <p style="margin:0;">
+                    Высокая эффективность команды достигается не просто суммой сильных сторон отдельных участников,
+                    а <strong>балансом</strong> двух измерений: <strong>продуктивности</strong> (способность достигать результатов)
+                    и <strong>вовлеченности</strong> (качество совместной работы и культуры).
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 2. МОДЕЛЬ ОЦЕНКИ ===== -->
+        <section class="fade-up delay-2">
+            <h2><i class="fas fa-cubes"></i> 2. Модель оценки потенциала команды</h2>
+            <p>
+                Модель включает <strong>14 факторов</strong>, сгруппированных в два измерения.
+                Каждый фактор оценивается по 10-балльной шкале на основе восприятия членов команды.
+            </p>
+
+            <div class="grid-2 mt-12">
+                <div class="card card-green">
+                    <h3 style="margin-top:0;"><i class="fas fa-chart-line"></i> Продуктивность</h3>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">
+                        <strong>Что это:</strong> Способность команды достигать измеримых бизнес-результатов,
+                        выполнять поставленные задачи и двигаться к стратегическим целям.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">
+                        <strong>Как проявляется:</strong> В четкости целей, эффективности принятия решений,
+                        распределении ресурсов, проактивности и взаимной ответственности.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500);">
+                        <strong>Почему важно:</strong> Продуктивность — это «двигатель» команды.
+                        Без нее команда теряет смысл существования и не приносит ценности организации.
+                    </p>
+                    <ul style="list-style:none; padding:0; font-size:0.98rem; margin-top:12px;">
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>1.</strong> Командное лидерство
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>2.</strong> Ресурсы
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>3.</strong> Принятие решений
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>4.</strong> Проактивность
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>5.</strong> Подотчетность
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>6.</strong> Цели и стратегии
+                        </li>
+                        <li style="padding:6px 0;">
+                            <strong>7.</strong> Согласованность
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card card-orange">
+                    <h3 style="margin-top:0;"><i class="fas fa-handshake"></i> Вовлеченность</h3>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">
+                        <strong>Что это:</strong> Качество взаимодействия, уровень доверия, уважения
+                        и общей культуры совместной работы в команде.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-bottom:10px;">
+                        <strong>Как проявляется:</strong> В открытости коммуникаций, взаимной поддержке,
+                        конструктивном разрешении конфликтов, ценности разнообразия и общем оптимизме.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500);">
+                        <strong>Почему важно:</strong> Вовлеченность — это «топливо» команды.
+                        Она создает среду, в которой люди хотят работать, рисковать, творить и оставаться.
+                    </p>
+                    <ul style="list-style:none; padding:0; font-size:0.98rem; margin-top:12px;">
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>8.</strong> Доверие
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>9.</strong> Уважение
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>10.</strong> Дух товарищества
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>11.</strong> Коммуникации
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>12.</strong> Конструктивное взаимодействие
+                        </li>
+                        <li style="padding:6px 0; border-bottom:1px solid var(--gray-200);">
+                            <strong>13.</strong> Разнообразие
+                        </li>
+                        <li style="padding:6px 0;">
+                            <strong>14.</strong> Оптимизм
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Связи между факторами -->
+            <div class="highlight-box highlight-box-blue mt-12">
+                <i class="fas fa-project-diagram" style="color:var(--blue); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Связи и взаимовлияние факторов</strong>
+                <p style="margin:0; font-size:0.98rem;">
+                    Все 14 факторов взаимосвязаны и образуют <strong>системный эффект</strong>.
+                    Улучшение одного фактора тянет за собой другие. Например:
+                </p>
+                <ul style="margin:6px 0 0 20px; font-size:0.95rem;">
+                    <li><strong>Доверие</strong> (вовлеченность) → улучшает <strong>коммуникации</strong> → повышает <strong>подотчетность</strong> (продуктивность)</li>
+                    <li><strong>Проактивность</strong> (продуктивность) → стимулирует <strong>конструктивное взаимодействие</strong> → укрепляет <strong>оптимизм</strong> (вовлеченность)</li>
+                    <li><strong>Уважение</strong> (вовлеченность) → создает основу для <strong>принятия решений</strong> → усиливает <strong>согласованность</strong> (продуктивность)</li>
+                </ul>
+                <p style="margin-top:6px; font-size:0.92rem; color:var(--gray-500);">
+                    <i class="fas fa-info-circle"></i> Именно поэтому важно работать над <strong>всеми</strong> факторами,
+                    а не фокусироваться на одном. Системный подход дает устойчивый результат.
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 3. МАТРИЦА 2×2 ===== -->
+        <section class="fade-up delay-3">
+            <h2><i class="fas fa-th"></i> 3. Матрица командной эффективности</h2>
+            <p>
+                Соотношение двух измерений образует 4 зоны. Каждая описывает характерный профиль команды
+                и определяет приоритетную стратегию развития.
+            </p>
+
+            <div class="matrix-wrapper">
+                <div class="matrix-grid">
+
+                    <!-- Квадранты -->
+                    <div class="matrix-quadrant q-gray">
+                        <strong>СЕРАЯ ЗОНА</strong>
+                        <small>Низкая продуктивность</small>
+                        <small>Низкая вовлеченность</small>
+                        <div class="sub">Застой · Апатия · Изоляция</div>
+                        <span class="badge" style="margin-top:6px; background:#A0A0A0; color:white;">Кризис</span>
+                    </div>
+
+                    <div class="matrix-quadrant q-red">
+                        <strong>ОРАНЖЕВАЯ ЗОНА</strong>
+                        <small>Высокая продуктивность</small>
+                        <small>Низкая вовлеченность</small>
+                        <div class="sub">Перегрузки · Выгорание · Конкуренция</div>
+                        <span class="badge badge-orange" style="margin-top:6px;">Дефицит вовлеченности</span>
+                    </div>
+
+                    <div class="matrix-quadrant q-blue">
+                        <strong>СИНЯЯ ЗОНА</strong>
+                        <small>Низкая продуктивность</small>
+                        <small>Высокая вовлеченность</small>
+                        <div class="sub">Комфорт · Избегание конфликтов</div>
+                        <span class="badge badge-blue" style="margin-top:6px;">Дефицит продуктивности</span>
+                    </div>
+
+                    <div class="matrix-quadrant q-green">
+                        <strong>ЗЕЛеНАЯ ЗОНА</strong>
+                        <small>Высокая продуктивность</small>
+                        <small>Высокая вовлеченность</small>
+                        <div class="sub">Баланс · Устойчивость · Драйв</div>
+                        <span class="badge" style="margin-top:6px; background:var(--green-dark); color:white;">Эталон</span>
+                    </div>
+
+                    <!-- Шкала X (продуктивность) — горизонтальная -->
+                    <div class="trapezoid-scale-x">
+                        <div class="segment seg-red" style="flex:2;">0–4</div>
+                        <div class="segment seg-yellow" style="flex:3;">5–6</div>
+                        <div class="segment seg-green" style="flex:3;">7–10</div>
+                    </div>
+
+                    <!-- Шкала Y (вовлеченность) — вертикальная, слева -->
+                    <div class="trapezoid-scale-y">
+                        <div class="segment seg-green" style="flex:3;">7–10</div>
+                        <div class="segment seg-yellow" style="flex:3;">5–6</div>
+                        <div class="segment seg-red" style="flex:2;">0–4</div>
+                    </div>
+
+                    <!-- Подписи осей -->
+                    <div class="axis-label-x">
+                        <span><i class="fas fa-arrow-left"></i> <strong>Продуктивность</strong> <i class="fas fa-arrow-right"></i></span>
+                    </div>
+
+                    <div class="axis-label-y">
+                        <span><i class="fas fa-arrow-up"></i> <strong>Вовлеченность</strong> <i class="fas fa-arrow-down"></i></span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Расшифровка шкал -->
+            <div class="grid-2 mt-12">
+                <div class="card card-green">
+                    <h4 style="margin-top:0;"><i class="fas fa-ruler-horizontal" style="color:var(--green);"></i> Шкала Продуктивности</h4>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0;">
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--red);"></span> 0–4: Критический</span>
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--orange);"></span> 5–6: Развивающийся</span>
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--green);"></span> 7–10: Зрелый</span>
+                    </div>
+                    <p style="font-size:0.92rem; margin-top:4px;">
+                        Отражает способность команды ставить цели, принимать решения, управлять ресурсами
+                        и достигать измеримых бизнес-результатов.
+                    </p>
+                </div>
+                <div class="card card-orange">
+                    <h4 style="margin-top:0;"><i class="fas fa-ruler-vertical" style="color:var(--orange);"></i> Шкала Вовлеченности</h4>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin:6px 0;">
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--red);"></span> 0–4: Критический</span>
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--orange);"></span> 5–6: Развивающийся</span>
+                        <span><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--green);"></span> 7–10: Зрелый</span>
+                    </div>
+                    <p style="font-size:0.92rem; margin-top:4px;">
+                        Отражает качество взаимодействия, уровень доверия, уважения, коммуникации
+                        и общую культуру совместной работы.
+                    </p>
+                </div>
+            </div>
+
+            <div class="highlight-box highlight-box-orange mt-12">
+                <i class="fas fa-flag" style="color:var(--orange); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Стратегии по зонам</strong>
+                <div class="grid-2" style="margin-top:6px; gap:12px;">
+                    <div style="background:var(--white); padding:12px 16px; border-radius:8px; border-left:4px solid var(--green);">
+                        <strong style="color:var(--green-dark);">Зеленая зона</strong>
+                        <p style="font-size:0.92rem; margin:0;">Укреплять лидерство, не допускать самоуспокоенности, работать с новыми членами.</p>
+                    </div>
+                    <div style="background:var(--white); padding:12px 16px; border-radius:8px; border-left:4px solid var(--orange);">
+                        <strong style="color:#B85C00;">Оранжевая зона</strong>
+                        <p style="font-size:0.92rem; margin:0;">Срочное улучшение вовлеченности: доверие, уважение, коммуникации.</p>
+                    </div>
+                    <div style="background:var(--white); padding:12px 16px; border-radius:8px; border-left:4px solid var(--blue);">
+                        <strong style="color:#2B6B8F;">Синяя зона</strong>
+                        <p style="font-size:0.92rem; margin:0;">Сместить фокус с процесса на результат: цели, проактивность, подотчетность.</p>
+                    </div>
+                    <div style="background:var(--white); padding:12px 16px; border-radius:8px; border-left:4px solid #A0A0A0;">
+                        <strong style="color:#666;">Серая зона</strong>
+                        <p style="font-size:0.92rem; margin:0;">Кризисное вмешательство, поиск «точек опоры» для первого рывка.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 4. ПОДГОТОВКА ===== -->
+        <section>
+            <h2><i class="fas fa-clipboard-list"></i> 4. Подготовка к оценке</h2>
+
+            <div class="grid-3" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <div class="card">
+                    <i class="fas fa-user-tie" style="font-size:2rem; color:var(--green);"></i>
+                    <h4 style="margin:8px 0 4px;">1. Состав команды</h4>
+                    <p style="font-size:0.92rem;">
+                        Все члены команды, включая руководителя. Минимальный размер — 4 человека.
+                        Для команд &lt; 4 человек используется индивидуальный подход.
+                    </p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-lock" style="font-size:2rem; color:var(--orange);"></i>
+                    <h4 style="margin:8px 0 4px;">2. Анонимность</h4>
+                    <p style="font-size:0.92rem;">
+                        Ответы собираются анонимно (или с агрегацией). Это ключевое условие для
+                        получения честных данных и психологической безопасности.
+                    </p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clock" style="font-size:2rem; color:var(--green-dark);"></i>
+                    <h4 style="margin:8px 0 4px;">3. Время проведения</h4>
+                    <p style="font-size:0.92rem;">
+                        ~15 минут на заполнение опросника. Рекомендуется выделить отдельное время
+                        на встрече или дать ссылку для самостоятельного заполнения.
+                    </p>
+                </div>
+                <div class="card card-blue" style="grid-column: span 1;">
+                    <i class="fas fa-envelope" style="font-size:2rem; color:var(--blue);"></i>
+                    <h4 style="margin:8px 0 4px;">4. Информирование участников</h4>
+                    <p style="font-size:0.92rem;">
+                        Отправьте уведомление или запишите видеообращение с объяснением цели,
+                        формата и гарантий анонимности.
+                    </p>
+                    <details style="margin-top:8px; font-size:0.9rem; color:var(--gray-500);">
+                        <summary style="cursor:pointer; font-weight:600; color:var(--blue);">
+                            <i class="fas fa-chevron-right"></i> Пример текста для рассылки
+                        </summary>
+                        <div style="background:var(--white); padding:14px 16px; border-radius:8px; margin-top:8px; font-size:0.88rem; color:var(--gray-700); border:1px solid var(--gray-200);">
+                            <strong>Тема: Оценка потенциала команды</strong>
+                            <p style="margin:6px 0 0 0;">
+                                Коллеги, приглашаю вас принять участие в анонимной оценке нашей команды.
+                                Цель — выявить наши сильные стороны и зоны роста, чтобы мы могли работать еще эффективнее.
+                                <br><br>
+                                Вам предстоит ответить на 28 вопросов. Это займет не более 15 минут.
+                                Все ответы строго конфиденциальны и будут использованы только в агрегированном виде.
+                                <br><br>
+                                Ссылка на опросник: <strong>[ссылка]</strong>
+                                <br>
+                                Дедлайн: <strong>[дата]</strong>
+                                <br><br>
+                                Спасибо за вашу честность и участие!
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="highlight-box mt-12">
+                <i class="fas fa-check-circle" style="color:var(--green); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Чек-лист подготовки</strong>
+                <ul style="margin:0; padding-left:20px; font-size:0.98rem;">
+                    <li>Определите состав команды и согласуйте участие с руководителем</li>
+                    <li>Объясните команде цель оценки и гарантии анонимности</li>
+                    <li>Подготовьте ссылку на опросник (или распечатайте бланки)</li>
+                    <li>Установите дедлайн для сбора ответов (3–5 рабочих дней)</li>
+                    <li>Назначьте ответственного за сбор и агрегацию данных</li>
+                </ul>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 5. ОПРОСНИК ===== -->
+        <section>
+            <h2><i class="fas fa-file-alt"></i> 5. Диагностический опросник</h2>
+            <p>
+                Каждый член команды оценивает 28 утверждений по 10-балльной шкале.
+                Два вопроса на каждый из 14 факторов.
+            </p>
+
+            <!-- Шкала оценивания (над опросником) -->
+            <div class="rating-scale">
+                <div class="segment seg-1-2">
+                    <span class="number">1–2</span>
+                    <span class="label">Полностью не согласен</span>
+                </div>
+                <div class="segment seg-3-4">
+                    <span class="number">3–4</span>
+                    <span class="label">Скорее не согласен</span>
+                </div>
+                <div class="segment seg-5-6">
+                    <span class="number">5–6</span>
+                    <span class="label">Нейтрально / По-разному</span>
+                </div>
+                <div class="segment seg-7-8">
+                    <span class="number">7–8</span>
+                    <span class="label">Скорее согласен</span>
+                </div>
+                <div class="segment seg-9-10">
+                    <span class="number">9–10</span>
+                    <span class="label">Полностью согласен</span>
+                </div>
+            </div>
+
+            <div class="table-wrap">
+                <table class="table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width:15%;">Фактор</th>
+                            <th style="width:75%;">Утверждения</th>
+                            <th style="width:10%;">Оценка (1–10)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>1. Лидерство</strong></td><td><strong>Я делаю:</strong> Я беру на себя лидерские функции, когда это необходимо для команды.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде лидерство распределяется между разными людьми.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>2. Ресурсы</strong></td><td><strong>Я делаю:</strong> Я эффективно использую доступные мне ресурсы для достижения командных целей.<br><strong>Я вижу:</strong> Я вижу, что наша команда умело управляет имеющимися ресурсами.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>3. Решения</strong></td><td><strong>Я делаю:</strong> Я участвую в принятии решений и вношу свой вклад в этот процесс.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде есть четкий и эффективный процесс принятия решений.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>4. Проактивность</strong></td><td><strong>Я делаю:</strong> Я проявляю инициативу и предлагаю новые идеи, не дожидаясь указаний.<br><strong>Я вижу:</strong> Я вижу, что наша команда в целом открыта к изменениям и готова экспериментировать.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>5. Подотчетность</strong></td><td><strong>Я делаю:</strong> Я беру на себя ответственность за результаты своей работы перед командой.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде каждый отвечает за общий результат.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>6. Цели</strong></td><td><strong>Я делаю:</strong> Я понимаю цели команды и выстраиваю свою работу для их достижения.<br><strong>Я вижу:</strong> Я вижу, что перед нашей командой стоят ясные и вдохновляющие цели.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>7. Согласованность</strong></td><td><strong>Я делаю:</strong> Я чувствую себя частью единой команды и действую в одном направлении с коллегами.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде есть общее понимание того, куда мы движемся.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>8. Доверие</strong></td><td><strong>Я делаю:</strong> Я открыто высказываю свое мнение, даже если оно противоречит мнению других.<br><strong>Я чувствую:</strong> Я чувствую, что в нашей команде можно говорить правду без страха последствий.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>9. Уважение</strong></td><td><strong>Я делаю:</strong> Я проявляю уважение к каждому члену команды, независимо от его роли.<br><strong>Я чувствую:</strong> Я чувствую, что в нашей команде царит взаимное уважение.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>10. Дух товарищества</strong></td><td><strong>Я делаю:</strong> Я поддерживаю коллег и делюсь с ними своими переживаниями и радостями.<br><strong>Я чувствую:</strong> Я чувствую, что в нашей команде есть сильное «мы» и атмосфера поддержки.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>11. Коммуникации</strong></td><td><strong>Я делаю:</strong> Я передаю информацию коллегам ясно и своевременно.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде информация передается эффективно.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>12. Конструктивное взаимодействие</strong></td><td><strong>Я делаю:</strong> Я участвую в обсуждении разногласий, не переходя на личности.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде конфликты воспринимаются как возможность для поиска решений.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>13. Разнообразие</strong></td><td><strong>Я делаю:</strong> Я ценю различия в опыте, идеях и стилях работы моих коллег.<br><strong>Я вижу:</strong> Я вижу, что в нашей команде поощряется разнообразие мнений.</td><td>___ / ___</td></tr>
+                        <tr><td><strong>14. Оптимизм</strong></td><td><strong>Я делаю:</strong> Я сохраняю позитивный настрой даже в сложных ситуациях.<br><strong>Я чувствую:</strong> Я чувствую, что наша команда уверенно смотрит в будущее и верит в свои силы.</td><td>___ / ___</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box highlight-box-blue mt-12">
+                <i class="fas fa-info-circle" style="color:var(--blue); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Важно</strong>
+                <p style="margin:0;">
+                    Вопросы сформулированы в единственном числе, чтобы каждый участник оценивал <strong>свой личный опыт и поведение</strong>.
+                    Это повышает честность ответов и позволяет выявить разрыв между индивидуальным вкладом и восприятием командной динамики.
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 6. АЛГОРИТМ ОБРАБОТКИ ===== -->
+        <section>
+            <h2><i class="fas fa-calculator"></i> 6. Алгоритм обработки данных</h2>
+            <p>
+                После сбора ответов вычисляются средние значения по каждому фактору,
+                затем — интегральные показатели. Дополнительно определяется уровневая оценка
+                каждого фактора.
+            </p>
+
+            <!-- Шаг 1 -->
+            <div class="card card-green" style="margin-bottom:16px;">
+                <h4 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                    <span style="background:var(--green); color:var(--white); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">1</span>
+                    Факторы (F₁–F₁₄)
+                </h4>
+                <p style="font-size:0.95rem; margin:0;">
+                    Для каждого фактора вычисляется среднее арифметическое по двум вопросам.
+                    <br><br>
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block;">
+                        F₁ = (Q1.1 + Q1.2) / 2
+                    </code>
+                </p>
+            </div>
+
+            <!-- Шаг 2 -->
+            <div class="card card-orange" style="margin-bottom:16px;">
+                <h4 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                    <span style="background:var(--orange); color:var(--white); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">2</span>
+                    Измерения: Продуктивность (П) и Вовлеченность (В)
+                </h4>
+                <p style="font-size:0.95rem; margin:0;">
+                    Средние значения по каждому измерению.
+                    <br><br>
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block; margin-bottom:4px;">
+                        П = (F₁ + F₂ + F₃ + F₄ + F₅ + F₆ + F₇) / 7
+                    </code>
+                    <br>
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block;">
+                        В = (F₈ + F₉ + F₁₀ + F₁₁ + F₁₂ + F₁₃ + F₁₄) / 7
+                    </code>
+                </p>
+            </div>
+
+            <!-- Шаг 3 -->
+            <div class="card" style="margin-bottom:16px; border-left-color:var(--green-dark);">
+                <h4 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                    <span style="background:var(--green-dark); color:var(--white); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">3</span>
+                    Общий потенциал (P)
+                </h4>
+                <p style="font-size:0.95rem; margin:0;">
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block;">
+                        P = (П + В) / 2
+                    </code>
+                    <br>
+                    Диапазон: <strong>1–10</strong>.
+                </p>
+            </div>
+
+            <!-- Шаг 4 -->
+            <div class="card" style="margin-bottom:16px; border-left-color:var(--orange-dark);">
+                <h4 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                    <span style="background:var(--orange-dark); color:var(--white); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">4</span>
+                    Индекс гармонии (H)
+                </h4>
+                <p style="font-size:0.95rem; margin:0;">
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block;">
+                        H = 1 — ( |П — В| / 10 )
+                    </code>
+                    <br>
+                    Диапазон: <strong>0–1</strong>. Чем выше, тем сбалансированнее команда.
+                </p>
+            </div>
+
+            <!-- Шаг 5 -->
+            <div class="card card-green" style="margin-bottom:16px; grid-column: span 2;">
+                <h4 style="margin-top:0; display:flex; align-items:center; gap:12px;">
+                    <span style="background:var(--green); color:var(--white); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem;">5</span>
+                    Итоговый балл (Total Score)
+                </h4>
+                <p style="font-size:0.95rem; margin:0;">
+                    <code style="background:var(--gray-200); padding:4px 12px; border-radius:6px; display:inline-block; font-size:1.1rem;">
+                        Total Score = P × H
+                    </code>
+                    <br>
+                    Диапазон: <strong>0–10</strong>. Интегральный показатель, учитывающий и общий уровень,
+                    и баланс измерений.
+                </p>
+            </div>
+
+            <!-- Уровневая оценка (горизонтальная шкала) -->
+            <div class="highlight-box highlight-box-blue mt-12">
+                <i class="fas fa-traffic-light" style="color:var(--blue); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Уровневая оценка факторов</strong>
+                <p style="margin:0;">
+                    Каждый фактор дополнительно классифицируется по уровню зрелости:
+                </p>
+
+                <div class="level-scale-horizontal" style="margin:10px 0 6px 0;">
+                    <div class="segment seg-critical">Критический<br><span style="font-weight:400; font-size:0.65rem;">0–4</span></div>
+                    <div class="segment seg-developing">Развивающийся<br><span style="font-weight:400; font-size:0.65rem;">5–6</span></div>
+                    <div class="segment seg-mature">Зрелый<br><span style="font-weight:400; font-size:0.65rem;">7–10</span></div>
+                </div>
+
+                <ul style="margin:6px 0 0 20px; font-size:0.95rem;">
+                    <li><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--red);"></span> <strong>Критический</strong> (0–4) — требует немедленного вмешательства</li>
+                    <li><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--orange);"></span> <strong>Развивающийся</strong> (5–6) — есть потенциал, нужна целенаправленная работа</li>
+                    <li><span class="level-dot" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--green);"></span> <strong>Зрелый</strong> (7–10) — сильная сторона команды, поддерживать и укреплять</li>
+                </ul>
+                <p style="margin-top:6px; font-size:0.92rem; color:var(--gray-500);">
+                    <i class="fas fa-info-circle"></i> Этот подход дает более наглядную картину, чем просто средние баллы,
+                    и позволяет быстро определить приоритеты развития.
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 7. ИНТЕРПРЕТАЦИЯ И КЛАСТЕРИЗАЦИЯ ===== -->
+        <section>
+            <h2><i class="fas fa-chart-pie"></i> 7. Интерпретация и кластеризация</h2>
+            <p>
+                На основе значений <strong>П</strong> (продуктивность) и <strong>В</strong> (вовлеченность)
+                команда относится к одному из четырех кластеров.
+            </p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:16%;">Кластер</th>
+                            <th style="width:14%;">Продуктивность</th>
+                            <th style="width:14%;">Вовлеченность</th>
+                            <th style="width:30%;">Характеристика</th>
+                            <th style="width:26%;">Приоритет развития</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="background:#E8F5E0; font-weight:700; color:var(--green-dark); text-align:center;">ЗЕЛеНАЯ</td>
+                            <td style="text-align:center;">≥ 7</td>
+                            <td style="text-align:center;">≥ 7</td>
+                            <td>Высокая эффективность, баланс, устойчивость</td>
+                            <td>Поддержка, укрепление лидерства, работа с новыми членами</td>
+                        </tr>
+                        <tr>
+                            <td style="background:#FDE8D0; font-weight:700; color:#B85C00; text-align:center;">ОРАНЖЕВАЯ</td>
+                            <td style="text-align:center;">≥ 7</td>
+                            <td style="text-align:center;">< 7</td>
+                            <td>Высокие результаты ценой выгорания и стресса</td>
+                            <td>Срочное улучшение вовлеченности (доверие, уважение, коммуникации)</td>
+                        </tr>
+                        <tr>
+                            <td style="background:#D4ECFA; font-weight:700; color:#2B6B8F; text-align:center;">СИНЯЯ</td>
+                            <td style="text-align:center;">< 7</td>
+                            <td style="text-align:center;">≥ 7</td>
+                            <td>Комфортная атмосфера, но низкая результативность</td>
+                            <td>Фокус на продуктивность (цели, проактивность, подотчетность)</td>
+                        </tr>
+                        <tr>
+                            <td style="background:#EAEAEA; font-weight:700; color:#666; text-align:center;">СЕРАЯ</td>
+                            <td style="text-align:center;">< 7</td>
+                            <td style="text-align:center;">< 7</td>
+                            <td>Апатия, изоляция, отсутствие драйва</td>
+                            <td>Кризисное вмешательство, поиск «точек опоры»</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box highlight-box-orange mt-12">
+                <i class="fas fa-flag" style="color:var(--orange); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Важно</strong>
+                <p style="margin:0;">
+                    Кластер — это не «диагноз» и не приговор. Это <strong>отправная точка</strong> для развития.
+                    Даже команды из серой зоны при системной работе способны выйти на высокий уровень.
+                </p>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 8. РЕКОМЕНДАЦИИ ===== -->
+        <section>
+            <h2><i class="fas fa-lightbulb"></i> 8. Рекомендации по развитию</h2>
+
+            <div class="tab-group">
+                <div class="tab-label" onclick="toggleTab(this)">
+                    <span><i class="fas fa-star" style="color:var(--green-dark);"></i> Для Зеленой зоны (Идеал)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="tab-content">
+                    <p style="font-weight:600; font-size:1.05rem; margin-bottom:6px;">
+                        Ваша команда находится в балансе. Задача — удержать и усилить позиции.
+                    </p>
+                    <ul>
+                        <li><strong>Укрепляйте лидерство:</strong> Продолжайте развивать культуру распределенного лидерства. Давайте возможность разным членам команды проявлять инициативу.</li>
+                        <li><strong>Не допускайте самоуспокоенности:</strong> Ставьте новые амбициозные цели, выходите за пределы «зоны комфорта».</li>
+                        <li><strong>Интегрируйте новых членов:</strong> Разработайте систему онбординга, которая передает ценности и культуру команды.</li>
+                        <li><strong>Регулярно отслеживайте прогресс:</strong> Проводите повторную оценку раз в 6–12 месяцев, чтобы видеть динамику.</li>
+                        <li><strong>Упражнения:</strong> «Лучшая команда» (вспомнить успешный опыт), «Предназначение команды» (уточнить миссию).</li>
+                    </ul>
+                    <div style="background:var(--green-bg); padding:12px 16px; border-radius:8px; margin-top:10px;">
+                        <strong style="color:var(--green-dark);">Ожидаемый результат:</strong> Устойчивая высокая эффективность, низкая текучка, высокая вовлеченность.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-group">
+                <div class="tab-label" onclick="toggleTab(this)">
+                    <span><i class="fas fa-fire" style="color:var(--orange);"></i>  Для Оранжевой зоны (Перегрузки)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="tab-content">
+                    <p style="font-weight:600; font-size:1.05rem; margin-bottom:6px;">
+                        Команда достигает результатов, но цена слишком высока. Приоритет — снижение стресса и восстановление культуры.
+                    </p>
+                    <ul>
+                        <li><strong>Приоритет №1 — доверие:</strong> Создайте безопасную среду для открытых разговоров. Начните с малого — например, с анонимного сбора обратной связи.</li>
+                        <li><strong>Улучшайте коммуникации:</strong> Внедрите прозрачные каналы обмена информацией. Регулярные синхронизации (15-минутные стендапы) снижают неопределенность.</li>
+                        <li><strong>Снижайте стресс:</strong> Пересмотрите распределение нагрузки. Введите практику «времени для восстановления» (no-meeting дни).</li>
+                        <li><strong>Развивайте уважение:</strong> Введите практику публичного признания вклада каждого — например, «золотые кнопки» в конце совещаний.</li>
+                        <li><strong>Упражнения:</strong> «Активное слушание», «Имя для энергетического поля» (осознание напряжения).</li>
+                    </ul>
+                    <div style="background:var(--orange-bg); padding:12px 16px; border-radius:8px; margin-top:10px;">
+                        <strong style="color:#B85C00;">Ожидаемый результат:</strong> Снижение текучки, улучшение климата, сохранение высоких результатов без выгорания.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-group">
+                <div class="tab-label" onclick="toggleTab(this)">
+                    <span><i class="fas fa-leaf" style="color:var(--blue);"></i> Для Синей зоны (Вольяжность)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="tab-content">
+                    <p style="font-weight:600; font-size:1.05rem; margin-bottom:6px;">
+                        В команде комфортно, но результативность ниже потенциала. Приоритет — сместить фокус с процесса на результат.
+                    </p>
+                    <ul>
+                        <li><strong>Сместите фокус на результат:</strong> Введите четкие командные KPI. Отслеживайте их на каждом совещании.</li>
+                        <li><strong>Повышайте проактивность:</strong> Поощряйте инициативу. Начните с «Идейного часа» раз в неделю, где любой может предложить улучшение.</li>
+                        <li><strong>Усильте подотчетность:</strong> Сделайте ответственность за результат прозрачной. Введите практику «обещаний» — каждый говорит, что сделает к следующей встрече.</li>
+                        <li><strong>Ставьте амбициозные цели:</strong> Выйдите за рамки «безопасных» планов. Добавьте один «дерзкий» проект, который вдохновляет.</li>
+                        <li><strong>Упражнения:</strong> «Игра “Продуктивность”», «Минимум/максимум согласия» (поиск точек роста).</li>
+                    </ul>
+                    <div style="background:var(--blue-bg); padding:12px 16px; border-radius:8px; margin-top:10px;">
+                        <strong style="color:#2B6B8F;">Ожидаемый результат:</strong> Рост продуктивности, новые вызовы, драйв и энергия в команде.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-group">
+                <div class="tab-label" onclick="toggleTab(this)">
+                    <span><i class="fas fa-skull" style="color:#888;"></i> Для Серой зоны (Застой)</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="tab-content">
+                    <p style="font-weight:600; font-size:1.05rem; margin-bottom:6px;">
+                        Команда в кризисе. Приоритет — экстренное вмешательство и восстановление веры в себя.
+                    </p>
+                    <ul>
+                        <li><strong>Кризисное вмешательство:</strong> Признайте проблему публично. Создайте ощущение срочности — это даст энергию для первого шага.</li>
+                        <li><strong>Найдите «точки опоры»:</strong> Определите 1–2 фактора, которые можно улучшить быстро (например, коммуникации или прояснение целей).</li>
+                        <li><strong>Привлекайте внешнюю поддержку:</strong> Пригласите фасилитатора или командного коуча — это снимет напряжение и даст нейтральный взгляд.</li>
+                        <li><strong>Создайте «быстрые победы»:</strong> Организуйте небольшой проект, который гарантированно получится. Маленькие успехи восстанавливают веру в свои силы.</li>
+                        <li><strong>Упражнения:</strong> «Командные токсины» (выявление деструктивных паттернов), «Галерея созвездий» (прояснение ролей).</li>
+                    </ul>
+                    <div style="background:var(--gray-100); padding:12px 16px; border-radius:8px; margin-top:10px;">
+                        <strong style="color:#666;">Ожидаемый результат:</strong> Выход из апатии, первые изменения, восстановление энергии и доверия.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 9. ВИЗУАЛИЗАЦИЯ ПРОФИЛЯ ===== -->
+        <section>
+            <h2><i class="fas fa-chart-radar"></i> 9. Визуализация профиля команды</h2>
+            <p>
+                Для наглядной интерпретации строится <strong>спайдер-график (радар)</strong> по 14 факторам.
+                Это позволяет мгновенно увидеть сильные стороны и зоны роста.
+            </p>
+
+            <div class="grid-2 mt-12">
+                <div class="card card-green">
+                    <h4><i class="fas fa-check-circle" style="color:var(--green);"></i> Сильные стороны</h4>
+                    <p style="font-size:0.95rem;">
+                        Факторы с оценкой <strong>≥ 7</strong> (зеленый уровень) — это опоры команды.
+                        Их нужно поддерживать и использовать как основу для развития слабых зон.
+                    </p>
+                </div>
+                <div class="card card-orange">
+                    <h4><i class="fas fa-exclamation-triangle" style="color:var(--orange);"></i> Зоны роста</h4>
+                    <p style="font-size:0.95rem;">
+                        Факторы с оценкой <strong>< 5</strong> (красный уровень) — критические точки.
+                        Они требуют первоочередного внимания и целенаправленных действий.
+                    </p>
+                </div>
+                <div class="card card-blue" style="grid-column: span 2;">
+                    <h4><i class="fas fa-chart-line" style="color:var(--blue);"></i> Уровневая карта</h4>
+                    <p style="font-size:0.95rem;">
+                        Каждый фактор получает цветовую маркировку в зависимости от уровня зрелости:
+                    </p>
+                    <div class="level-scale-horizontal" style="margin:6px 0; max-width:500px;">
+                        <div class="segment seg-critical" style="flex:1;">Критический</div>
+                        <div class="segment seg-developing" style="flex:1;">Развивающийся</div>
+                        <div class="segment seg-mature" style="flex:1;">Зрелый</div>
+                    </div>
+                    <p style="font-size:0.92rem; color:var(--gray-500);">
+                        Это позволяет быстро оценить, где команда уже сильна, а где требуется вмешательство.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 10. ИНТЕРАКТИВНЫЙ КАЛЬКУЛЯТОР ===== -->
+        <section>
+            <h2><i class="fas fa-sliders-h"></i> 10. Интерактивный калькулятор</h2>
+            <p>
+                Введите оценки по каждому из 14 факторов (средние по команде).
+                Калькулятор автоматически рассчитает все показатели, определит кластер
+                и покажет профиль команды на радар-графике.
+            </p>
+
+            <!-- Переключатель режимов -->
+            <div class="mode-toggle">
+                <span class="label">
+                    <i class="fas fa-sliders-h" style="color:var(--orange);"></i> Режим:
+                </span>
+                <button id="modeTeamBtn" class="btn-mode active" onclick="setMode('team')">
+                    <i class="fas fa-users"></i> Оценка команды
+                </button>
+                <button id="modeLeaderBtn" class="btn-mode" onclick="setMode('leader')">
+                    <i class="fas fa-user-tie"></i> Сравнение с руководителем
+                </button>
+                <span class="mode-hint" id="modeHint">
+                    <i class="fas fa-info-circle"></i> Текущий режим: оценка команды
+                </span>
+            </div>
+
+            <div class="calc-grid" id="calcGrid">
+                <div class="calc-header">
+                    <span><i class="fas fa-chart-line" style="color:var(--green);"></i> Продуктивность</span>
+                    <span><i class="fas fa-handshake" style="color:var(--orange);"></i> Вовлеченность</span>
+                </div>
+                <!-- Слайдеры будут заполнены скриптом -->
+            </div>
+
+            <!-- Слайдеры для руководителя (скрыты по умолчанию) -->
+            <div class="leader-grid" id="calcGridLeader">
+                <div class="leader-header">
+                    <i class="fas fa-user-tie"></i> Оценка руководителя (индивидуальная)
+                </div>
+            </div>
+
+            <div class="result-panel" id="resultPanel">
+                <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between;">
+                    <div>
+                        <div style="font-size:0.85rem; color:var(--gray-500);">ИТОГОВЫЙ БАЛЛ</div>
+                        <div class="big-number" id="totalScoreDisplay">—</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:0.85rem; color:var(--gray-500);">КЛАСТЕР</div>
+                        <div class="cluster-badge" id="clusterDisplay" style="background:var(--gray-300); color:var(--gray-700);">—</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="font-size:0.85rem; color:var(--gray-500);">ИНДЕКС ГАРМОНИИ</div>
+                        <div style="font-size:1.6rem; font-weight:700; transition: color 0.3s ease;" id="harmonyDisplay">—</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div>
+                        <div style="font-size:0.85rem; color:var(--gray-500);">Продуктивность (П)</div>
+                        <div class="metric-value" id="prodDisplay">—</div>
+                    </div>
+                    <div>
+                        <div style="font-size:0.85rem; color:var(--gray-500);">Вовлеченность (В)</div>
+                        <div class="metric-value" id="posDisplay" style="color:var(--orange-dark);">—</div>
+                    </div>
+                </div>
+
+                <div class="spider-container">
+                    <canvas id="spiderCanvas" width="600" height="600"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 11. ШАБЛОНЫ ===== -->
+        <section class="download-section">
+            <h2><i class="fas fa-download"></i> 11. Шаблоны и материалы</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-file-excel" style="color:var(--green);"></i>
+                    <h4 style="margin:8px 0 4px;">Шаблон для сбора данных</h4>
+                    <p style="font-size:0.9rem; color:var(--gray-500);">
+                        CSV-файл с формулами для автоматического расчета.
+                    </p>
+                    <button class="btn-download" onclick="downloadTemplate('data')">
+                        <i class="fas fa-download"></i> Скачать
+                    </button>
+                </div>
+                <div class="card">
+                    <i class="fas fa-file-pdf" style="color:var(--orange);"></i>
+                    <h4 style="margin:8px 0 4px;">Шаблон отчета для команды</h4>
+                    <p style="font-size:0.9rem; color:var(--gray-500);">
+                        Готовая структура для презентации результатов.
+                    </p>
+                    <button class="btn-download btn-download-orange" onclick="downloadTemplate('report')">
+                        <i class="fas fa-download"></i> Скачать
+                    </button>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clipboard-check" style="color:var(--green-dark);"></i>
+                    <h4 style="margin:8px 0 4px;">Чек-лист подготовки</h4>
+                    <p style="font-size:0.9rem; color:var(--gray-500);">
+                        Пошаговый план организации оценки.
+                    </p>
+                    <button class="btn-download btn-download-gray" onclick="downloadTemplate('checklist')">
+                        <i class="fas fa-download"></i> Скачать
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== 12. СИСТЕМНЫЙ АНАЛИЗ ВЗАИМОСВЯЗЕЙ ФАКТОРОВ ===== -->
+        <section>
+            <h2><i class="fas fa-project-diagram"></i> 12. Системный анализ взаимосвязей факторов</h2>
+            <p>
+                Все 14 факторов эффективности образуют <strong>системные петли</strong>, где усиление одного фактора тянет за собой другие.
+                Понимание этих связей позволяет выбрать <strong>приоритетные рычаги</strong> для развития команды.
+            </p>
+
+            <div class="highlight-box highlight-box-blue">
+                <i class="fas fa-info-circle" style="color:var(--blue); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Принцип системного развития</strong>
+                <p style="margin:0; font-size:0.98rem;">
+                    Вмешательство в один фактор создает <strong>мультипликативный эффект</strong> — изменения распространяются по системе.
+                    Начинать всегда нужно с <strong>фундамента</strong>: доверия и уважения. Без них любые изменения в процессах и результатах будут нестабильны.
+                </p>
+            </div>
+
+            <hr class="divider" style="margin:30px 0;" />
+
+            <!-- ===== 12.1. ВИЗУАЛЬНАЯ МОДЕЛЬ «ДОМ КОМАНДЫ» ===== -->
+            <h3><i class="fas fa-house" style="color:var(--green);"></i> 12.1. Модель «Дом команды» (все 14 факторов)</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                Четыре уровня, от фундамента к результатам. Каждый уровень опирается на предыдущий.
+            </p>
+
+            <div class="card" style="background:var(--gray-100); padding:25px 20px 20px; max-width:750px; margin:0 auto; border:1px solid var(--gray-200);">
+
+                <!-- Уровень 4: Результаты (5 факторов) -->
+                <div style="background:var(--green); border-radius:var(--radius-sm) var(--radius-sm) 0 0; padding:14px 20px; text-align:center; color:var(--white);">
+                    <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; opacity:0.7;">Уровень 4</div>
+                    <div style="font-weight:700; font-size:1.1rem;">РЕЗУЛЬТАТЫ</div>
+                    <div style="display:flex; justify-content:center; gap:12px 20px; flex-wrap:wrap; font-size:0.8rem; margin-top:4px;">
+                        <span><i class="fas fa-bullseye"></i> Цели и стратегии</span>
+                        <span><i class="fas fa-handshake"></i> Подотчетность</span>
+                        <span><i class="fas fa-gavel"></i> Принятие решений</span>
+                        <span><i class="fas fa-cubes"></i> Ресурсы</span>
+                        <span><i class="fas fa-arrows-alt-h"></i> Согласованность</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:center; padding:4px 0; color:var(--gray-500); font-size:1rem;">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+                <!-- Уровень 3: Энергия (3 фактора) -->
+                <div style="background:var(--orange); padding:14px 20px; text-align:center; color:var(--white);">
+                    <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; opacity:0.7;">Уровень 3</div>
+                    <div style="font-weight:700; font-size:1.1rem;">ЭНЕРГИЯ</div>
+                    <div style="display:flex; justify-content:center; gap:12px 24px; flex-wrap:wrap; font-size:0.8rem; margin-top:4px;">
+                        <span><i class="fas fa-rocket"></i> Проактивность</span>
+                        <span><i class="fas fa-sun"></i> Оптимизм</span>
+                        <span><i class="fas fa-user-tie"></i> Командное лидерство</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:center; padding:4px 0; color:var(--gray-500); font-size:1rem;">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+                <!-- Уровень 2: Процессы (4 фактора) -->
+                <div style="background:var(--blue); padding:14px 20px; text-align:center; color:var(--white);">
+                    <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; opacity:0.7;">Уровень 2</div>
+                    <div style="font-weight:700; font-size:1.1rem;">ПРОЦЕССЫ</div>
+                    <div style="display:flex; justify-content:center; gap:12px 20px; flex-wrap:wrap; font-size:0.8rem; margin-top:4px;">
+                        <span><i class="fas fa-comments"></i> Коммуникации</span>
+                        <span><i class="fas fa-people-arrows"></i> Конструктивное взаимодействие</span>
+                        <span><i class="fas fa-users"></i> Дух товарищества</span>
+                        <span><i class="fas fa-rainbow"></i> Разнообразие</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:center; padding:4px 0; color:var(--gray-500); font-size:1rem;">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+                <!-- Уровень 1: Фундамент (2 фактора) -->
+                <div style="background:var(--red); border-radius:0 0 var(--radius-sm) var(--radius-sm); padding:14px 20px; text-align:center; color:var(--white);">
+                    <div style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.08em; opacity:0.7;">Уровень 1</div>
+                    <div style="font-weight:700; font-size:1.1rem;">ФУНДАМЕНТ</div>
+                    <div style="display:flex; justify-content:center; gap:12px 30px; flex-wrap:wrap; font-size:0.8rem; margin-top:4px;">
+                        <span><i class="fas fa-shield-alt"></i> Доверие</span>
+                        <span><i class="fas fa-hand-peace"></i> Уважение</span>
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:10px; font-size:0.75rem; color:var(--gray-500);">
+                    <i class="fas fa-arrow-up" style="color:var(--green);"></i> От фундамента к результатам
+                    <span style="margin:0 8px;">·</span>
+                    <i class="fas fa-arrow-down" style="color:var(--red);"></i> От результатов к фундаменту
+                    <span style="margin:0 8px;">·</span>
+                    <span style="font-weight:600;">Всего 14 факторов</span>
+                </div>
+            </div>
+
+            <div class="grid-2 mt-12">
+                <div class="card card-green">
+                    <h4 style="margin-top:0;"><i class="fas fa-arrow-up" style="color:var(--green);"></i> Снизу вверх: как строить</h4>
+                    <ul style="font-size:0.9rem; padding-left:18px; margin:4px 0 0;">
+                        <li><strong>Шаг 1.</strong> Укрепите доверие и уважение</li>
+                        <li><strong>Шаг 2.</strong> Настройте коммуникации и взаимодействие</li>
+                        <li><strong>Шаг 3.</strong> Зажгите энергию через проактивность, оптимизм и лидерство</li>
+                        <li><strong>Шаг 4.</strong> Результаты придут как следствие</li>
+                    </ul>
+                </div>
+                <div class="card card-orange">
+                    <h4 style="margin-top:0;"><i class="fas fa-arrow-down" style="color:var(--orange);"></i> Сверху вниз: диагностика</h4>
+                    <ul style="font-size:0.9rem; padding-left:18px; margin:4px 0 0;">
+                        <li><strong>Шаг 1.</strong> Если нет результатов — проверьте энергию</li>
+                        <li><strong>Шаг 2.</strong> Если нет энергии — проверьте процессы</li>
+                        <li><strong>Шаг 3.</strong> Если процессы хромают — проверьте фундамент</li>
+                        <li><strong>Шаг 4.</strong> Фундамент — всегда первая точка вмешательства</li>
+                    </ul>
+                </div>
+            </div>
+
+            <hr class="divider" style="margin:30px 0;" />
+
+            <!-- ===== 12.2. ЧЕК-ЛИСТ ДИАГНОСТИКИ «СЛАБОГО ЗВЕНА» ===== -->
+            <h3><i class="fas fa-clipboard-check" style="color:var(--orange);"></i> 12.2. Чек-лист диагностики «слабого звена»</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                Ответьте на вопросы, чтобы определить, где находится первичная точка вмешательства.
+            </p>
+
+            <div class="grid-2">
+
+                <div class="card card-red">
+                    <h4 style="margin-top:0; color:var(--red);"><i class="fas fa-shield-alt"></i> Фундамент</h4>
+                    <div style="font-size:0.9rem;">
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-fund" onchange="updateWeakLink()">
+                            <span>Члены команды открыто высказывают мнения</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-fund" onchange="updateWeakLink()">
+                            <span>В команде царит взаимное уважение</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-fund" onchange="updateWeakLink()">
+                            <span>Люди не боятся ошибаться и говорить о проблемах</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card card-blue">
+                    <h4 style="margin-top:0; color:var(--blue);"><i class="fas fa-comments"></i> Процессы</h4>
+                    <div style="font-size:0.9rem;">
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-proc" onchange="updateWeakLink()">
+                            <span>Информация передается ясно и своевременно</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-proc" onchange="updateWeakLink()">
+                            <span>Конфликты — возможность для поиска решений</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-proc" onchange="updateWeakLink()">
+                            <span>Разнообразие мнений ценится и поощряется</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card card-orange">
+                    <h4 style="margin-top:0; color:var(--orange);"><i class="fas fa-rocket"></i> Энергия</h4>
+                    <div style="font-size:0.9rem;">
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-ener" onchange="updateWeakLink()">
+                            <span>Команда проявляет инициативу</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-ener" onchange="updateWeakLink()">
+                            <span>Команда сохраняет позитивный настрой</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-ener" onchange="updateWeakLink()">
+                            <span>Лидерство распределяется между людьми</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card card-green">
+                    <h4 style="margin-top:0; color:var(--green-dark);"><i class="fas fa-bullseye"></i> Результаты</h4>
+                    <div style="font-size:0.9rem;">
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-res" onchange="updateWeakLink()">
+                            <span>Перед командой стоят ясные цели</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-res" onchange="updateWeakLink()">
+                            <span>Каждый чувствует ответственность за результат</span>
+                        </label>
+                        <label style="display:flex; align-items:start; gap:8px; padding:3px 0; cursor:pointer;">
+                            <input type="checkbox" class="check-res" onchange="updateWeakLink()">
+                            <span>Решения принимаются эффективно</span>
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="weakLinkResult" class="highlight-box" style="border-left-color:var(--gray-300); background:var(--gray-100); text-align:center; margin-top:12px;">
+                <i class="fas fa-info-circle" style="color:var(--gray-500);"></i>
+                Отметьте пункты, которые <strong>НЕ</strong> соответствуют вашей команде. Чек-лист определит <strong>слабое звено</strong>.
+            </div>
+
+            <hr class="divider" style="margin:30px 0;" />
+
+            <!-- ===== 12.3. СИСТЕМНЫЙ АНАЛИЗ ПО ДАННЫМ ИЗ ОПРОСНИКА ===== -->
+            <h3><i class="fas fa-cogs" style="color:var(--green-dark);"></i> 12.3. Системный анализ на основе данных опросника</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                Калькулятор использует данные из основного опросника (раздел 10) и показывает <strong>приоритетные рычаги</strong> и <strong>системные эффекты</strong>.
+            </p>
+
+            <div class="card" style="background:var(--gray-100); padding:20px 24px; border:1px solid var(--gray-200);">
+
+                <!-- Таблица с текущими оценками -->
+                <div style="margin-bottom:16px; display:grid; grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr 1fr; gap:6px 12px; font-size:0.85rem;" id="sysDataDisplay">
+                    <!-- Заполняется скриптом -->
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+
+                    <div class="card" style="padding:14px 18px; text-align:center; border:1px solid var(--gray-200); box-shadow:none;">
+                        <div style="font-size:0.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.04em;">Средний балл</div>
+                        <div style="font-size:2rem; font-weight:800; color:var(--green-dark);" id="sysAvg2">—</div>
+                    </div>
+
+                    <div class="card" style="padding:14px 18px; text-align:center; border:1px solid var(--gray-200); box-shadow:none;">
+                        <div style="font-size:0.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.04em;">Приоритетный рычаг</div>
+                        <div style="font-size:1.1rem; font-weight:700; color:var(--orange-dark);" id="sysLever2">—</div>
+                        <div style="font-size:0.75rem; color:var(--gray-500);" id="sysLeverReason2">Загрузите данные из опросника</div>
+                    </div>
+
+                    <div class="card" style="padding:14px 18px; text-align:center; border:1px solid var(--gray-200); box-shadow:none;">
+                        <div style="font-size:0.75rem; color:var(--gray-500); text-transform:uppercase; letter-spacing:0.04em;">Прогнозируемый эффект</div>
+                        <div style="font-size:1.8rem; font-weight:800; color:var(--green-dark);" id="sysEffect2">—</div>
+                        <div style="font-size:0.75rem; color:var(--gray-500);" id="sysEffectDesc2">При воздействии на рычаг</div>
+                    </div>
+
+                </div>
+
+                <div id="sysRecommendation2" class="highlight-box" style="margin-top:14px; border-left-color:var(--green); background:var(--green-bg); font-size:0.95rem;">
+                    <i class="fas fa-lightbulb" style="color:var(--orange); float:left; margin-right:12px; font-size:1.2rem;"></i>
+                    <strong>Рекомендация:</strong> <span id="sysRecText2">Перейдите в раздел 10, заполните опросник, и системный анализ будет рассчитан автоматически.</span>
+                </div>
+
+            </div>
+
+            <hr class="divider" style="margin:30px 0;" />
+
+            <!-- ===== 12.4. МАТРИЦА ПРИОРИТЕТОВ ===== -->
+            <h3><i class="fas fa-table" style="color:var(--blue);"></i> 12.4. Матрица приоритетов</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                Быстрая диагностика: определите состояние команды и выберите первичный и вторичный фокус развития.
+            </p>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:22%;">Состояние команды</th>
+                            <th style="width:26%;">Первичный фокус</th>
+                            <th style="width:26%;">Вторичный фокус</th>
+                            <th style="width:26%;">Ключевые действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Низкое доверие и уважение</strong></td>
+                            <td><span class="badge badge-red">Доверие</span> <span class="badge badge-red">Уважение</span></td>
+                            <td><span class="badge badge-blue">Коммуникации</span></td>
+                            <td>Анонимные опросы, фасилитация по безопасности, практика признания</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Хороший климат, но нет результатов</strong></td>
+                            <td><span class="badge" style="background:var(--green-dark); color:white;">Цели</span> <span class="badge" style="background:var(--green-dark); color:white;">Подотчетность</span></td>
+                            <td><span class="badge badge-orange">Проактивность</span></td>
+                            <td>SMART-цели, прозрачные KPI, система ответственности</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Есть результаты, но люди выгорают</strong></td>
+                            <td><span class="badge badge-red">Доверие</span> <span class="badge badge-red">Уважение</span> <span class="badge badge-orange">Оптимизм</span></td>
+                            <td><span class="badge badge-blue">Конструктивное взаимодействие</span></td>
+                            <td>Снижение нагрузки, практика признания, фасилитация конфликтов</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Все хорошо, но хочется большего</strong></td>
+                            <td><span class="badge badge-orange">Проактивность</span> <span class="badge badge-blue">Разнообразие</span></td>
+                            <td><span class="badge badge-green">Лидерство</span></td>
+                            <td>Поддержка инициатив, инновационные проекты, развитие лидерства</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Полный застой (серая зона)</strong></td>
+                            <td><span class="badge badge-red">Доверие</span> <span class="badge badge-red">Уважение</span></td>
+                            <td><span class="badge badge-orange">Оптимизм</span></td>
+                            <td>Кризисное вмешательство, быстрые победы, внешняя поддержка</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="highlight-box highlight-box-orange">
+                <i class="fas fa-flag" style="color:var(--orange); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Золотое правило системного развития</strong>
+                <p style="margin:0; font-size:0.98rem;">
+                    <strong>Всегда начинайте с фундамента.</strong> Если в команде нет доверия и уважения, любые изменения в процессах, энергии и результатах будут нестабильны.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- ===== 13. ОПИСАНИЕ 14 ФАКТОРОВ ЭФФЕКТИВНОСТИ ===== -->
+        <section>
+            <h2><i class="fas fa-info-circle"></i> 13. Описание 14 факторов эффективности</h2>
+            <p>
+                В основе методики лежат <strong>14 факторов</strong>, сгруппированных в два измерения:
+                <strong>продуктивность</strong> (способность достигать результатов) и
+                <strong>вовлеченность</strong> (качество совместной работы и культуры).
+                Ниже — краткое, но полное описание каждого фактора.
+            </p>
+
+            <div class="divider" style="margin:20px 0;"></div>
+
+            <!-- ===== ПРОДУКТИВНОСТЬ ===== -->
+            <h3 style="color:var(--green-dark);"><i class="fas fa-chart-line" style="color:var(--green);"></i> Продуктивность</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                7 факторов, определяющих способность команды достигать бизнес-результатов.
+            </p>
+
+            <div class="grid-2">
+
+                <!-- 1. Командное лидерство -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">1</span>
+                        Командное лидерство
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Лидерство — это не должность, а поведение. В эффективной команде каждый готов взять на себя инициативу и ответственность, когда это необходимо. Лидер поддерживает команду, но не контролирует ее тотально.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Члены команды сами проявляют инициативу и не ждут указаний сверху.
+                    </p>
+                </div>
+
+                <!-- 2. Ресурсы -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">2</span>
+                        Ресурсы
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Речь не о количестве ресурсов, а об умении управлять тем, что есть. Эффективная команда изобретательна, находит нестандартные решения и не оправдывает неудачи нехваткой средств, времени или людей.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Команда находит способы сделать больше с тем, что у нее есть.
+                    </p>
+                </div>
+
+                <!-- 3. Принятие решений -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">3</span>
+                        Принятие решений
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> В команде есть ясный и эффективный процесс принятия решений, который адаптируется к ситуации. Решения принимаются своевременно, а команда учится на своих ошибках и успехах.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Решения не застревают, а принимаются быстро и качественно.
+                    </p>
+                </div>
+
+                <!-- 4. Проактивность -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">4</span>
+                        Проактивность
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Команда не ждет, пока проблемы решатся сами собой. Она берет инициативу в свои руки, ищет новые возможности, экспериментирует и не боится перемен. Это команда-драйвер, а не реактивный исполнитель.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Команда сама создает изменения, а не только реагирует на них.
+                    </p>
+                </div>
+
+                <!-- 5. Подотчетность -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">5</span>
+                        Подотчетность
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Каждый отвечает не только за свою работу, но и за общий результат. Подотчетность — это не контроль сверху, а взаимная ответственность и поддержка. В команде прозрачно, кто за что отвечает.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Обещания выполняются, а если нет — команда помогает, а не наказывает.
+                    </p>
+                </div>
+
+                <!-- 6. Цели и стратегии -->
+                <div class="card card-green" style="border-left-color:var(--green);">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">6</span>
+                        Цели и стратегии
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> У команды есть ясные, амбициозные и вдохновляющие цели. Стратегия и тактика понятны каждому. При этом команда способна адаптироваться к изменениям, не теряя из виду главное направление.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Каждый знает, куда движется команда и какой вклад он вносит.
+                    </p>
+                </div>
+
+                <!-- 7. Согласованность -->
+                <div class="card card-green" style="border-left-color:var(--green); grid-column: span 2;">
+                    <h4 style="margin-top:0; color:var(--green-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--green); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">7</span>
+                        Согласованность
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Все члены команды понимают общую задачу и движутся в одном направлении. Это не означает единомыслия — разногласия по способам достижения цели допустимы. Главное — единство в ответе на вопросы: «Кто мы?» и «Куда мы идем?».
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Команда чувствует себя единым целым и действует как один организм.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="divider" style="margin:30px 0;"></div>
+
+            <!-- ===== ВОВЛЕЧеННОСТЬ ===== -->
+            <h3 style="color:var(--orange-dark);"><i class="fas fa-handshake" style="color:var(--orange);"></i> Вовлеченность</h3>
+            <p style="font-size:0.95rem; color:var(--gray-500); margin-bottom:16px;">
+                7 факторов, определяющих качество совместной работы и культуры команды.
+            </p>
+
+            <div class="grid-2">
+
+                <!-- 8. Доверие -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">8</span>
+                        Доверие
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Это воздух командной культуры. В команде с высоким доверием люди открыто говорят о проблемах, не боятся ошибаться и могут рассчитывать друг на друга. Доверие создается через выполнение обещаний и безопасную среду для сложных разговоров.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Люди говорят правду, даже если она неприятна, и не боятся последствий.
+                    </p>
+                </div>
+
+                <!-- 9. Уважение -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">9</span>
+                        Уважение
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> В команде царит взаимное уважение и признание ценности каждого. Люди слушают друг друга, ценят чужой вклад и опыт. Уважение — это фундамент, на котором строятся все остальные отношения.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Каждый чувствует, что его мнение важно и его вклад замечен.
+                    </p>
+                </div>
+
+                <!-- 10. Дух товарищества -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">10</span>
+                        Дух товарищества
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Сильное чувство «мы» и взаимной поддержки. Это не просто дружба, а профессиональная сплоченность вокруг общей цели. Люди помогают друг другу, делятся успехами и трудностями, и это дает энергию для работы.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> В команде есть атмосфера поддержки — «я прикрываю твою спину, а ты — мою».
+                    </p>
+                </div>
+
+                <!-- 11. Коммуникации -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">11</span>
+                        Коммуникации
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Информация передается ясно, своевременно и релевантно. Но главное — команда умеет слушать. Эффективная коммуникация — это не просто отправка сообщений, а двусторонний процесс, где важны и говорение, и слушание.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> В команде нет недопонимания, а информация доходит до всех, кому нужна.
+                    </p>
+                </div>
+
+                <!-- 12. Конструктивное взаимодействие -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">12</span>
+                        Конструктивное взаимодействие
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Команда не избегает конфликтов, а умеет использовать их для поиска лучших решений. Разногласия — это источник новых идей, а не повод для ссор. Конфликты решаются по делу, без перехода на личности.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Споры ведут к прогрессу, а не к расколу в команде.
+                    </p>
+                </div>
+
+                <!-- 13. Разнообразие -->
+                <div class="card card-orange" style="border-left-color:var(--orange);">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">13</span>
+                        Разнообразие
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Команда ценит различия в опыте, взглядах и стилях работы. Разнообразие — это не просто «хорошо», а ключевой источник силы и креативности. Каждый может быть собой, и это приносит пользу общему делу.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Разные мнения не подавляются, а поощряются и учитываются.
+                    </p>
+                </div>
+
+                <!-- 14. Оптимизм -->
+                <div class="card card-orange" style="border-left-color:var(--orange); grid-column: span 2;">
+                    <h4 style="margin-top:0; color:var(--orange-dark); display:flex; align-items:center; gap:10px;">
+                        <span style="background:var(--orange); color:white; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:700; flex-shrink:0;">14</span>
+                        Оптимизм
+                    </h4>
+                    <p style="font-size:0.95rem; margin:0;">
+                        <strong>Суть:</strong> Команда уверенно смотрит в будущее и верит в свои силы. Оптимизм — это не «розовые очки», а твердая вера в способность справиться с вызовами. Он дает энергию, помогает сохранять устойчивость в кризисах и вдохновляет на достижения.
+                    </p>
+                    <p style="font-size:0.9rem; color:var(--gray-500); margin-top:6px;">
+                        <strong>Признак:</strong> Даже в трудные времена команда сохраняет настрой «мы справимся».
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="highlight-box highlight-box-blue mt-20">
+                <i class="fas fa-info-circle" style="color:var(--blue); font-size:1.4rem; float:left; margin-right:16px;"></i>
+                <strong style="display:block; margin-bottom:4px;">Как использовать эти описания</strong>
+                <ul style="margin:0 0 0 20px; font-size:0.95rem;">
+                    <li><strong>Для диагностики:</strong> Понимание сути каждого фактора помогает точнее интерпретировать результаты опросника.</li>
+                    <li><strong>Для фасилитации:</strong> Используйте описания, чтобы объяснить команде, что именно измеряется и почему это важно.</li>
+                    <li><strong>Для самооценки:</strong> Члены команды могут сопоставить свое восприятие с описаниями и лучше понять зоны роста.</li>
+                </ul>
+            </div>
+
+        </section>
+
+        <hr class="divider" />
+
+        <!-- ===== ФУТЕР ===== -->
+        <footer class="footer">
+            <span>© 2026 · Методический паспорт оценки потенциала команды</span>
+            <span>
+                <i class="fas fa-user"></i> Алексей Милеев &nbsp;·&nbsp;
+                <i class="fas fa-phone"></i> +7(926)204 37 09 &nbsp;·&nbsp;
+                <i class="fas fa-print" onclick="window.print();" style="cursor:pointer;"></i> Печать
+            </span>
+        </footer>
+
+    </div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+        // ===== АККОРДЕОН =====
+        function toggleTab(el) {
+            const content = el.nextElementSibling;
+            const icon = el.querySelector('i.fa-chevron-down');
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                el.classList.remove('open');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                const parent = el.closest('section');
+                if (parent) {
+                    const allTabs = parent.querySelectorAll('.tab-content');
+                    const allLabels = parent.querySelectorAll('.tab-label');
+                    allTabs.forEach(t => t.classList.remove('open'));
+                    allLabels.forEach(l => l.classList.remove('open'));
+                }
+                content.classList.add('open');
+                el.classList.add('open');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // ===== КНОПКА НАВЕРХ =====
+        const scrollBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 600) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
+        scrollBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ===== КАЛЬКУЛЯТОР =====
+        const factorNames = [
+            'Лидерство', 'Ресурсы', 'Принятие решений', 'Проактивность',
+            'Подотчетность', 'Цели и стратегии', 'Согласованность',
+            'Доверие', 'Уважение', 'Дух товарищества', 'Коммуникации',
+            'Конструктивное взаимодействие', 'Разнообразие', 'Оптимизм'
+        ];
+
+        const factorKeys = [
+            'f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7',
+            'f8', 'f9', 'f10', 'f11', 'f12', 'f13', 'f14'
+        ];
+
+        let currentMode = 'team';
+        let leaderInitialized = false;
+
+        // ===== ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРОВ КОМАНДЫ =====
+        const calcGrid = document.getElementById('calcGrid');
+        // Заголовки уже есть в HTML
+
+        // Факторы продуктивности (индексы 0-6) и вовлеченности (индексы 7-13)
+        const prodIndices = [0, 1, 2, 3, 4, 5, 6];
+        const posIndices = [7, 8, 9, 10, 11, 12, 13];
+
+        // Создаем слайдеры для продуктивности (левый столбец)
+        prodIndices.forEach(idx => {
+            const name = factorNames[idx];
+            const key = factorKeys[idx];
+            const div = document.createElement('div');
+            div.className = 'calc-item';
+            div.innerHTML = `
+                <label>
+                    <span>${idx+1}. ${name}</span>
+                    <span class="calc-value" id="val_${key}">5.0</span>
+                </label>
+                <div class="slider-wrapper">
+                    <div class="slider-tooltip" id="tip_${key}">5.0</div>
+                    <input type="range" min="0" max="10" step="0.5" value="5" id="slider_${key}" data-key="${key}">
+                </div>
+            `;
+            calcGrid.appendChild(div);
+        });
+
+        // Создаем слайдеры для вовлеченности (правый столбец)
+        posIndices.forEach(idx => {
+            const name = factorNames[idx];
+            const key = factorKeys[idx];
+            const div = document.createElement('div');
+            div.className = 'calc-item';
+            div.innerHTML = `
+                <label>
+                    <span>${idx+1}. ${name}</span>
+                    <span class="calc-value" id="val_${key}">5.0</span>
+                </label>
+                <div class="slider-wrapper">
+                    <div class="slider-tooltip" id="tip_${key}">5.0</div>
+                    <input type="range" min="0" max="10" step="0.5" value="5" id="slider_${key}" data-key="${key}">
+                </div>
+            `;
+            calcGrid.appendChild(div);
+        });
+
+        // ===== ИНИЦИАЛИЗАЦИЯ СЛАЙДЕРОВ РУКОВОДИТЕЛЯ =====
+        function initLeaderSliders() {
+            if (leaderInitialized) return;
+            const grid = document.getElementById('calcGridLeader');
+
+            // Заголовок уже есть в HTML
+
+            // Факторы продуктивности (индексы 0-6)
+            prodIndices.forEach(idx => {
+                const name = factorNames[idx];
+                const key = factorKeys[idx];
+                const div = document.createElement('div');
+                div.className = 'calc-item';
+                div.innerHTML = `
+                    <label>
+                        <span style="color:var(--purple);">${idx+1}. ${name}</span>
+                        <span class="calc-value-leader" id="val_leader_${key}">5.0</span>
+                    </label>
+                    <div class="slider-wrapper">
+                        <div class="slider-tooltip" id="tip_leader_${key}">5.0</div>
+                        <input type="range" min="0" max="10" step="0.5" value="5" id="slider_leader_${key}" data-key="${key}" data-leader="true">
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+
+            // Факторы вовлеченности (индексы 7-13)
+            posIndices.forEach(idx => {
+                const name = factorNames[idx];
+                const key = factorKeys[idx];
+                const div = document.createElement('div');
+                div.className = 'calc-item';
+                div.innerHTML = `
+                    <label>
+                        <span style="color:var(--purple);">${idx+1}. ${name}</span>
+                        <span class="calc-value-leader" id="val_leader_${key}">5.0</span>
+                    </label>
+                    <div class="slider-wrapper">
+                        <div class="slider-tooltip" id="tip_leader_${key}">5.0</div>
+                        <input type="range" min="0" max="10" step="0.5" value="5" id="slider_leader_${key}" data-key="${key}" data-leader="true">
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+
+            document.querySelectorAll('#calcGridLeader input[type="range"]').forEach(slider => {
+                const key = slider.dataset.key;
+                const tooltip = document.getElementById('tip_leader_' + key);
+
+                slider.addEventListener('input', function() {
+                    const val = parseFloat(this.value);
+                    document.getElementById('val_leader_' + key).textContent = val.toFixed(1);
+                    tooltip.textContent = val.toFixed(1);
+                    tooltip.classList.add('show');
+                    const percent = (val - 0) / (10 - 0);
+                    const px = percent * (this.offsetWidth - 10);
+                    tooltip.style.left = 'calc(10px + ' + px + 'px)';
+                    calculateAll();
+                });
+
+                slider.addEventListener('blur', function() {
+                    document.getElementById('tip_leader_' + key).classList.remove('show');
+                });
+
+                slider.addEventListener('mouseenter', function() {
+                    document.getElementById('tip_leader_' + key).classList.add('show');
+                });
+
+                slider.addEventListener('mouseleave', function() {
+                    document.getElementById('tip_leader_' + key).classList.remove('show');
+                });
+            });
+
+            leaderInitialized = true;
+        }
+
+        // ===== ПЕРЕКЛЮЧЕНИЕ РЕЖИМОВ =====
+        function setMode(mode) {
+            currentMode = mode;
+            const teamBtn = document.getElementById('modeTeamBtn');
+            const leaderBtn = document.getElementById('modeLeaderBtn');
+            const hint = document.getElementById('modeHint');
+            const leaderGrid = document.getElementById('calcGridLeader');
+
+            if (mode === 'team') {
+                teamBtn.className = 'btn-mode active';
+                leaderBtn.className = 'btn-mode';
+                hint.innerHTML = '<i class="fas fa-info-circle"></i> Текущий режим: оценка команды';
+                leaderGrid.classList.remove('visible');
+                leaderGrid.style.display = 'none';
+            } else {
+                leaderBtn.className = 'btn-mode leader-active';
+                teamBtn.className = 'btn-mode';
+                hint.innerHTML = '<i class="fas fa-info-circle"></i> Текущий режим: сравнение с руководителем <span style="color:var(--purple);">(фиолетовый пунктир)</span>';
+                if (!leaderInitialized) initLeaderSliders();
+                leaderGrid.classList.add('visible');
+                leaderGrid.style.display = 'grid';
+            }
+            calculateAll();
+        }
+
+        // ===== ОБРАБОТКА СОБЫТИЙ СЛАЙДЕРОВ КОМАНДЫ =====
+        document.querySelectorAll('#calcGrid input[type="range"]').forEach(slider => {
+            const key = slider.dataset.key;
+            const tooltip = document.getElementById('tip_' + key);
+
+            slider.addEventListener('input', function() {
+                const val = parseFloat(this.value);
+                document.getElementById('val_' + key).textContent = val.toFixed(1);
+                tooltip.textContent = val.toFixed(1);
+                tooltip.classList.add('show');
+                const percent = (val - 0) / (10 - 0);
+                const px = percent * (this.offsetWidth - 10);
+                tooltip.style.left = 'calc(10px + ' + px + 'px)';
+                calculateAll();
+            });
+
+            slider.addEventListener('blur', function() {
+                document.getElementById('tip_' + key).classList.remove('show');
+            });
+
+            slider.addEventListener('mouseenter', function() {
+                document.getElementById('tip_' + key).classList.add('show');
+            });
+
+            slider.addEventListener('mouseleave', function() {
+                document.getElementById('tip_' + key).classList.remove('show');
+            });
+        });
+
+        // ===== ПОЛУЧЕНИЕ ЗНАЧЕНИЙ =====
+        function getFactorValues() {
+            const values = {};
+            factorKeys.forEach(key => {
+                const slider = document.getElementById('slider_' + key);
+                values[key] = parseFloat(slider.value);
+            });
+            return values;
+        }
+
+        function getLeaderValues() {
+            if (currentMode !== 'leader') return null;
+            const values = {};
+            factorKeys.forEach(key => {
+                const slider = document.getElementById('slider_leader_' + key);
+                if (slider) {
+                    values[key] = parseFloat(slider.value);
+                } else {
+                    values[key] = 5.0;
+                }
+            });
+            return values;
+        }
+
+        // ===== УРОВЕНЬ ФАКТОРА =====
+        function getLevel(value) {
+            if (value < 5) return { label: 'Критический', color: '#E8746B' };
+            if (value < 7) return { label: 'Развивающийся', color: '#EEA24C' };
+            return { label: 'Зрелый', color: '#7AB66B' };
+        }
+
+        // ===== ПОЛУЧЕНИЕ ЦВЕТА ПО ЗНАЧЕНИЮ =====
+        function getColorForValue(value) {
+            if (value < 4) return '#E8746B';
+            if (value < 7) return '#EEA24C';
+            return '#7AB66B';
+        }
+
+        // ===== ОСНОВНОЙ РАСЧеТ =====
+        function calculateAll() {
+            const vals = getFactorValues();
+            const leaderVals = getLeaderValues();
+
+            let prodSum = 0;
+            for (let i = 1; i <= 7; i++) prodSum += vals['f' + i];
+            const prod = prodSum / 7;
+
+            let posSum = 0;
+            for (let i = 8; i <= 14; i++) posSum += vals['f' + i];
+            const pos = posSum / 7;
+
+            const P = (prod + pos) / 2;
+            const diff = Math.abs(prod - pos);
+            const H = 1 - (diff / 10);
+            const total = P * H;
+
+            let cluster = '';
+            let clusterColor = '';
+            let clusterBg = '';
+            let fillColor = '';
+            let strokeColor = '';
+            let harmonyColor = '';
+
+            if (prod >= 7 && pos >= 7) {
+                cluster = 'ЗЕЛеНАЯ';
+                clusterColor = '#fff';
+                clusterBg = 'var(--green-dark)';
+                fillColor = 'rgba(122, 182, 107, 0.25)';
+                strokeColor = '#7AB66B';
+                harmonyColor = '#5A8E4B';
+            } else if (prod >= 7 && pos < 7) {
+                cluster = 'КРАСНАЯ';
+                clusterColor = '#fff';
+                clusterBg = 'var(--orange-dark)';
+                fillColor = 'rgba(238, 162, 76, 0.25)';
+                strokeColor = '#EEA24C';
+                harmonyColor = '#D4892E';
+            } else if (prod < 7 && pos >= 7) {
+                cluster = 'СИНЯЯ';
+                clusterColor = '#fff';
+                clusterBg = '#2B6B8F';
+                fillColor = 'rgba(91, 155, 213, 0.25)';
+                strokeColor = '#5B9BD5';
+                harmonyColor = '#2B6B8F';
+            } else {
+                cluster = 'СЕРАЯ';
+                clusterColor = '#fff';
+                clusterBg = '#888';
+                fillColor = 'rgba(160, 160, 160, 0.25)';
+                strokeColor = '#A0A0A0';
+                harmonyColor = '#888';
+            }
+
+            // Итоговый балл — цвет
+            const totalColor = getColorForValue(total);
+            document.getElementById('totalScoreDisplay').style.color = totalColor;
+            document.getElementById('totalScoreDisplay').textContent = total.toFixed(2);
+
+            // Продуктивность — цвет
+            const prodColor = getColorForValue(prod);
+            const prodEl = document.getElementById('prodDisplay');
+            prodEl.style.color = prodColor;
+            prodEl.textContent = prod.toFixed(2);
+
+            // Вовлеченность — цвет
+            const posColor = getColorForValue(pos);
+            const posEl = document.getElementById('posDisplay');
+            posEl.style.color = posColor;
+            posEl.textContent = pos.toFixed(2);
+
+            // Индекс гармонии — цвет кластера
+            const harmonyEl = document.getElementById('harmonyDisplay');
+            harmonyEl.style.color = harmonyColor;
+            harmonyEl.textContent = H.toFixed(3);
+
+            const clusterEl = document.getElementById('clusterDisplay');
+            clusterEl.textContent = cluster;
+            clusterEl.style.background = clusterBg;
+            clusterEl.style.color = clusterColor;
+
+            drawSpider(vals, fillColor, strokeColor, leaderVals);
+        }
+
+        // ===== СПАЙДЕР-ГРАФИК =====
+        function drawSpider(vals, fillColor, strokeColor, leaderVals) {
+            const canvas = document.getElementById('spiderCanvas');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            const containerWidth = rect.width || 600;
+            const size = Math.min(containerWidth, 600);
+            canvas.width = size;
+            canvas.height = size;
+
+            const w = canvas.width;
+            const h = canvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const radius = Math.min(w, h) * 0.38;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const labels = factorNames;
+            const keys = factorKeys;
+            const n = labels.length;
+
+            const angles = [];
+            for (let i = 0; i < n; i++) {
+                angles.push(-Math.PI / 2 + (i * 2 * Math.PI) / n);
+            }
+
+            // Сетка
+            for (let ring = 1; ring <= 3; ring++) {
+                const r = radius * (ring / 3);
+                ctx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const x = cx + r * Math.cos(angles[i]);
+                    const y = cy + r * Math.sin(angles[i]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = '#D0D7D2';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Линии
+            for (let i = 0; i < n; i++) {
+                const x = cx + radius * Math.cos(angles[i]);
+                const y = cy + radius * Math.sin(angles[i]);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(x, y);
+                ctx.strokeStyle = '#D0D7D2';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                const labelR = radius * 1.10;
+                const lx = cx + labelR * Math.cos(angles[i]);
+                const ly = cy + labelR * Math.sin(angles[i]);
+                ctx.fillStyle = '#3F4A44';
+                ctx.font = '10px Segoe UI, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(labels[i], lx, ly);
+            }
+
+            // ===== ДАННЫЕ КОМАНДЫ =====
+            const values = keys.map(k => vals[k] / 10);
+            ctx.beginPath();
+            for (let i = 0; i < n; i++) {
+                const r = radius * values[i];
+                const x = cx + r * Math.cos(angles[i]);
+                const y = cy + r * Math.sin(angles[i]);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+
+            if (fillColor) {
+                ctx.fillStyle = fillColor;
+                ctx.fill();
+            }
+
+            if (strokeColor) {
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = 3;
+                ctx.setLineDash([]);
+                ctx.stroke();
+            }
+
+            // ===== ДАННЫЕ РУКОВОДИТЕЛЯ (если есть) =====
+            if (leaderVals) {
+                const leaderValues = keys.map(k => leaderVals[k] / 10);
+                ctx.beginPath();
+                for (let i = 0; i < n; i++) {
+                    const r = radius * leaderValues[i];
+                    const x = cx + r * Math.cos(angles[i]);
+                    const y = cy + r * Math.sin(angles[i]);
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+
+                ctx.strokeStyle = '#6C5CE7';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([6, 5]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                for (let i = 0; i < n; i++) {
+                    const r = radius * leaderValues[i];
+                    const x = cx + r * Math.cos(angles[i]);
+                    const y = cy + r * Math.sin(angles[i]);
+
+                    ctx.beginPath();
+                    ctx.rect(x - 4, y - 4, 8, 8);
+                    ctx.fillStyle = '#6C5CE7';
+                    ctx.fill();
+                    ctx.strokeStyle = '#fff';
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                }
+            }
+
+            // ===== ТОЧКИ КОМАНДЫ =====
+            for (let i = 0; i < n; i++) {
+                const val = vals[keys[i]];
+                const level = getLevel(val);
+                const r = radius * values[i];
+                const x = cx + r * Math.cos(angles[i]);
+                const y = cy + r * Math.sin(angles[i]);
+
+                const gradient = ctx.createRadialGradient(x, y, 0, x, y, 10);
+                gradient.addColorStop(0, level.color);
+                gradient.addColorStop(1, '#fff');
+                ctx.beginPath();
+                ctx.arc(x, y, 8, 0, 2 * Math.PI);
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // ===== ЛЕГЕНДА =====
+            ctx.font = '12px Segoe UI, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'top';
+
+            const legendX = 12;
+            let legendY = 12;
+
+            ctx.fillStyle = strokeColor || '#7AB66B';
+            ctx.fillRect(legendX, legendY + 6, 20, 3);
+            ctx.fillStyle = '#3F4A44';
+            ctx.fillText('Команда (средняя)', legendX + 26, legendY);
+
+            if (leaderVals) {
+                legendY += 26;
+                ctx.strokeStyle = '#6C5CE7';
+                ctx.lineWidth = 2.5;
+                ctx.setLineDash([6, 5]);
+                ctx.beginPath();
+                ctx.moveTo(legendX, legendY + 6);
+                ctx.lineTo(legendX + 20, legendY + 6);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = '#3F4A44';
+                ctx.fillText('Руководитель (индивидуальная)', legendX + 26, legendY);
+
+                ctx.fillStyle = '#6C5CE7';
+                ctx.fillRect(legendX + 2, legendY + 1, 6, 6);
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(legendX + 2, legendY + 1, 6, 6);
+            }
+        }
+
+        // ===== СКАЧИВАНИЕ ШАБЛОНОВ =====
+        function downloadTemplate(type) {
+            let content = '';
+            let filename = '';
+            let mimeType = 'text/plain';
+
+            if (type === 'data') {
+                content =
+                    'Фактор,Вопрос_1_поведение,Вопрос_2_восприятие,Среднее\nЛидерство,5,6,5.5\nРесурсы,4,5,4.5\nПринятие решений,6,7,6.5\nПроактивность,5,5,5.0\nПодотчетность,6,6,6.0\nЦели и стратегии,7,8,7.5\nСогласованность,5,6,5.5\nДоверие,4,5,4.5\nУважение,6,7,6.5\nДух товарищества,5,6,5.5\nКоммуникации,4,4,4.0\nКонструктивное взаимодействие,3,4,3.5\nРазнообразие,6,6,6.0\nОптимизм,5,5,5.0';
+                filename = 'template_data.csv';
+                mimeType = 'text/csv';
+            } else if (type === 'report') {
+                content =
+                    'ОТЧеТ ОЦЕНКИ ПОТЕНЦИАЛА КОМАНДЫ\n' +
+                    '====================================\n\n' +
+                    'Дата: _________________\n' +
+                    'Команда: _________________\n\n' +
+                    'РЕЗУЛЬТАТЫ:\n' +
+                    '------------\n' +
+                    'Продуктивность (П): ____\n' +
+                    'Вовлеченность (В): ____\n' +
+                    'Общий потенциал (P): ____\n' +
+                    'Индекс гармонии (H): ____\n' +
+                    'Итоговый балл: ____\n' +
+                    'Кластер: ____\n\n' +
+                    'СИЛЬНЫЕ СТОРОНЫ (≥ 7):\n' +
+                    '- _________________\n' +
+                    '- _________________\n\n' +
+                    'ЗОНЫ РОСТА (< 5):\n' +
+                    '- _________________\n' +
+                    '- _________________\n\n' +
+                    'РЕКОМЕНДАЦИИ:\n' +
+                    '--------------\n' +
+                    '1. _________________\n' +
+                    '2. _________________\n' +
+                    '3. _________________\n' +
+                    '4. _________________\n\n' +
+                    'РАЗРАБОТЧИК: Алексей Милеев / +7(926)204 37 09\n';
+                filename = 'template_report.txt';
+                mimeType = 'text/plain';
+            } else if (type === 'checklist') {
+                content =
+                    'ЧЕК-ЛИСТ ПОДГОТОВКИ ОЦЕНКИ\n' +
+                    '============================\n\n' +
+                    '[ ] Определен состав команды\n' +
+                    '[ ] Согласовано участие с руководителем\n' +
+                    '[ ] Команде объяснена цель оценки\n' +
+                    '[ ] Гарантирована анонимность ответов\n' +
+                    '[ ] Подготовлен опросник (ссылка/бланки)\n' +
+                    '[ ] Установлен дедлайн (3-5 дней)\n' +
+                    '[ ] Назначен ответственный за сбор данных\n' +
+                    '[ ] Назначен ответственный за агрегацию\n' +
+                    '[ ] Подготовлен шаблон для обработки данных\n' +
+                    '[ ] Назначена дата презентации результатов\n\n' +
+                    'РАЗРАБОТЧИК: Алексей Милеев / +7(926)204 37 09\n';
+                filename = 'checklist_prep.txt';
+                mimeType = 'text/plain';
+            }
+
+            const blob = new Blob([content], { type: mimeType + ';charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(link.href);
+        }
+
+        // ===== 12.2. ЧЕК-ЛИСТ СЛАБОГО ЗВЕНА =====
+        function updateWeakLink() {
+            const fundChecks = document.querySelectorAll('.check-fund:checked');
+            const procChecks = document.querySelectorAll('.check-proc:checked');
+            const enerChecks = document.querySelectorAll('.check-ener:checked');
+            const resChecks = document.querySelectorAll('.check-res:checked');
+
+            const fundTotal = document.querySelectorAll('.check-fund').length;
+            const procTotal = document.querySelectorAll('.check-proc').length;
+            const enerTotal = document.querySelectorAll('.check-ener').length;
+            const resTotal = document.querySelectorAll('.check-res').length;
+
+            const fundScore = fundChecks.length / fundTotal;
+            const procScore = procChecks.length / procTotal;
+            const enerScore = enerChecks.length / enerTotal;
+            const resScore = resChecks.length / resTotal;
+
+            const scores = [
+                { name: 'Фундамент', score: fundScore },
+                { name: 'Процессы', score: procScore },
+                { name: 'Энергия', score: enerScore },
+                { name: 'Результаты', score: resScore }
+            ];
+
+            const minScore = Math.min(...scores.map(s => s.score));
+            const weak = scores.find(s => s.score === minScore);
+
+            const resultDiv = document.getElementById('weakLinkResult');
+
+            if (minScore === 1) {
+                resultDiv.innerHTML = `
+                    <i class="fas fa-check-circle" style="color:var(--green); font-size:1.2rem;"></i>
+                    <strong style="color:var(--green-dark);">Отлично!</strong> Все уровни в порядке.
+                    Работайте над <strong>проактивностью и разнообразием</strong> для выхода на новый уровень.
+                `;
+                resultDiv.style.borderLeftColor = 'var(--green)';
+                resultDiv.style.background = 'var(--green-bg)';
+            } else {
+                const hint = {
+                    'Фундамент': 'Начните с анонимных опросов и практики признания.',
+                    'Процессы': 'Внедрите регулярные синхронизации и правила обратной связи.',
+                    'Энергия': 'Создайте быстрые победы и поддерживайте инициативы.',
+                    'Результаты': 'Введите четкие KPI и SMART-цели.'
+                };
+
+                resultDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle" style="color:var(--orange); font-size:1.2rem;"></i>
+                    <strong style="color:var(--orange-dark);">Слабое звено: ${weak.name}</strong><br>
+                    <span style="font-size:0.92rem; color:var(--gray-700);">${hint[weak.name]}</span>
+                    <br><span style="font-size:0.8rem; color:var(--gray-500);">Отмечено ${Math.round(minScore * 100)}% пунктов.</span>
+                `;
+                resultDiv.style.borderLeftColor = 'var(--orange)';
+                resultDiv.style.background = 'var(--orange-bg)';
+            }
+        }
+
+        // ===== 12.3. СИСТЕМНЫЙ АНАЛИЗ ПО ДАННЫМ ИЗ ОПРОСНИКА =====
+        function updateSystemFromData() {
+            const sliders = document.querySelectorAll('#calcGrid input[type="range"]');
+            if (sliders.length === 0) {
+                document.getElementById('sysAvg2').textContent = '—';
+                document.getElementById('sysLever2').textContent = '—';
+                document.getElementById('sysLeverReason2').textContent = 'Заполните опросник в разделе 10';
+                document.getElementById('sysEffect2').textContent = '—';
+                document.getElementById('sysEffectDesc2').textContent = 'Заполните опросник';
+                document.getElementById('sysRecText2').textContent = 'Перейдите в раздел 10, заполните опросник, и системный анализ будет рассчитан автоматически.';
+                document.getElementById('sysDataDisplay').innerHTML = '<div style="grid-column:1/-1; text-align:center; color:var(--gray-500);">Нет данных. Заполните опросник в разделе 10.</div>';
+                return;
+            }
+
+            const values = {};
+            let total = 0;
+            let count = 0;
+
+            sliders.forEach(slider => {
+                const val = parseFloat(slider.value);
+                const key = slider.id.replace('slider_', '');
+                values[key] = val;
+                total += val;
+                count++;
+            });
+
+            const avg = total / count;
+            document.getElementById('sysAvg2').textContent = avg.toFixed(1);
+
+            const displayDiv = document.getElementById('sysDataDisplay');
+            const factorShortNames = ['Лид', 'Рес', 'Реш', 'Про', 'Под', 'Цел', 'Сог', 'Дов', 'Ува', 'Дух', 'Ком', 'Кон', 'Раз', 'Опт'];
+            displayDiv.innerHTML = factorShortNames.map((name, i) => {
+                const key = 'f' + (i + 1);
+                const val = values[key] || 0;
+                const color = val >= 7 ? 'var(--green-dark)' : (val >= 5 ? 'var(--orange-dark)' : 'var(--red)');
+                return `<div style="text-align:center; padding:4px 0; border-bottom:1px solid var(--gray-200);">
+                            <div style="font-size:0.65rem; color:var(--gray-500);">${name}</div>
+                            <div style="font-weight:700; color:${color};">${val.toFixed(1)}</div>
+                        </div>`;
+            }).join('');
+
+            const factors = {
+                trust: { name: 'Доверие', level: 'Фундамент', color: 'var(--red)' },
+                respect: { name: 'Уважение', level: 'Фундамент', color: 'var(--red)' },
+                communication: { name: 'Коммуникации', level: 'Процессы', color: 'var(--blue)' },
+                constructive: { name: 'Конструктивное взаимодействие', level: 'Процессы', color: 'var(--blue)' },
+                diversity: { name: 'Разнообразие', level: 'Процессы', color: 'var(--blue)' },
+                camaraderie: { name: 'Дух товарищества', level: 'Процессы', color: 'var(--blue)' },
+                proactivity: { name: 'Проактивность', level: 'Энергия', color: 'var(--orange)' },
+                optimism: { name: 'Оптимизм', level: 'Энергия', color: 'var(--orange)' },
+                leadership: { name: 'Лидерство', level: 'Энергия', color: 'var(--orange)' },
+                goals: { name: 'Цели и стратегии', level: 'Результаты', color: 'var(--green)' },
+                accountability: { name: 'Подотчетность', level: 'Результаты', color: 'var(--green)' },
+                decisions: { name: 'Принятие решений', level: 'Результаты', color: 'var(--green)' },
+                resources: { name: 'Ресурсы', level: 'Результаты', color: 'var(--green)' },
+                alignment: { name: 'Согласованность', level: 'Результаты', color: 'var(--green)' }
+            };
+
+            const levels = { 'Фундамент': Infinity, 'Процессы': Infinity, 'Энергия': Infinity, 'Результаты': Infinity };
+            const levelFactors = { 'Фундамент': null, 'Процессы': null, 'Энергия': null, 'Результаты': null };
+
+            for (const [key, val] of Object.entries(values)) {
+                if (factors[key]) {
+                    const level = factors[key].level;
+                    if (val < levels[level]) {
+                        levels[level] = val;
+                        levelFactors[level] = { ...factors[key], value: val };
+                    }
+                }
+            }
+
+            const priorityOrder = ['Фундамент', 'Процессы', 'Энергия', 'Результаты'];
+            let priorityFactor = null;
+            for (const level of priorityOrder) {
+                if (levelFactors[level] && levels[level] < 7) {
+                    priorityFactor = levelFactors[level];
+                    break;
+                }
+            }
+
+            if (!priorityFactor) {
+                let minVal = Infinity;
+                let minKey = null;
+                for (const [key, val] of Object.entries(values)) {
+                    if (val < minVal) {
+                        minVal = val;
+                        minKey = key;
+                    }
+                }
+                if (minKey && factors[minKey]) {
+                    priorityFactor = { ...factors[minKey], value: minVal };
+                }
+            }
+
+            const leverEl = document.getElementById('sysLever2');
+            const reasonEl = document.getElementById('sysLeverReason2');
+            if (priorityFactor) {
+                leverEl.textContent = priorityFactor.name;
+                leverEl.style.color = priorityFactor.color;
+                if (priorityFactor.value < 5) {
+                    reasonEl.textContent = `Критический (${priorityFactor.value.toFixed(1)}) — немедленное вмешательство`;
+                } else if (priorityFactor.value < 7) {
+                    reasonEl.textContent = `Развивающийся (${priorityFactor.value.toFixed(1)}) — есть потенциал`;
+                } else {
+                    reasonEl.textContent = `Зрелый (${priorityFactor.value.toFixed(1)}) — поддерживать`;
+                }
+            } else {
+                leverEl.textContent = '—';
+                reasonEl.textContent = 'Оцените все факторы';
+            }
+
+            const effectEl = document.getElementById('sysEffect2');
+            const effectDesc = document.getElementById('sysEffectDesc2');
+            if (priorityFactor) {
+                const potentialGain = (7 - priorityFactor.value) * 0.4;
+                effectEl.textContent = '+' + potentialGain.toFixed(2);
+                effectEl.style.color = potentialGain > 0.5 ? 'var(--green-dark)' : 'var(--orange-dark)';
+                effectDesc.textContent = `При улучшении "${priorityFactor.name}" до 7.0`;
+            } else {
+                effectEl.textContent = '—';
+                effectDesc.textContent = 'При воздействии на рычаг';
+            }
+
+            const recText = document.getElementById('sysRecText2');
+            if (priorityFactor) {
+                const actions = {
+                    'Доверие': 'Проведите анонимный опрос по психологической безопасности.',
+                    'Уважение': 'Введите практику публичного признания вклада.',
+                    'Коммуникации': 'Внедрите 15-минутные стендапы.',
+                    'Конструктивное взаимодействие': 'Проведите фасилитацию по управлению конфликтами.',
+                    'Проактивность': 'Создайте "Идейный час" раз в неделю.',
+                    'Оптимизм': 'Создайте быстрые победы и празднуйте успехи.',
+                    'Цели и стратегии': 'Проведите стратегическую сессию.',
+                    'Подотчетность': 'Введите практику "обещаний".'
+                };
+                recText.textContent = actions[priorityFactor.name] || 'Начните работу с этого фактора.';
+            } else {
+                recText.textContent = 'Заполните опросник в разделе 10 для получения рекомендации.';
+            }
+        }
+
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        document.addEventListener('DOMContentLoaded', function() {
+            calculateAll();
+
+            updateWeakLink();
+            setTimeout(updateSystemFromData, 500);
+
+            document.addEventListener('input', function(e) {
+                if (e.target.closest('#calcGrid input[type="range"]')) {
+                    setTimeout(updateSystemFromData, 100);
+                }
+            });
+
+            setTimeout(() => {
+                const firstTab = document.querySelector('.tab-label');
+                if (firstTab) toggleTab(firstTab);
+            }, 500);
+
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    const vals = getFactorValues();
+                    const leaderVals = getLeaderValues();
+                    drawSpider(vals, 'rgba(122,182,107,0.25)', '#7AB66B', leaderVals);
+                }, 150);
+            });
+        });
+    </script>
+
+</body>
+</html>

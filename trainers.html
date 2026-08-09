@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Диалоговые тренажёры — Лаборатория Метаморфозиса</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --bg-deep: #090a0e;
+    --panel: #171a22;
+    --panel-2: #1c1f28;
+    --line: rgba(255,255,255,0.09);
+    --text: #eef1f6;
+    --text-dim: #aab1c2;
+    --text-dimmer: #6b7688;
+    --copper: #b0653a;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background:
+      radial-gradient(900px 560px at 88% -10%, rgba(176,101,58,0.10), transparent 60%),
+      radial-gradient(760px 520px at 6% 100%, rgba(139,111,224,0.10), transparent 60%),
+      var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100%;
+  }
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dimmer);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 34px;
+    transition: color 0.2s ease;
+  }
+  .back-link:hover { color: var(--text-dim); }
+  .back-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--copper);
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 30px;
+    font-weight: 600;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 520px;
+    margin: 0 0 40px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .card-row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  /* ===== Капсула-эликсир (тот же компонент, что на главной) ===== */
+  .card-bar-ext { position: relative; width: 26px; flex-shrink: 0; }
+  .card-bar-ext .elixir-glow {
+    position: absolute; inset: -12px;
+    border-radius: 999px;
+    background: var(--c1);
+    filter: blur(14px);
+    opacity: 0.11;
+    animation: elixirGlowPulse 6.5s ease-in-out infinite;
+    z-index: 0;
+  }
+  .capsule-body {
+    position: absolute; inset: 0;
+    border-radius: 999px;
+    overflow: hidden;
+    background:
+      repeating-linear-gradient(55deg,
+        rgba(255,255,255,0.24) 0 2px,
+        rgba(255,255,255,0) 2px 11px,
+        rgba(0,0,0,0.22) 11px 13px,
+        rgba(255,255,255,0) 13px 22px),
+      repeating-linear-gradient(-55deg,
+        rgba(255,255,255,0.16) 0 2px,
+        rgba(255,255,255,0) 2px 11px,
+        rgba(0,0,0,0.18) 11px 13px,
+        rgba(255,255,255,0) 13px 22px),
+      radial-gradient(60% 90% at 30% 50%, rgba(255,255,255,0.30), rgba(255,255,255,0) 65%),
+      linear-gradient(90deg, rgba(0,0,0,0.34) 0%, transparent 22%, transparent 78%, rgba(0,0,0,0.34) 100%),
+      linear-gradient(165deg, var(--c1), var(--c2));
+    background-size: 220% 220%, 220% 220%, 100% 100%, 100% 100%, 100% 100%;
+    background-position: 0% 0%, 0% 0%, 0 0, 0 0, 0 0;
+    opacity: 0.22;
+    border: 1px solid rgba(255,255,255,0.20);
+    box-shadow:
+      inset 3px 0 6px rgba(0,0,0,0.35),
+      inset -3px 0 6px rgba(0,0,0,0.35);
+    z-index: 1;
+    animation: capsuleFacetLive 8s ease-in-out infinite;
+  }
+  @keyframes capsuleFacetLive {
+    0%, 100% { background-position: 0% 0%, 0% 0%, 0 0, 0 0, 0 0; }
+    50%      { background-position: 14% 20%, -14% -16%, 0 0, 0 0, 0 0; }
+  }
+  .card-bar-ext .elixir-sheen {
+    position: absolute;
+    left: 14%; top: 5%;
+    width: 20%; height: 90%;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0) 60%);
+    opacity: 0.30;
+    z-index: 2;
+  }
+  .card-bar-ext .elixir-rim {
+    position: absolute; inset: 0;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), inset 0 0 10px rgba(255,255,255,0.05);
+    pointer-events: none;
+    z-index: 3;
+  }
+  .card-bar-ext .bubble {
+    position: absolute;
+    left: 50%;
+    width: 5px; height: 5px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.55);
+    opacity: 0;
+    animation: elixirBubble linear infinite;
+    z-index: 2;
+  }
+  .card-bar-ext .bubble.b1 { left: 32%; width: 4px; height: 4px; animation-duration: 6.5s; animation-delay: 0.4s; }
+  .card-bar-ext .bubble.b2 { left: 60%; width: 6px; height: 6px; animation-duration: 8s; animation-delay: 2.4s; }
+  .card-bar-ext .bubble.b3 { left: 46%; width: 3px; height: 3px; animation-duration: 5.5s; animation-delay: 4.1s; }
+
+  @keyframes elixirGlowPulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+  @keyframes elixirBubble {
+    0%   { bottom: 4%; opacity: 0; transform: translateX(0); }
+    10%  { opacity: 0.7; }
+    90%  { opacity: 0.5; }
+    100% { bottom: 92%; opacity: 0; transform: translateX(3px); }
+  }
+
+  .card {
+    position: relative;
+    flex: 1;
+    background: linear-gradient(155deg, var(--panel-2), var(--panel));
+    border-radius: 14px;
+    padding: 18px 20px;
+    min-height: 78px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    overflow: visible;
+    border: 1px solid var(--line);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .card:hover { transform: translateX(3px); border-color: rgba(255,255,255,0.18); }
+  .card-title {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--text);
+    position: relative;
+    z-index: 2;
+  }
+  .card-desc {
+    font-size: 12.5px;
+    font-weight: 300;
+    line-height: 1.5;
+    color: var(--text-dimmer);
+    position: relative;
+    z-index: 2;
+  }
+  .card.dim { cursor: default; }
+  .card.dim:hover { transform: none; border-color: var(--line); }
+  .card.dim .card-title { color: var(--text-dimmer); }
+  .card.dim .card-desc { color: rgba(107,118,136,0.6); }
+  .soon-tag {
+    align-self: flex-start;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-dimmer);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 40px 18px 60px; }
+    h1 { font-size: 25px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="back-link" href="index.html">
+    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    На главную
+  </a>
+
+  <div class="eyebrow">Диалоговые тренажёры</div>
+  <h1>Выберите тренажёр</h1>
+  <p class="lede">Живые диалоговые сценарии с реальным собеседником на базе LLM — не дерево заготовленных реплик, а настоящий разговор с разбором по итогам.</p>
+
+  <div class="cards">
+    <div class="card-row">
+      <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#3EAA6D" data-href="dialog-trainer-v1.html">
+        <div class="card-title">Конструктивная обратная связь · «Дмитрий»</div>
+        <div class="card-desc">Сценарий «снижение вовлечённости», 15 минут, роль — руководитель, текст + голос</div>
+      </div>
+    </div>
+
+    <div class="card-row">
+      <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#8B6FE0" data-href="dialog-trainer-argumentation-marina___копия.html">
+        <div class="card-title">Аргументация в переговорах · «Марина»</div>
+        <div class="card-desc">Сценарий «ресурсы под дедлайн» — распределение инженеров между командами</div>
+      </div>
+    </div>
+
+    <div class="card-row">
+      <div class="card-bar-ext" style="--c1:#4C7FB0; --c2:#9EC3E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#4C7FB0" data-href="dialog-trainer-narrative-igor___копия.html">
+        <div class="card-title">Нарративное лидерство · «Игорь»</div>
+        <div class="card-desc">Сценарий «признание ошибки» — разговор с сотрудником через сторителлинг</div>
+      </div>
+    </div>
+
+    <div class="card-row">
+      <div class="card-bar-ext" style="--c1:#D9A23E; --c2:#F3D48F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#D9A23E" data-href="Тренаже_р_метафор.html">
+        <div class="card-title">Мастерская образов · тренажёр метафор</div>
+        <div class="card-desc">6 шагов конструктора метафоры + тест перед тестовой аудиторией с разбором</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    document.querySelectorAll('.card[data-href]').forEach(function(card){
+      card.addEventListener('click', function(){
+        window.location.href = card.getAttribute('data-href');
+      });
+    });
+  })();
+</script>
+</body>
+</html>

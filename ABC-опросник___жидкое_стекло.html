@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABC-опросник · Кто решит вашу проблему №1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --accent:#81CCF2;
+      --accent-2:#9b8cff;
+      --accent-3:#63e0c4;
+      --a:#37AB66;
+      --b:#EEA14C;
+      --c:#ED6C4C;
+      --ink:#e8ecf1;
+      --ink-dim:#a7b8c9;
+      --ink-faint:#71879b;
+      --glass:rgba(255,255,255,0.055);
+      --glass-strong:rgba(255,255,255,0.10);
+      --glass-border:rgba(255,255,255,0.14);
+      --glass-border-soft:rgba(255,255,255,0.08);
+    }
+    * { box-sizing: border-box; margin: 0; }
+    .ic { display: inline-block; vertical-align: -0.15em; flex-shrink: 0; }
+    .ic svg { width: 1em; height: 1em; display: block; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, sans-serif;
+      padding: 2.5rem 1.5rem;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+      overflow-x: hidden;
+      background:
+        radial-gradient(1100px 700px at 12% -8%, rgba(129,204,242,0.16), transparent 60%),
+        radial-gradient(900px 650px at 108% 6%, rgba(155,140,255,0.13), transparent 55%),
+        radial-gradient(850px 600px at 45% 115%, rgba(99,224,196,0.10), transparent 55%),
+        linear-gradient(160deg, #0a0e13 0%, #0d1420 45%, #090c11 100%);
+      background-attachment: fixed;
+    }
+
+    /* ===== Декоративный слой: блики, шары света и пузырьки ===== */
+    .bg-orbs { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+    .orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .5; }
+    .orb-1 { width: 420px; height: 420px; top: -120px; left: -80px; background: radial-gradient(circle at 35% 35%, rgba(129,204,242,.55), transparent 70%); animation: drift1 26s ease-in-out infinite alternate; }
+    .orb-2 { width: 380px; height: 380px; top: 8%; right: -140px; background: radial-gradient(circle at 40% 40%, rgba(155,140,255,.45), transparent 70%); animation: drift2 30s ease-in-out infinite alternate; }
+    .orb-3 { width: 340px; height: 340px; bottom: -140px; left: 28%; background: radial-gradient(circle at 40% 40%, rgba(99,224,196,.4), transparent 70%); animation: drift3 24s ease-in-out infinite alternate; }
+    @keyframes drift1 { to { transform: translate(60px, 40px) scale(1.08); } }
+    @keyframes drift2 { to { transform: translate(-50px, 60px) scale(0.95); } }
+    @keyframes drift3 { to { transform: translate(40px, -50px) scale(1.05); } }
+
+    .bubbles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .bubble {
+      position: absolute; bottom: -40px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 28%, rgba(255,255,255,.85), rgba(255,255,255,.06) 42%, rgba(129,204,242,.14) 75%);
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: inset 0 0 6px rgba(255,255,255,.35), 0 4px 14px rgba(0,0,0,.25);
+      animation-name: rise;
+      animation-timing-function: ease-in;
+      animation-iteration-count: infinite;
+      opacity: 0;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      8% { opacity: .5; }
+      50% { transform: translateY(-52vh) translateX(14px); }
+      92% { opacity: .3; }
+      100% { transform: translateY(-108vh) translateX(-10px); opacity: 0; }
+    }
+
+    .container { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; }
+
+    h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.01em; color: #f2f5f8; }
+    h4 { font-size: 1rem; margin-bottom: 0.5rem; }
+    h1 { font-size: clamp(1.6rem, 2.6vw, 2.1rem); text-shadow: 0 1px 30px rgba(129,204,242,.2); }
+
+    .hero { position: relative; padding-bottom: .2rem; }
+    .hero > * { position: relative; z-index: 1; }
+    .crack-overlay { position: absolute; top: -30px; right: -20px; width: 280px; height: 210px; opacity: .14; pointer-events: none; mix-blend-mode: screen; z-index: 0; }
+
+    .kicker {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-weight: 500; font-size: 0.7rem;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .kicker::before { content: ""; width: 24px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); display: inline-block; }
+
+    .header-desc {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--ink-dim);
+      max-width: 100%;
+      margin: 0.5rem 0 1.5rem 0;
+      line-height: 1.6;
+    }
+
+    .legend {
+      position: relative;
+      display: flex; flex-wrap: wrap; align-items: center;
+      gap: 0.5rem 1.5rem;
+      background: linear-gradient(160deg, var(--glass), rgba(255,255,255,.015));
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 0.8rem 1.3rem;
+      margin-bottom: 2rem;
+      font-size: 0.75rem;
+      color: var(--ink-dim);
+      box-shadow: 0 8px 28px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .legend-item { display: flex; align-items: center; gap: 7px; }
+    .dot-a, .dot-b, .dot-c {
+      width: 11px; height: 11px; border-radius: 50%;
+      box-shadow: 0 0 8px currentColor, inset -2px -2px 3px rgba(0,0,0,.25), inset 2px 2px 3px rgba(255,255,255,.55);
+    }
+    .dot-a { background: radial-gradient(circle at 32% 28%, #cdf7db, var(--a) 55%, #237a45 100%); color: var(--a); }
+    .dot-b { background: radial-gradient(circle at 32% 28%, #ffe9c9, var(--b) 55%, #a86a1f 100%); color: var(--b); }
+    .dot-c { background: radial-gradient(circle at 32% 28%, #ffd7c9, var(--c) 55%, #a83c1f 100%); color: var(--c); }
+
+    .legend-hint {
+      margin-left: auto;
+      color: var(--ink-faint);
+      font-weight: 400;
+      font-size: 0.7rem;
+      cursor: help;
+      border-bottom: 1px dashed var(--ink-faint);
+      position: relative;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .legend-hint:hover::after {
+      content: "Если хотя бы один критерий оценен как C — итоговый класс C. Даже при всех A или B, наличие одного C опускает весь профиль.";
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(160deg, rgba(22,30,40,.92), rgba(14,20,28,.92));
+      backdrop-filter: blur(14px);
+      color: var(--ink);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      white-space: normal;
+      width: 280px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 34px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+      z-index: 10;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    /* Вкладки — стеклянный сегмент-контрол */
+    .tabs {
+      display: inline-flex;
+      gap: 4px;
+      margin-bottom: 1.6rem;
+      background: linear-gradient(160deg, var(--glass), rgba(255,255,255,.015));
+      backdrop-filter: blur(16px) saturate(140%);
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid var(--glass-border-soft);
+      border-radius: 16px;
+      padding: 5px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-faint);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 0.55rem 1.3rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border-radius: 11px;
+      letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .tab-btn .ic svg { width: 15px; height: 15px; }
+    .tab-btn:hover {
+      color: var(--ink-dim);
+      background: rgba(255,255,255,.05);
+    }
+    .tab-btn.active {
+      color: #eaf6ff;
+      background: linear-gradient(135deg, rgba(129,204,242,.30), rgba(129,204,242,.10));
+      box-shadow: 0 4px 16px rgba(129,204,242,.25), inset 0 1px 0 rgba(255,255,255,.25);
+    }
+    .tab-content {
+      display: none;
+      padding-top: 0.2rem;
+      animation: fadeIn 0.3s ease;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Стеклянные карточки ===== */
+    .card {
+      position: relative;
+      background: linear-gradient(165deg, var(--glass-strong), rgba(255,255,255,.02) 55%);
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 1.6rem 1.6rem 1.3rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 10px 34px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.10);
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+    .card::before {
+      content: "";
+      position: absolute; top: 0; left: 6%; right: 6%; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(129,204,242,.4);
+      box-shadow: 0 16px 44px rgba(0,0,0,.4), 0 0 0 1px rgba(129,204,242,.12), inset 0 1px 0 rgba(255,255,255,.14), inset 0 0 30px rgba(129,204,242,.05);
+    }
+    .card-header {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+      margin-bottom: 0.4rem;
+    }
+    .card-header h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+    .card-header .criteria-tag {
+      font-family: 'Inter', monospace;
+      font-size: 0.6rem;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      color: #9fb3c4;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+    }
+    .card-sub {
+      font-size: 0.9rem;
+      color: var(--ink-dim);
+      border-left: 3px solid rgba(129,204,242,.35);
+      padding-left: 0.7rem;
+      margin-bottom: 0.9rem;
+    }
+    .question-block {
+      background: rgba(255,255,255,.035);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      margin: 0.5rem 0 0 0;
+      box-shadow: inset 0 1px 6px rgba(0,0,0,.22);
+    }
+    .question-block .q {
+      font-size: 0.85rem;
+      color: #cfdbe6;
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+    }
+    .question-block .q-line {
+      font-size: 0.78rem;
+      color: var(--ink-dim);
+      font-weight: 400;
+      margin: 0.2rem 0;
+      padding-left: 0.3rem;
+      line-height: 1.5;
+    }
+    .question-block .q-line .label {
+      color: var(--ink-faint);
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 85px;
+    }
+    .question-block .q-line .tooltip-trigger {
+      border-bottom: 1px dashed var(--ink-faint);
+      cursor: help;
+      position: relative;
+      color: var(--accent);
+    }
+    .question-block .q-line .tooltip-trigger:hover::after {
+      content: "Проверка рекомендаций с прошлых мест работы для подтверждения фактов и оценки реального вклада сотрудника.";
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(160deg, rgba(22,30,40,.92), rgba(14,20,28,.92));
+      backdrop-filter: blur(14px);
+      color: var(--ink);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.7rem;
+      font-weight: 400;
+      white-space: normal;
+      width: 260px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 34px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+      z-index: 10;
+      text-align: left;
+      line-height: 1.4;
+    }
+    .question-block .q-line .q-text {
+      font-weight: 400;
+      color: #cfdbe6;
+      font-size: 0.82rem;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+    }
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: #d3dce5;
+      cursor: pointer;
+      transition: 0.15s;
+      padding: 0.3rem 0.5rem;
+      border-radius: 9px;
+    }
+    .option:hover { background: rgba(129,204,242,.08); }
+    .option input[type="radio"] {
+      accent-color: var(--accent);
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .option .tier-badge {
+      font-family: 'Inter', monospace;
+      font-size: 0.6rem;
+      padding: 0.1rem 0.4rem;
+      border-radius: 12px;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      margin-right: 0.2rem;
+    }
+    .tier-a { background: rgba(55,171,102,.18); color: #5fd98a; box-shadow: inset 0 0 0 1px rgba(55,171,102,.3); }
+    .tier-b { background: rgba(238,161,76,.18); color: #ffbf74; box-shadow: inset 0 0 0 1px rgba(238,161,76,.3); }
+    .tier-c { background: rgba(237,108,76,.18); color: #ff8f6e; box-shadow: inset 0 0 0 1px rgba(237,108,76,.3); }
+    .char-desc {
+      font-size: 0.8rem;
+      color: var(--ink-dim);
+      margin-left: 0.2rem;
+      opacity: 0.85;
+    }
+    .hint {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      margin: 0.6rem 0 0 0;
+      border-top: 1px dashed rgba(255,255,255,.10);
+      padding-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+    .hint .hint-line {
+      display: block;
+      line-height: 1.5;
+      padding-left: 0.9rem;
+      position: relative;
+    }
+    .hint .hint-line::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.5em;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 5px var(--accent);
+    }
+    .hint .key {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .section-divider {
+      margin: 1rem 0 1.5rem 0;
+      border: 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    /* ===== Результат ===== */
+    .result-area {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(160deg, var(--glass-strong), rgba(255,255,255,.02));
+      backdrop-filter: blur(22px) saturate(150%);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 1.7rem;
+      margin: 1.6rem 0;
+      box-shadow: 0 12px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.12);
+    }
+    .result-area::before {
+      content: "";
+      position: absolute; width: 220px; height: 220px; border-radius: 50%;
+      top: -90px; right: -60px;
+      background: radial-gradient(circle, rgba(129,204,242,.25), transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+    }
+    .result-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.8rem 1.8rem;
+      margin-bottom: 0.4rem;
+    }
+    .result-badge {
+      font-size: 2.6rem;
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 0 0 24px currentColor;
+      transition: color .3s ease;
+    }
+    .result-badge .sub {
+      font-size: 1rem;
+      color: var(--ink-faint);
+      font-weight: 400;
+      text-shadow: none;
+    }
+    .result-meta {
+      color: var(--ink-dim);
+      font-size: 0.9rem;
+    }
+    .result-detail {
+      font-size: 0.85rem;
+      color: #c7d4df;
+      border-left: 2px solid rgba(129,204,242,.4);
+      padding-left: 0.8rem;
+      margin: 0.3rem 0 0.2rem 0;
+    }
+    .btn {
+      position: relative;
+      overflow: hidden;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.14);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      padding: 0.65rem 1.7rem;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      backdrop-filter: blur(10px);
+    }
+    .btn::after {
+      content: "";
+      position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.28), transparent);
+      transform: skewX(-20deg);
+      transition: left .6s ease;
+    }
+    .btn:hover::after { left: 130%; }
+    .btn:hover { background: rgba(255,255,255,.09); border-color: rgba(255,255,255,.22); }
+    .btn-primary { background: linear-gradient(135deg, rgba(129,204,242,.30), rgba(129,204,242,.10)); border-color: rgba(129,204,242,.5); color: #eaf6ff; box-shadow: 0 6px 20px rgba(129,204,242,.2); }
+    .btn-primary:hover { background: linear-gradient(135deg, rgba(129,204,242,.4), rgba(129,204,242,.15)); border-color: var(--accent); }
+
+    /* Блок рекомендаций (вкладка) */
+    .info-panel {
+      background: linear-gradient(160deg, var(--glass-strong), rgba(255,255,255,.02));
+      backdrop-filter: blur(22px) saturate(150%);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 1.6rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.10);
+    }
+    .principle-box {
+      position: relative;
+      font-size: 0.95rem; color: #dbe6ef; font-weight: 500;
+      padding: 0.9rem 1.1rem 1rem 1.3rem;
+      background: linear-gradient(135deg, rgba(129,204,242,.12), rgba(129,204,242,.02));
+      border-radius: 14px;
+      border-left: 3px solid var(--accent);
+      margin-bottom: 1.6rem;
+      backdrop-filter: blur(10px);
+    }
+    .highlight { color: var(--accent); font-weight: 500; }
+
+    .rec-section {
+      margin-bottom: 1.2rem;
+    }
+    .rec-section:last-child { margin-bottom: 0; }
+    .rec-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .rec-title .emoji { font-size: 1.1rem; }
+    .rec-item {
+      font-size: 0.82rem;
+      color: var(--ink-dim);
+      padding: 0.15rem 0 0.15rem 1.2rem;
+      position: relative;
+      line-height: 1.5;
+    }
+    .rec-item::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+    }
+    .rec-item .a-color { color: #5fd98a; font-weight: 600; }
+    .rec-item .b-color { color: #ffbf74; font-weight: 600; }
+    .rec-item .c-color { color: #ff8f6e; font-weight: 600; }
+    .rec-divider {
+      border: 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      margin: 0.8rem 0;
+    }
+    .rec-key {
+      display: inline-block;
+      padding: 0.1rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+    .rec-key.a { background: rgba(55,171,102,.2); color: #5fd98a; }
+    .rec-key.b { background: rgba(238,161,76,.2); color: #ffbf74; }
+    .rec-key.c { background: rgba(237,108,76,.2); color: #ff8f6e; }
+    .rec-key.rule { background: rgba(129,204,242,.2); color: var(--accent); }
+    .risk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .risk-item {
+      background: rgba(255,255,255,.035);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(237,108,76,.22);
+      border-left: 3px solid var(--c);
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+    }
+    .risk-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #cfdbe6;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 0.3rem;
+    }
+    .risk-label .ic { color: var(--c); }
+    .risk-text {
+      font-size: 0.8rem;
+      color: var(--ink-dim);
+      line-height: 1.55;
+    }
+    .footnote {
+      font-size: 0.7rem;
+      color: var(--ink-faint);
+      margin: 1.2rem 0 0 0;
+      border-top: 1px solid rgba(255,255,255,.07);
+      padding-top: 0.8rem;
+    }
+    .footnote a { color: var(--accent); text-decoration: none; }
+    .footnote a:hover { text-decoration: underline; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .orb, .bubble, .tab-content, .card { animation: none !important; transition: none !important; }
+    }
+
+    @media print {
+      body { background: #fff !important; color: #111 !important; }
+      .bg-orbs, .bubbles, .crack-overlay { display: none !important; }
+      .card, .legend, .tabs, .result-area, .info-panel, .question-block, .risk-item, .principle-box {
+        background: #fff !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        box-shadow: none !important; border: 1px solid #ccc !important; color: #111 !important;
+      }
+      .card::before, .result-area::before { display: none !important; }
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 1.2rem 1rem; }
+      .card { padding: 1.1rem; }
+      .options { gap: 0.3rem; }
+      .result-badge { font-size: 1.9rem; }
+      .legend { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .legend-hint { margin-left: 0; }
+      .question-block .q-line .label { min-width: 70px; }
+      .tabs { display: flex; }
+      .tab-btn { font-size: 0.8rem; padding: 0.5rem 1rem; }
+      .card, .legend, .tabs, .result-area, .info-panel { backdrop-filter: blur(12px) saturate(140%); }
+    }
+  </style>
+</head>
+<body>
+<div class="bg-orbs" aria-hidden="true">
+  <span class="orb orb-1"></span>
+  <span class="orb orb-2"></span>
+  <span class="orb orb-3"></span>
+</div>
+<div class="bubbles" aria-hidden="true">
+  <span class="bubble" style="left:6%; width:12px; height:12px; animation-duration:17s; animation-delay:0s;"></span>
+  <span class="bubble" style="left:18%; width:18px; height:18px; animation-duration:21s; animation-delay:3s;"></span>
+  <span class="bubble" style="left:32%; width:9px; height:9px; animation-duration:15s; animation-delay:7s;"></span>
+  <span class="bubble" style="left:48%; width:14px; height:14px; animation-duration:19s; animation-delay:1.5s;"></span>
+  <span class="bubble" style="left:63%; width:22px; height:22px; animation-duration:24s; animation-delay:5s;"></span>
+  <span class="bubble" style="left:77%; width:10px; height:10px; animation-duration:16s; animation-delay:9s;"></span>
+  <span class="bubble" style="left:90%; width:16px; height:16px; animation-duration:20s; animation-delay:2.5s;"></span>
+</div>
+<div class="container">
+
+  <div class="hero">
+  <svg class="crack-overlay" viewBox="0 0 260 210" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#bfe6ff" stroke-width="1" stroke-linecap="round">
+    <path d="M230 10 L190 55 L205 90 L170 120 L180 160 L150 200" opacity="0.55"/>
+    <path d="M190 55 L150 40 L120 65" opacity="0.4"/>
+    <path d="M205 90 L245 100" opacity="0.4"/>
+    <path d="M170 120 L135 105 L100 130" opacity="0.35"/>
+    <path d="M180 160 L215 175" opacity="0.3"/>
+    <path d="M150 200 L115 185" opacity="0.3"/>
+    <polygon points="190,55 205,90 170,75" fill="#bfe6ff" opacity="0.06" stroke="none"/>
+    <polygon points="170,120 180,160 145,145" fill="#bfe6ff" opacity="0.05" stroke="none"/>
+  </svg>
+  <div class="kicker">ABC-методика · HR-инструмент</div>
+  <h1>Оценка сотрудников и кандидатов</h1>
+  <div class="header-desc">
+    <em>Основано на книге «Кто решит вашу проблему номер один» · 6 ключевых критериев для выявления A-игроков и их удержания и C-игроков для их развития</em>
+  </div>
+  </div>
+
+  <div class="legend">
+    <span class="legend-item"><span class="dot-a"></span> A-игрок (превосходит ожидания)</span>
+    <span class="legend-item"><span class="dot-b"></span> B-игрок (стабилен, но не превосходит)</span>
+    <span class="legend-item"><span class="dot-c"></span> C-игрок (требует внимания и развития)</span>
+    <span class="legend-hint"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg></span> правило нижнего потолка</span>
+  </div>
+
+  <!-- Вкладки -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="survey"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.3" width="6" height="3" rx="1"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="13" y2="18"/></svg></span> Опрос</button>
+    <button class="tab-btn" data-tab="info"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.2c-1.7-1.3-4-2-6.5-2-1 0-1.5.3-1.5 1v12c0 .7.5 1 1.5 1 2.5 0 4.8.7 6.5 2 1.7-1.3 4-2 6.5-2 1 0 1.5-.3 1.5-1v-12c0-.7-.5-1-1.5-1-2.5 0-4.8.7-6.5 2Z"/><line x1="12" y1="6.2" x2="12" y2="19.2"/></svg></span> Дополнительная информация</button>
+  </div>
+
+  <!-- Вкладка: Опрос -->
+  <div class="tab-content active" id="tab-survey">
+    <form id="abcForm">
+      <!-- Критерий 1 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>1. Продуктивность / Производительность</h2>
+          <span class="criteria-tag">результаты, сроки, качество</span>
+        </div>
+        <div class="card-sub">Насколько сотрудник превосходит ожидания по результатам, срокам, качеству и т.д.</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«Этот сотрудник почти всегда превосходит ожидания?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Приведите 2-3 примера, где вы превзошли ожидания руководства на прошлой работе. Как вы этого достигли?»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Этот сотрудник всегда делал больше, чем вы ожидали?»</span></div>
+          <div class="options" data-criterion="prod">
+            <label class="option"><input type="radio" name="prod" value="A"> <span class="tier-badge tier-a">A</span> Почти всегда превосходит ожидания, делает больше и раньше срока</label>
+            <label class="option"><input type="radio" name="prod" value="B"> <span class="tier-badge tier-b">B</span> Делает работу качественно и в срок, но редко превосходит ожидания</label>
+            <label class="option"><input type="radio" name="prod" value="C"> <span class="tier-badge tier-c">C</span> Регулярно срывает дедлайны, делает с ошибками, требует доп. контроля</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">Ключевой маркер A:</span> «почти всегда» — не иногда, не часто, а стабильно</span>
+            <span class="hint-line">Если не можете сразу ответить «да» — это уже не A</span>
+            <span class="hint-line">Проверяйте слова – ищите факты через рекомендации и подтверждение</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Критерий 2 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>2. Инициативность и лидерство</h2>
+          <span class="criteria-tag">сам видит проблемы и действует</span>
+        </div>
+        <div class="card-sub">Человек сам видит проблемы и действует, а не ждет указаний</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«Были ли ситуации, когда человек нашел проблему, предложил решение и САМ ее решил?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Расскажите 2-3 примера, как вы на прошлой работе нашли проблему, предложили решение и реализовали его»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Этот сотрудник самостоятельно решает сложную проблему обнаружив ее?»</span></div>
+          <div class="options" data-criterion="init">
+            <label class="option"><input type="radio" name="init" value="A"> <span class="tier-badge tier-a">A</span> Постоянно выявляет проблемы, предлагает решения и САМ реализует их; поднимает дух команды, лидирует проекты</label>
+            <label class="option"><input type="radio" name="init" value="B"> <span class="tier-badge tier-b">B</span> Иногда предлагает решения, но не проявляет лидерства, ждет указаний «делай»</label>
+            <label class="option"><input type="radio" name="init" value="C"> <span class="tier-badge tier-c">C</span> Не предлагает инициатив, работает только по инструкциям, «мяч с песком»</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">Разница A/B:</span> A не ждет разрешения — пошел и сделал; B предлагает, но ждет «делай»</span>
+            <span class="hint-line">Лидерство = способность «заряжать» команду, брать ответственность за проект</span>
+            <span class="hint-line">Игрок С: исполнитель-формалист, предпочитающий простые решения в сложных ситуациях</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Критерий 3 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>3. Саморазвитие и обучаемость</h2>
+          <span class="criteria-tag">применяет знания на практике</span>
+        </div>
+        <div class="card-sub">Не просто учится, а быстро применяет знания на практике (execution)</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«После обучения человек внедряет изменения или просто кивает?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Приведите примеры: чему вы научились на прошлом месте и КАК ПРИМЕНИЛИ это в работе? Какие результаты получили?»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Этот сотрудник улучшает текущие бизнес-процессы?»</span></div>
+          <div class="options" data-criterion="learn">
+            <label class="option"><input type="radio" name="learn" value="A"> <span class="tier-badge tier-a">A</span> Активно учится + БЫСТРО применяет знания на практике (execution)</label>
+            <label class="option"><input type="radio" name="learn" value="B"> <span class="tier-badge tier-b">B</span> Хорошо учится, но редко применяет («все знает, но ничего не делает»)</label>
+            <label class="option"><input type="radio" name="learn" value="C"> <span class="tier-badge tier-c">C</span> Саботирует обучение, не любит учиться, ничего не применяет</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">Ключевое слово — execution (исполнение):</span> способность быстро применять знания</span>
+            <span class="hint-line">Если нужно «пинать», чтобы учился — это игрок C</span>
+            <span class="hint-line">Игрок A после семинара в течение месяца меняет процессы; B — слушает и говорит, не более</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Критерий 4 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>4. Соответствие корпоративным ценностям</h2>
+          <span class="criteria-tag">пример для других</span>
+        </div>
+        <div class="card-sub">Не просто «не нарушает», а является примером ценностей для других</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«Можно ли поставить этого человека в пример новичку?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Что вы особенно цените в компании?», «При каких условиях вы точно уволитесь?», «Какие ценности в команде для вас наиболее важны?»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Ваши ценности и ценности компании совпадают с ценностями сотрудника на 100%?»</span></div>
+          <div class="options" data-criterion="values">
+            <label class="option"><input type="radio" name="values" value="A"> <span class="tier-badge tier-a">A</span> На 100% разделяет ценности и является ПРИМЕРОМ для других</label>
+            <label class="option"><input type="radio" name="values" value="B"> <span class="tier-badge tier-b">B</span> Разделяет ценности, но не является эталоном для подражания</label>
+            <label class="option"><input type="radio" name="values" value="C"> <span class="tier-badge tier-c">C</span> Не разделяет и/или саботирует ценности компании</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">Ценности — это не абстракция,</span> а конкретные ритуалы, правила и поведение (дресс-код, встречи, обратная связь)</span>
+            <span class="hint-line">Ценности – это конструкты защищающие от негативных действий, последствий и способствующие развитию</span>
+            <span class="hint-line">Игрок A не просто «не нарушает», а активно транслирует ценности</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Критерий 5 -->
+      <div class="card">
+        <div class="card-header">
+          <h2>5. Адаптивность и автономность</h2>
+          <span class="criteria-tag">работает автономно</span>
+        </div>
+        <div class="card-sub">Сотрудник быстро реагирует на изменения и работает автономно (без микроменеджмента)</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«Приходится ли вам регулярно заниматься этим человеком, чтобы он сделал работу?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Приведите пример, где вы быстро перестроились под глобальные изменения в компании и начали давать новые результаты. Как вы работали автономно?»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Понимает ли сотрудник с первого раза, и пытается ли он самостоятельно разобраться при внедрении нового?»</span></div>
+          <div class="options" data-criterion="adapt">
+            <label class="option"><input type="radio" name="adapt" value="A"> <span class="tier-badge tier-a">A</span> Быстро адаптируется к изменениям + работает АВТОНОМНО (не нужен микроменеджмент)</label>
+            <label class="option"><input type="radio" name="adapt" value="B"> <span class="tier-badge tier-b">B</span> Умеет адаптироваться и решать проблемы, но НУЖДАЕТСЯ В РУКОВОДСТВЕ</label>
+            <label class="option"><input type="radio" name="adapt" value="C"> <span class="tier-badge tier-c">C</span> Испытывает трудности с решением проблем, тяжело адаптируется, сопротивляется изменениям</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">Игрок A, главный маркер — автономность:</span> дал задачу → получил результат без контроля</span>
+            <span class="hint-line">Игрок B — «хороший футбольный мяч»: пнул — полетел, но сам не движется</span>
+            <span class="hint-line">Игрок С — «кирпич в футбольном мяче»: пнул — и пошел лечить ногу</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Критерий 6 (для руководителей) -->
+      <div class="card">
+        <div class="card-header">
+          <h2>6. Найм и управление командой</h2>
+          <span class="criteria-tag">системный множитель</span>
+        </div>
+        <div class="card-sub">Кого руководитель берет в свою команду — определяет будущее компании</div>
+        <div class="question-block">
+          <div class="q">Вопросы для оценки:</div>
+          <div class="q-line"><span class="label">Для текущих:</span> <span class="q-text">«Можете найти в компании игроков класса А, В и С?»</span></div>
+          <div class="q-line"><span class="label">Для кандидата:</span> <span class="q-text">«Опишите ваш процесс найма. На что вы смотрите в первую очередь? Кого вы НИКОГДА не нанимаете и почему?», «Как вы проводите собеседование?»</span></div>
+          <div class="q-line"><span class="label"><span class="tooltip-trigger">Референс-чек</span>:</span> <span class="q-text">«Какого класса игрок Вы и какого класса игроки Ваши непосредственные подчиненные?»</span></div>
+          <div class="options" data-criterion="hire">
+            <label class="option"><input type="radio" name="hire" value="A"> <span class="tier-badge tier-a">A</span> Категорически отказывается работать с не-A; редко берет сильных B; ищет «звезд»</label>
+            <label class="option"><input type="radio" name="hire" value="B"> <span class="tier-badge tier-b">B</span> Собирает под собой B и C; не видит/не нанимает A</label>
+            <label class="option"><input type="radio" name="hire" value="C"> <span class="tier-badge tier-c">C</span> Нанимает только C; создает «бетонный потолок» для роста сильных</label>
+          </div>
+          <div class="hint">
+            <span class="hint-line"><span class="key">«Лестничный эффект»:</span> A нанимает A, B нанимает B/C, C нанимает только C</span>
+            <span class="hint-line">HR-отдел должен быть на 100% из A-игроков — иначе вся компания скатится в B/C</span>
+            <span class="hint-line">Кресло руководителя должен занимать игрок А и критическая масса руководителей должны быть игроки класса А</span>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary" id="calcBtn">Рассчитать класс</button>
+    </form>
+
+    <!-- Результат -->
+    <div class="result-area" id="resultArea">
+      <div class="result-row">
+        <span class="result-badge" id="resultBadge">— <span class="sub">/ класс</span></span>
+        <span class="result-meta" id="resultMeta">Заполните все 6 критериев</span>
+      </div>
+      <div class="result-detail" id="resultDetail">Нижний потолок: если хоть один C → общий класс C.</div>
+      <div style="margin-top:0.4rem; display:flex; flex-wrap:wrap; gap:0.8rem 1.8rem; font-size:0.8rem; color:#6d859b;">
+        <span id="criteriaSummary">A: 0 · B: 0 · C: 0</span>
+        <span id="ruleHint"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg></span> Правило: одна C «разбавляет» весь профиль</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладка: Дополнительная информация -->
+  <div class="tab-content" id="tab-info">
+    <div class="info-panel">
+
+      <!-- Главный принцип -->
+      <div class="principle-box">
+        <span class="ic" style="color:#81CCF2; margin-right:2px;"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 14.5 9l6.3.6-4.8 4.2 1.4 6.1L12 16.8 6.6 19.9 8 13.8 3.2 9.6 9.5 9Z"/></svg></span> <span class="highlight">Главный принцип:</span> Не ищите идеал. Ищите человека, который с вероятностью 90% решит задачу и превзойдет ожидания. Ваша цель — построить систему, где такие люди приходят, растут и остаются.
+      </div>
+
+      <!-- Ключ -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="15" r="4"/><path d="M10.5 11.5 20 2"/><path d="M15.5 6.5 18 9"/><path d="M17.5 4.5 20 7"/></svg></span> Ключ</div>
+        <div class="rec-item"><span class="rec-key a">A-player</span> все 5-6 параметров = A</div>
+        <div class="rec-item"><span class="rec-key b">B-player</span> есть B, но нет C (может быть «ближе к A» или «ближе к C»)</div>
+        <div class="rec-item"><span class="rec-key c">C-player</span> хотя бы один параметр = C (разбавляет весь профиль)</div>
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Модель расчета -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><rect x="7.5" y="5.5" width="9" height="3.5" rx="0.5"/><circle cx="8.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="15.5" cy="13" r="0.9" fill="currentColor" stroke="none"/><circle cx="8.5" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="12" cy="17" r="0.9" fill="currentColor" stroke="none"/><circle cx="15.5" cy="17" r="0.9" fill="currentColor" stroke="none"/></svg></span> Модель расчета итогового класса сотрудника</div>
+        <div class="rec-item"><span class="rec-key rule">Правило «нижнего потолка»</span></div>
+        <div class="rec-item">1. Если хотя бы <span class="highlight">ОДИН</span> критерий оценен как «C» → сотрудник = <span class="c-color">C-плеер</span> (одна «C» «разбавляет» весь профиль до нижнего грейда)</div>
+        <div class="rec-item">2. Если <span class="highlight">все</span> критерии = «A» → сотрудник = <span class="a-color">A-плеер</span> (идеальный случай, встречается &lt;10% сотрудников)</div>
+        <div class="rec-item">3. Если есть «B», но нет «C» → сотрудник = <span class="b-color">B-плеер</span> — может быть «ближе к A» (4-5 параметров A, остальные B) или «ближе к C» (преобладают B, есть риски)</div>
+        <div class="rec-item" style="margin-top:0.3rem;">4. Для руководителей: критерий №6 (Найм) является <span class="highlight">«умножающим»</span> — если руководитель = B/C по найму → его команда не сможет стать сильной. Даже при хороших личных показателях такой руководитель = <span class="highlight">системный риск</span></div>
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Визуальная шкала -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="20" x2="20" y2="20"/><rect x="6" y="13" width="3" height="7"/><rect x="11" y="9" width="3" height="11"/><rect x="16" y="5" width="3" height="15"/></svg></span> Визуальная шкала принятия решения</div>
+        <div class="rec-item"><span class="rec-key a">Все 5-6 параметров = A</span> → <span class="a-color">A-PLAYER <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 11 15.5 16.5 9"/></svg></span></span> — Ставка на человека, развитие, премирование</div>
+        <div class="rec-item"><span class="rec-key c">Есть 1+ параметров = C</span> → <span class="c-color">C-PLAYER <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg></span></span> — План замены, увольнение, не давать ключевые задачи</div>
+        <div class="rec-item"><span class="rec-key b">Только B, без C</span> → <span class="b-color">B-PLAYER <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span></span> — Рабочая лошадка: давать четкие инструкции, но не ставить на стратегические позиции; пробовать «качать» 1.5 месяца → если нет рывка к A → план замены</div>
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Практические рекомендации -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg></span> Практические рекомендации по внедрению</div>
+        
+        <div style="font-size:0.82rem; color:#a3b6c9; font-weight:500; margin:0.5rem 0 0.2rem 0;">Этап 1: Подготовка (1-2 дня)</div>
+        <div class="rec-item">Выписать имена 10-15 ключевых сотрудников для пилотной оценки</div>
+        <div class="rec-item">Подготовить таблицу с 6 критериями для каждого</div>
+        <div class="rec-item">Напомнить себе: цель — не «наказать», а увидеть потенциал и риски</div>
+
+        <div style="font-size:0.82rem; color:#a3b6c9; font-weight:500; margin:0.5rem 0 0.2rem 0;">Этап 2: Оценка текущих сотрудников (3-5 дней)</div>
+        <div class="rec-item">По каждому человеку ответить на вопросы из колонки «Для текущих»</div>
+        <div class="rec-item">Не оценивать «в вакууме» — сверяться с фактами: дедлайны, инициативы, отзывы</div>
+        <div class="rec-item">Избегать самообмана: если сомневаетесь между A и B — ставьте B</div>
+
+        <div style="font-size:0.82rem; color:#a3b6c9; font-weight:500; margin:0.5rem 0 0.2rem 0;">Этап 3: Оценка кандидатов на собеседовании</div>
+        <div class="rec-item">Использовать структурированные вопросы из таблицы</div>
+        <div class="rec-item">Всегда запрашивать 2-3 конкретных примера (не общие слова)</div>
+        <div class="rec-item">Обязательно делать референс-чеки с акцентом на «превосходил ли ожидания?»</div>
+
+        <div style="font-size:0.82rem; color:#a3b6c9; font-weight:500; margin:0.5rem 0 0.2rem 0;">Этап 4: Принятие кадровых решений</div>
+        <div class="rec-item">Ключевые позиции (руководители, ассистенты, первая линия) — <span class="a-color">только A</span></div>
+        <div class="rec-item">Линейные позиции — допустимы сильные B, но <span class="highlight">без C</span></div>
+        <div class="rec-item">Целевой показатель по компании: <span class="highlight">20-30% A-игроков</span>, <span class="c-color">0% C на ключевых ролях</span></div>
+
+        <div style="font-size:0.82rem; color:#a3b6c9; font-weight:500; margin:0.5rem 0 0.2rem 0;">Этап 5: Работа с «зоной роста» (B-игроки)</div>
+        <div class="rec-item">Дать честную обратную связь: «Ты сейчас сильный B. Вот что нужно для перехода в A»</div>
+        <div class="rec-item">Установить четкий срок (1.5-2 месяца) и метрики роста</div>
+        <div class="rec-item">Если динамики нет — кадровое решение (замена/ротация)</div>
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Сильные стороны -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.3 1 2.5h6c0-1.2.3-1.8 1-2.5A6 6 0 0 0 12 3Z"/></svg></span> Сильные стороны подхода</div>
+        <div class="rec-item"><span class="highlight">Простота и структурированность:</span> 6 критериев легко запомнить и применить</div>
+        <div class="rec-item"><span class="highlight">Фокус на результатах, а не на навыках:</span> оцениваем не «что знает», а «что сделал»</div>
+        <div class="rec-item"><span class="highlight">Практическая ориентация:</span> вопросы для собеседования можно использовать «здесь и сейчас»</div>
+        <div class="rec-item"><span class="highlight">Системный взгляд:</span> правило «нижнего потолка» предотвращает иллюзии о «почти-идеальном» сотруднике</div>
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Риски -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span> Риски и как их минимизировать</div>
+        <div class="risk-list">
+                  <div class="risk-item">
+                    <div class="risk-label"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span> Субъективность оценки</div>
+                    <div class="risk-text">Оценивать не в одиночку: привлекать второго руководителя, сверять с фактами (KPI, отзывы клиентов)</div>
+                  </div>
+                  <div class="risk-item">
+                    <div class="risk-label"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span> «Охота на ведьм»</div>
+                    <div class="risk-text">Не объявлять «революцию»: начинать с себя → топ-команда → ключевые роли; фокус на развитии, а не наказании</div>
+                  </div>
+                  <div class="risk-item">
+                    <div class="risk-label"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span> Потеря хороших B-игроков</div>
+                    <div class="risk-text">Четко коммуницировать: B — это не «плохо», это «нужна другая роль»; предлагать пути роста или комфортные ниши</div>
+                  </div>
+                  <div class="risk-item">
+                    <div class="risk-label"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 21 19.5H3Z"/><line x1="12" y1="9.5" x2="12" y2="14"/><circle cx="12" cy="16.7" r="0.9" fill="currentColor" stroke="none"/></svg></span> Игнорирование контекста</div>
+                    <div class="risk-text">Учитывать: новичок в роли ≠ опытный; кризис в компании ≠ стабильность; оценивать в динамике</div>
+                  </div>
+                </div>        
+      </div>
+
+      <hr class="rec-divider">
+
+      <!-- Дополнительные улучшения -->
+      <div class="rec-section">
+        <div class="rec-title"><span class="ic emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3c3 1 5.5 3.5 6.5 6.5-2 .5-4 1.7-5.7 3.4C12.1 14.6 10.9 16.6 10.4 18.6c-3-1-5.5-3.5-6.5-6.5 2-.5 4-1.7 5.7-3.4C11.3 6.9 12.5 4.9 13 3Z"/><circle cx="14.5" cy="9.5" r="1.3"/><path d="M8 16c-1.5 1-2 3-2 5 2 0 4-.5 5-2"/></svg></span> Дополнительные улучшения методики</div>
+        <div class="rec-item"><span class="highlight">Добавить вес критериев:</span> для разных ролей критерии могут иметь разный вес (например, для продажника — продуктивность и адаптивность важнее, чем для бухгалтера)</div>
+        <div class="rec-item"><span class="highlight">Ввести «период переоценки»:</span> оценивать не разово, а каждые 6 месяцев, чтобы видеть динамику</div>
+        <div class="rec-item"><span class="highlight">Создать «карту развития» для B-игроков:</span> чек-лист конкретных действий для перехода в A (например: «за 2 месяца инициировать и реализовать 1 улучшение процесса»)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footnote">
+    <span><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9 17.5 20 6.5"/></svg></span> <strong>Для руководителей:</strong> критерий №6 (Найм) является умножающим. Даже при хороших личных показателях, если руководитель B/C по найму — системный риск.</span><br>
+    <span style="display:inline-block; margin-top:0.3rem;"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="9" r="2.5"/></svg></span> Рекомендация: ключевые позиции — только A. Линейные — сильные B, но без C. Целевой показатель: 20-30% A, 0% C на ключевых ролях.</span>
+  </div>
+    <!-- ===== ФУТЕР ===== -->
+  <footer style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #2c3a47; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+    <div style="font-size: 13px; color: #6d859b;">
+      © 2026 · Оценка сотрудников и кандидатов · ABC-опросник · Кто решит вашу проблему №1
+    </div>
+    <div style="font-size: 13px; color: #6d859b; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+      <span class="ic" style="color:#81CCF2;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg></span> Алексей Милеев &nbsp;·&nbsp;
+      <span class="ic" style="color:#81CCF2;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5c.5-.3 1.1-.4 1.6-.1l2 1.3c.5.3.7 1 .4 1.5l-1 1.8c-.3.5-.2 1.1.2 1.5l3.3 3.3c.4.4 1 .5 1.5.2l1.8-1c.5-.3 1.2-.1 1.5.4l1.3 2c.3.5.2 1.1-.1 1.6l-1.2 1.4c-.5.6-1.3.9-2 .7-3.6-.9-6.8-2.9-9.3-5.4S3.4 8 2.5 4.4c-.2-.8.1-1.6.7-2Z"/></svg></span> +7(926)204 37 09 &nbsp;·&nbsp;
+      <span class="ic" onclick="window.print();" style="cursor:pointer; color:#81CCF2;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9" width="12" height="7" rx="1"/><path d="M8 9V4h8v5"/><path d="M8 16v4h8v-4"/><line x1="8.5" y1="12" x2="11" y2="12"/></svg></span> Печать
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Переключение вкладок
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Логика расчета
+  (function() {
+    const form = document.getElementById('abcForm');
+    const btn = document.getElementById('calcBtn');
+    const resultBadge = document.getElementById('resultBadge');
+    const resultMeta = document.getElementById('resultMeta');
+    const resultDetail = document.getElementById('resultDetail');
+    const criteriaSummary = document.getElementById('criteriaSummary');
+
+    const criteriaNames = {
+      prod: 'Продуктивность',
+      init: 'Инициативность',
+      learn: 'Обучаемость',
+      values: 'Ценности',
+      adapt: 'Адаптивность',
+      hire: 'Найм'
+    };
+
+    function getSelectedValue(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : null;
+    }
+
+    function calcClass() {
+      const results = {
+        prod: getSelectedValue('prod'),
+        init: getSelectedValue('init'),
+        learn: getSelectedValue('learn'),
+        values: getSelectedValue('values'),
+        adapt: getSelectedValue('adapt'),
+        hire: getSelectedValue('hire')
+      };
+
+      const missing = Object.keys(results).filter(k => results[k] === null);
+      if (missing.length > 0) {
+        const names = missing.map(k => criteriaNames[k] || k).join(', ');
+        resultBadge.innerHTML = '— <span class="sub">/ класс</span>';
+        resultMeta.textContent = `Заполните все 6 критериев (не заполнены: ${names})`;
+        resultDetail.textContent = 'Нижний потолок: если хоть один C → общий класс C.';
+        criteriaSummary.textContent = 'A: 0 · B: 0 · C: 0';
+        resultBadge.style.color = '#e3e6ea';
+        return;
+      }
+
+      const values = Object.values(results);
+      const countA = values.filter(v => v === 'A').length;
+      const countB = values.filter(v => v === 'B').length;
+      const countC = values.filter(v => v === 'C').length;
+
+      let overall = '';
+      let detail = '';
+
+      if (countC > 0) {
+        overall = 'C';
+        detail = 'C-игрок: хотя бы один критерий = C. Требует внимания и развития. Не давать ключевые задачи без сопровождения.';
+      } else if (countA === 6) {
+        overall = 'A';
+        detail = 'A-игрок: все 6 критериев = A. Ставка на человека, развитие, премирование. (Встречается <10% сотрудников)';
+      } else {
+        overall = 'B';
+        const nearA = countA >= 4 ? 'ближе к A' : 'ближе к C (есть риски)';
+        detail = `B-игрок: есть B, но нет C. ${nearA}. Рабочая лошадка: давать четкие инструкции, но не ставить на стратегические позиции. Пробовать «качать» 1.5 месяца → если нет рывка к A → план замены.`;
+      }
+
+      if (results.hire === 'C' || results.hire === 'B') {
+        if (overall !== 'C') {
+          detail += ' · Для руководителей: даже при хороших личных показателях, если найм = B/C — системный риск.';
+        }
+      }
+
+      let classColor = '#e3e6ea';
+      if (overall === 'A') classColor = '#37AB66';
+      else if (overall === 'B') classColor = '#EEA14C';
+      else if (overall === 'C') classColor = '#ED6C4C';
+
+      resultBadge.innerHTML = `${overall} <span class="sub">/ класс</span>`;
+      resultBadge.style.color = classColor;
+      resultMeta.textContent = `A: ${countA}, B: ${countB}, C: ${countC}`;
+      resultDetail.textContent = detail;
+      criteriaSummary.textContent = `A: ${countA} · B: ${countB} · C: ${countC}`;
+    }
+
+    btn.addEventListener('click', calcClass);
+    form.addEventListener('change', (e) => {
+      if (e.target.type === 'radio') calcClass();
+    });
+    calcClass();
+  })();
+</script>
+</body>
+</html>
