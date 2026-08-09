@@ -354,31 +354,155 @@
     100% { bottom: 92%; opacity: 0; transform: translateX(3px); }
   }
 
+  /* ===== КАРТОЧКА — перламутровое стекло ===== */
   .card {
     position: relative;
     flex: 1;
-    background: linear-gradient(155deg, var(--panel-2), var(--panel));
     border-radius: 14px;
-    padding: 16px 18px;
-    min-height: 76px;
+    padding: 10px 14px;
+    min-height: 56px;
     display: flex;
     align-items: center;
     cursor: pointer;
     overflow: visible;
-    border: 1px solid var(--line);
-    transition: transform 0.25s ease, border-color 0.25s ease;
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.95);
+    
+    /* Стеклянная основа */
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    
+    /* Тени */
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.35),
+      0 2px 8px rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      inset 0 -2px 8px rgba(0, 0, 0, 0.12),
+      0 8px 32px rgba(74, 143, 228, 0.06);
   }
-  .card:hover { transform: translateX(3px); border-color: rgba(255,255,255,0.18); }
   .card-title {
+    position: relative;
+    z-index: 2;
     font-size: 14px;
     font-weight: 300;
     line-height: 1.35;
-    color: var(--text);
-    position: relative;
-    z-index: 2;
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.02em;
   }
-  .card.dim .card-title { color: var(--text-dimmer); }
+  .card.dim .card-title { color: rgba(255,255,255,0.35); }
 
+  /* === ПЕРЛАМУТРОВАЯ ГРАНИЦА === */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 1px;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(200,180,255,0.15) 20%,
+      rgba(74,143,228,0.20) 40%,
+      rgba(255,200,220,0.10) 60%,
+      rgba(143,197,255,0.18) 80%,
+      rgba(255,255,255,0.25) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: borderGlow 5s ease-in-out infinite alternate;
+  }
+  @keyframes borderGlow {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
+  }
+
+  /* === БЛИК === */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: 
+      radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.12), transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(143,197,255,0.06), transparent 50%);
+    pointer-events: none;
+    animation: sheenMove 8s ease-in-out infinite alternate;
+  }
+  @keyframes sheenMove {
+    0% { opacity: 0.4; background-position: 0% 0%, 0% 0%; }
+    100% { opacity: 0.9; background-position: 15% 10%, -10% 15%; }
+  }
+
+  /* === ПЕРЕЛИВ (внутри карточки) === */
+  .card .pearl-shift {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .card .pearl-shift::before {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(74, 143, 228, 0.15) 0%,
+      rgba(143, 197, 255, 0.20) 12%,
+      rgba(200, 180, 255, 0.12) 25%,
+      rgba(255, 200, 220, 0.08) 38%,
+      rgba(143, 197, 255, 0.18) 50%,
+      rgba(74, 143, 228, 0.12) 62%,
+      rgba(200, 180, 255, 0.10) 75%,
+      rgba(255, 200, 220, 0.06) 88%,
+      rgba(74, 143, 228, 0.15) 100%
+    );
+    animation: pearlShift 20s linear infinite;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  @keyframes pearlShift {
+    0% { transform: rotate(0deg) scale(1.8); }
+    100% { transform: rotate(360deg) scale(1.8); }
+  }
+
+  /* === СВЕТЯЩИЙСЯ КРАЙ === */
+  .card .edge-glow {
+    position: absolute;
+    inset: -3px;
+    border-radius: 17px;
+    background: 
+      radial-gradient(ellipse at 20% 30%, rgba(74,143,228,0.15), transparent 40%),
+      radial-gradient(ellipse at 80% 70%, rgba(143,197,255,0.10), transparent 35%);
+    filter: blur(10px);
+    opacity: 0.5;
+    pointer-events: none;
+    animation: edgePulse 4s ease-in-out infinite alternate;
+    z-index: -1;
+  }
+  @keyframes edgePulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.03); }
+  }
+
+  /* === HOVER === */
+  .card:hover {
+    transform: translateY(-3px) scale(1.005);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow:
+      0 16px 48px rgba(0, 0, 0, 0.40),
+      0 4px 16px rgba(0, 0, 0, 0.20),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      inset 0 -2px 8px rgba(0, 0, 0, 0.12),
+      0 12px 40px rgba(74, 143, 228, 0.10);
+  }
+  .card:hover ~ .card-bar-ext .elixir-glow {
+    opacity: 0.25;
+  }
   .toggle-row {
     display: flex;
     align-items: center;
@@ -474,49 +598,49 @@
     <div class="content">
       <div class="cards">
     <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#3EC6E0; --c2:#8FE3FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#3EC6E0" data-href="Молекулярная_структура_КУ_ТМХ.html"><div class="card-title">Стратегия КУ ТМХ</div></div>
+      <div class="card-bar-ext" style="--c1:#4A8FE4; --c2:#8FE3FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#3EC6E0" data-href="Молекулярная_структура_КУ_ТМХ.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Стратегия КУ ТМХ</div></div>
     </div>
     <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#3EAA6D" data-href="Потенциал_команды_full_2.html"><div class="card-title">Диагностика потенциала команды</div></div>
+      <div class="card-bar-ext" style="--c1:#3DAA7A; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+      <div class="card" data-color="#3EAA6D" data-href="Потенциал_команды_full_2.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Диагностика потенциала команды</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#D6A93B; --c2:#F3D98A;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D6A93B" data-href="trainers.html"><div class="card-title">Диалоговые тренажеры</div></div>
+      <div class="card" data-color="#D6A93B" data-href="trainers.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Диалоговые тренажеры</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#C1554A; --c2:#EE9A8E;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#C1554A"><div class="card-title">Ассессмент-центр: от разработки до отчетов</div></div>
+      <div class="card" data-color="#C1554A"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Ассессмент-центр: от разработки до отчетов</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#8B6FE0" data-href="ABC-опросник___жидкое_стекло.html"><div class="card-title">Опросник: ABC-players</div></div>
+      <div class="card" data-color="#8B6FE0" data-href="ABC-опросник___жидкое_стекло.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Опросник: ABC-players</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#B0653A; --c2:#E3A26F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#B0653A"><div class="card-title">Программа-тренинг: оценка персонала</div></div>
+      <div class="card" data-color="#B0653A"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Программа-тренинг: оценка персонала</div></div>
     </div>
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#D9B26A; --c2:#F0D9A0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D9B26A" data-href="Активности_для_развития_резервистов.html"><div class="card-title">Кадровый резерв</div></div>
+      <div class="card" data-color="#D9B26A" data-href="Активности_для_развития_резервистов.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Кадровый резерв</div></div>
     </div>
         <!-- Performance Management -->
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#4A8FE4; --c2:#8FC5FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#4A8FE4" data-href="performance-management.html"><div class="card-title">Performance Management</div></div>
+      <div class="card" data-color="#4A8FE4" data-href="performance-management.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Performance Management</div></div>
     </div>
 
     <!-- Performance Review -->
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#D97A9B; --c2:#F2B8CC;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D97A9B" data-href="performance-review.html"><div class="card-title">Performance Review</div></div>
+      <div class="card" data-color="#D97A9B" data-href="performance-review.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Performance Review</div></div>
     </div>
 
     <!-- Talent Management -->
     <div class="card-row">
       <div class="card-bar-ext" style="--c1:#6ABF7A; --c2:#A8E0B5;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#6ABF7A" data-href="talent-management.html"><div class="card-title">Talent Management</div></div>
+      <div class="card" data-color="#6ABF7A" data-href="talent-management.html"><div class="edge-glow"></div><div class="pearl-shift"></div><div class="card-title">Talent Management</div></div>
     </div>
 
       </div>
@@ -1614,6 +1738,44 @@
       span.textContent = (ch === ' ') ? '\u00A0' : ch;
       el.appendChild(span);
     });
+  })();
+</script>
+<script>
+  (function() {
+    // ===== ПАЛИТРА ЦВЕТОВ =====
+    const colorPalette = [
+      { c1: '#3EC6E0', c2: '#8FE3FF' },
+      { c1: '#3EAA6D', c2: '#8FE3B0' },
+      { c1: '#D6A93B', c2: '#F3D98A' },
+      { c1: '#C1554A', c2: '#EE9A8E' },
+      { c1: '#8B6FE0', c2: '#C4B4FF' },
+      { c1: '#B0653A', c2: '#E3A26F' },
+      { c1: '#D9B26A', c2: '#F0D9A0' },
+      { c1: '#4A8FE4', c2: '#8FC5FF' },
+      { c1: '#D97A9B', c2: '#F2B8CC' },
+      { c1: '#6ABF7A', c2: '#A8E0B5' },
+      { c1: '#E88A5A', c2: '#F5C8A8' },
+      { c1: '#7A9EC4', c2: '#B8D4E8' },
+      { c1: '#C49A6C', c2: '#E8D0B8' },
+      { c1: '#A87AC4', c2: '#D4B8E8' },
+      { c1: '#6CB8A0', c2: '#B8E8D4' },
+    ];
+
+    const capsuleWrappers = document.querySelectorAll('.card-bar-ext');
+    
+    // Перемешиваем
+    const shuffled = [...colorPalette];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
+    capsuleWrappers.forEach((el, index) => {
+      const color = shuffled[index % shuffled.length];
+      el.style.setProperty('--c1', color.c1);
+      el.style.setProperty('--c2', color.c2);
+    });
+
   })();
 </script>
 </body>
