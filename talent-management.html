@@ -301,6 +301,154 @@ body::after{
 .card ul{margin:0;padding-left:20px;font-size:14.5px;color:var(--text-dim);}
 .card ul li{margin-bottom:6px;}
 
+/* ========================================================================
+   ENHANCEMENT LAYER — воздушное «надутое» стекло: блики, переливы, глубина
+   ======================================================================== */
+:root{
+  --accent-rgb: 45,122,90;
+  --accent-dark-rgb: 30,90,64;
+  --accent-light-rgb: 139,200,168;
+}
+
+/* --- единая система стеклянных поверхностей: кольцо блика + движущийся блик + прожектор мыши --- */
+.glass, .stat, .principle-card, .pdca-cell, .adkar-cell, .stage{
+  position:relative;
+  overflow:hidden;
+  --mx:50%; --my:22%;
+}
+.glass::after, .stat::after, .principle-card::after, .pdca-cell::after, .adkar-cell::after, .stage::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:
+    radial-gradient(460px circle at var(--mx) var(--my), rgba(255,255,255,0.28), transparent 60%),
+    linear-gradient(135deg,
+      rgba(255,255,255,0.14) 0%,
+      rgba(255,255,255,0) 26%,
+      rgba(255,255,255,0.05) 55%,
+      rgba(255,255,255,0) 76%,
+      rgba(255,255,255,0.08) 100%);
+  filter:blur(2px) drop-shadow(0 4px 20px rgba(255,255,255,0.06));
+  animation: liquidSheen 9s ease-in-out infinite;
+  transition: background .18s ease-out;
+  z-index:1;
+}
+.glass::before, .stat::before, .principle-card::before, .pdca-cell::before, .adkar-cell::before, .stage::before{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:linear-gradient(155deg,
+    rgba(255,255,255,0.55) 0%,
+    rgba(255,255,255,0) 28%,
+    rgba(255,255,255,0) 66%,
+    rgba(var(--accent-rgb),0.22) 100%);
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation: rimBreathe 6s ease-in-out infinite;
+}
+@keyframes rimBreathe{
+  0%,100%{ opacity:.75; }
+  50%{ opacity:1; }
+}
+
+.glass > *, .stat > *, .principle-card > *, .pdca-cell > *, .adkar-cell > *, .stage > *{ position:relative; z-index:3; }
+
+/* 3D-наклон вслед за курсором — для «карточных» поверхностей */
+.card.glass, .principle-card{
+  transform: perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(0) scale(1);
+  transition: transform .35s cubic-bezier(.25,.46,.45,.95), background .35s, box-shadow .35s;
+}
+.card.glass:hover, .principle-card:hover{
+  transform: perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-5px) scale(1.012);
+}
+
+.stat, .pdca-cell{ transition: transform .3s cubic-bezier(.25,.46,.45,.95), box-shadow .3s; }
+.stat:hover, .pdca-cell:hover{
+  transform:translateY(-3px);
+  box-shadow:0 14px 40px rgba(var(--accent-rgb),0.16);
+}
+
+/* переливчатый (iridescent) сдвиг оттенка по краю при наведении */
+@media (hover:hover){
+  .glass:hover::before, .stat:hover::before, .principle-card:hover::before, .pdca-cell:hover::before, .adkar-cell:hover::before, .stage:hover::before{
+    background:linear-gradient(155deg,
+      rgba(255,255,255,0.65) 0%,
+      rgba(var(--accent-light-rgb),0.18) 30%,
+      rgba(255,255,255,0) 66%,
+      rgba(var(--accent-rgb),0.32) 100%);
+  }
+}
+
+/* ===== ICON-3D: живые стеклянные шарики ===== */
+.icon-3d{ animation: iconBob 5.2s ease-in-out infinite; }
+@keyframes iconBob{
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-2.5px); }
+}
+.glass:hover .icon-3d, .principle-card:hover .icon-3d{ animation-play-state:paused; }
+
+/* ===== ФОН: усиленная динамика и переливы блобов ===== */
+body::before{ animation: blobFloat 30s ease-in-out infinite, hueDrift 22s ease-in-out infinite; }
+body::after{ animation: blobFloat 34s ease-in-out infinite 10s, hueDrift 26s ease-in-out infinite 4s; }
+@keyframes hueDrift{
+  0%,100%{ filter:blur(100px) hue-rotate(0deg); }
+  50%{ filter:blur(100px) hue-rotate(16deg); }
+}
+
+/* ===== АККОРДЕОН: индикатор состояния и мягкое свечение при открытии ===== */
+.stage{ transition: box-shadow .4s ease; }
+.stage.open{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.22),
+    0 10px 40px rgba(var(--accent-rgb),0.14);
+}
+.stage-head:focus-visible{
+  outline:2px solid rgba(var(--accent-rgb),0.6);
+  outline-offset:-2px;
+  border-radius:12px;
+}
+
+/* ===== "Развернуть все" ===== */
+.roadmap-toolbar{ display:flex; justify-content:flex-end; margin-bottom:10px; }
+.roadmap-toggle-all{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-dim);
+  background:var(--glass); backdrop-filter:var(--blur-sm); border:1px solid var(--glass-border);
+  border-radius:100px; padding:7px 16px; cursor:pointer; transition:all .25s;
+  display:inline-flex; align-items:center; gap:6px;
+}
+.roadmap-toggle-all:hover{ background:var(--glass-hover); color:var(--ink); }
+
+/* ===== Кнопка закрытия мобильного меню ===== */
+#mobile-nav-close{
+  position:absolute; top:16px; right:16px;
+  width:34px; height:34px; border-radius:50%;
+  background:var(--glass); backdrop-filter:var(--blur-sm);
+  border:1px solid var(--glass-border); color:var(--text-dim);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .2s; z-index:5;
+}
+#mobile-nav-close:hover{ background:var(--glass-hover); color:var(--ink); }
+.sidebar-title{
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--text-dimmer); margin-bottom:18px; padding-bottom:10px; border-bottom:1px solid var(--glass-border);
+}
+
+/* ===== Живой градиент прогресс-бара ===== */
+#progress-bar{
+  background:linear-gradient(90deg, rgba(var(--accent-rgb),1), rgba(var(--accent-light-rgb),1), rgba(var(--accent-rgb),1));
+  background-size:200% 100%;
+  animation: progressShimmer 3s linear infinite;
+}
+@keyframes progressShimmer{
+  0%{ background-position:0% 0%; }
+  100%{ background-position:200% 0%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .glass::after, .glass::before, .stat::after, .stat::before, .principle-card::after, .principle-card::before,
+  .pdca-cell::after, .pdca-cell::before, .adkar-cell::after, .adkar-cell::before, .stage::after, .stage::before,
+  .icon-3d, body::before, body::after, #progress-bar{
+    animation:none !important;
+  }
+}
+
+
 /* ===== HERO ===== */
 .hero{
   padding:60px 0 36px;margin-bottom:44px;position:relative;
@@ -566,6 +714,15 @@ footer .ftext .print-btn:hover{color:var(--primary-dark);}
   .glass .glass-inner-glow{display:none!important;}
   body::before,body::after{display:none!important;}
 }
+/* ===== RESPONSIVE — промежуточный брейкпоинт для планшетов (в конце каскада, чтобы точно перебить базовые правила) ===== */
+@media(max-width:900px){
+  .grid-3{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:38px;}
+  .stat-row{gap:12px;}
+}
+@media(max-width:520px){
+  .grid-3{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
@@ -711,6 +868,7 @@ footer .ftext .print-btn:hover{color:var(--primary-dark);}
           <h2>Дорожная карта внедрения</h2>
           <p class="section-intro">Девять последовательных этапов от диагностики критических ролей до измерения эффекта. Кликните по любому этапу, чтобы развернуть подробную инструкцию.</p>
         </div>
+        <div class="roadmap-toolbar"><button type="button" class="roadmap-toggle-all" id="roadmap-toggle-all"><i class="fas fa-angles-down"></i> Развернуть все</button></div>
         <div class="roadmap" id="roadmap-list"></div>
       </section>
 
@@ -1008,7 +1166,7 @@ stages.forEach((s,i)=>{
   const div = document.createElement('div');
   div.className='stage';
   div.innerHTML = `
-    <div class="stage-head" onclick="this.parentElement.classList.toggle('open')">
+    <div class="stage-head" role="button" tabindex="0" aria-expanded="false">
       <div class="stage-num">${String(i+1).padStart(2,'0')}</div>
       <div class="stage-head-text">
         <div class="stage-title">${s.title}</div>
@@ -1021,17 +1179,44 @@ stages.forEach((s,i)=>{
   roadmapEl.appendChild(div);
 });
 
+function setStageOpen(stage, open){
+  const head = stage.querySelector('.stage-head');
+  const body = stage.querySelector('.stage-body');
+  stage.classList.toggle('open', open);
+  head.setAttribute('aria-expanded', open ? 'true' : 'false');
+  body.style.maxHeight = open ? body.scrollHeight + 'px' : 0;
+}
+function toggleStage(stage){ setStageOpen(stage, !stage.classList.contains('open')); }
 document.querySelectorAll('.stage-head').forEach(head=>{
-  head.addEventListener('click', ()=>{
-    const stage = head.parentElement;
-    const body = stage.querySelector('.stage-body');
-    if(stage.classList.contains('open')){
-      body.style.maxHeight = body.scrollHeight + 'px';
-    } else {
-      body.style.maxHeight = 0;
+  head.addEventListener('click', ()=> toggleStage(head.parentElement));
+  head.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      toggleStage(head.parentElement);
     }
   });
 });
+let resizeRaf = null;
+window.addEventListener('resize', ()=>{
+  if(resizeRaf) cancelAnimationFrame(resizeRaf);
+  resizeRaf = requestAnimationFrame(()=>{
+    document.querySelectorAll('.stage.open').forEach(stage=>{
+      const body = stage.querySelector('.stage-body');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    });
+  });
+});
+const roadmapToggleAllBtn = document.getElementById('roadmap-toggle-all');
+if(roadmapToggleAllBtn){
+  let allOpen = false;
+  roadmapToggleAllBtn.addEventListener('click', ()=>{
+    allOpen = !allOpen;
+    document.querySelectorAll('.stage').forEach(stage=> setStageOpen(stage, allOpen));
+    roadmapToggleAllBtn.innerHTML = allOpen
+      ? '<i class="fas fa-angles-up"></i> Свернуть все'
+      : '<i class="fas fa-angles-down"></i> Развернуть все';
+  });
+}
 
 const overviewEl = document.getElementById('overview-strip');
 Array.from(document.querySelectorAll('#nav-links .nav-link')).forEach(link=>{
@@ -1041,7 +1226,9 @@ Array.from(document.querySelectorAll('#nav-links .nav-link')).forEach(link=>{
   const num = link.querySelector('.num').textContent;
   d.innerHTML = `<div class="n">${num}</div><div class="t">${label}</div>`;
   d.onclick = ()=>{
-    document.querySelector(link.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+    const target = document.querySelector(link.getAttribute('href'));
+    target.classList.add('visible');
+    target.scrollIntoView({behavior:'smooth'});
   };
   overviewEl.appendChild(d);
 });
@@ -1062,9 +1249,14 @@ sources.forEach(s=>{
 });
 
 document.getElementById('mobile-nav-panel').innerHTML =
+  '<button type="button" id="mobile-nav-close" aria-label="Закрыть меню"><i class="fas fa-xmark"></i></button>' +
   '<div class="sidebar-title">Навигация</div>' + document.getElementById('nav-links').innerHTML;
 document.querySelectorAll('#mobile-nav-panel .nav-link').forEach(a=>{
-  a.addEventListener('click', ()=>document.getElementById('mobile-nav').classList.remove('open'));
+  a.addEventListener('click', ()=>{
+    document.getElementById('mobile-nav').classList.remove('open');
+    const target = document.querySelector(a.getAttribute('href'));
+    if(target) target.classList.add('visible');
+  });
 });
 
 const dotRailEl = document.getElementById('dot-rail');
@@ -1075,7 +1267,9 @@ navSourceLinks.forEach(link=>{
   item.dataset.target = link.getAttribute('href');
   item.innerHTML = `<span class="tooltip">${link.textContent.replace(/^\d+/, '').trim()}</span><span class="dot"></span>`;
   item.addEventListener('click', ()=>{
-    document.querySelector(item.dataset.target).scrollIntoView({behavior:'smooth'});
+    const target = document.querySelector(item.dataset.target);
+    target.classList.add('visible');
+    target.scrollIntoView({behavior:'smooth'});
   });
   dotRailEl.appendChild(item);
 });
@@ -1097,15 +1291,25 @@ function updateSpy(){
     d.classList.toggle('active', d.dataset.target === '#'+current);
   });
 }
-window.addEventListener('scroll', updateSpy);
-updateSpy();
 
 function updateProgress(){
   const h = document.documentElement;
-  const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  const max = h.scrollHeight - h.clientHeight;
+  const scrolled = max > 0 ? (h.scrollTop / max) * 100 : 0;
   document.getElementById('progress-bar').style.width = scrolled + '%';
 }
-window.addEventListener('scroll', updateProgress);
+
+let scrollRaf = null;
+function onScroll(){
+  if(scrollRaf) return;
+  scrollRaf = requestAnimationFrame(()=>{
+    updateSpy();
+    updateProgress();
+    scrollRaf = null;
+  });
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+updateSpy();
 updateProgress();
 
 document.querySelectorAll('section').forEach(s=>s.classList.add('fade-in'));
@@ -1113,6 +1317,32 @@ const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
 },{threshold:0.08});
 document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+
+// ===================== ENHANCEMENT: жидкое стекло — прожектор мыши и наклон =====================
+const tiltTargets = document.querySelectorAll('.glass, .stat, .principle-card, .pdca-cell, .adkar-cell, .stage');
+tiltTargets.forEach(el=>{
+  el.addEventListener('mousemove', (e)=>{
+    const r = el.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    el.style.setProperty('--mx', x.toFixed(1) + '%');
+    el.style.setProperty('--my', y.toFixed(1) + '%');
+    el.style.setProperty('--rx', (((y - 50) / 50) * -3).toFixed(2) + 'deg');
+    el.style.setProperty('--ry', (((x - 50) / 50) * 3).toFixed(2) + 'deg');
+  });
+  el.addEventListener('mouseleave', ()=>{
+    el.style.setProperty('--mx', '50%');
+    el.style.setProperty('--my', '22%');
+    el.style.setProperty('--rx', '0deg');
+    el.style.setProperty('--ry', '0deg');
+  });
+});
+
+// ===================== ENHANCEMENT: кнопка закрытия мобильного меню =====================
+const mobileNavClose = document.getElementById('mobile-nav-close');
+if(mobileNavClose){
+  mobileNavClose.addEventListener('click', ()=>document.getElementById('mobile-nav').classList.remove('open'));
+}
 </script>
 </body>
 </html>
