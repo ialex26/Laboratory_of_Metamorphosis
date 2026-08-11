@@ -6,7 +6,7 @@
 <title>Диалоговые тренажеры — Лаборатория Метаморфозиса</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0d0f14;
@@ -18,61 +18,250 @@
     --text-dim: #aab1c2;
     --text-dimmer: #6b7688;
     --copper: #b0653a;
+    --cyan: #6fe0ff;
+    --cyan-soft: #8fe3ff;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0; padding: 0;
-    background:
-      radial-gradient(900px 560px at 88% -10%, rgba(176,101,58,0.10), transparent 60%),
-      radial-gradient(760px 520px at 6% 100%, rgba(139,111,224,0.10), transparent 60%),
-      var(--bg);
+    width: 100%; min-height: 100%;
+    background: var(--bg-deep);
     color: var(--text);
     font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
-    min-height: 100%;
-  }
-  .wrap {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 56px 24px 80px;
+    overflow-x: hidden;
   }
 
-  .back-link {
-    display: inline-flex;
+  /* ===== 3D СЦЕНА (волны) ===== */
+  #scene-wrap {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+  #scene-wrap canvas { display: block; touch-action: none; }
+
+  #bg-glow {
+    position: fixed; inset: -10%; pointer-events: none; z-index: 1;
+    background:
+      radial-gradient(ellipse 55% 45% at 62% 40%, rgba(32,150,182,0.16), transparent 62%),
+      radial-gradient(ellipse 50% 42% at 28% 28%, rgba(22,96,128,0.12), transparent 65%),
+      radial-gradient(ellipse 75% 70% at 50% 58%, rgba(12,58,80,0.16), transparent 70%);
+    background-repeat: no-repeat;
+    animation: driftGlow 26s ease-in-out infinite alternate;
+  }
+  @keyframes driftGlow {
+    0%   { background-position: 0% 0%,   0% 0%,   0% 0%;   opacity:0.82; }
+    50%  { background-position: 4% 3%,  -3% -3%,  2% 1%;   opacity:1;    }
+    100% { background-position: -3% 4%,  3% -2%, -2% 2%;   opacity:0.88; }
+  }
+
+  #vignette {
+    position: fixed; inset: 0; pointer-events: none; z-index: 2;
+    background: radial-gradient(ellipse 80% 75% at 50% 55%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 82%, rgba(0,0,0,0.85) 100%);
+  }
+
+  /* ===== FLOATING DRAWER (как в index.html) ===== */
+  .drawer {
+    position: fixed;
+    left: 0; top: 50%;
+    transform: translate(-100%, -50%);
+    width: min(20vw, 340px);
+    min-width: 280px;
+    max-height: 90vh;
+    z-index: 10;
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    filter: drop-shadow(22px 26px 46px rgba(0,0,0,0.42)) drop-shadow(0 0 34px rgba(0,0,0,0.22));
+  }
+  .drawer.open { transform: translate(0, -50%); }
+
+  .drawer-panel {
+    flex: 1;
+    min-width: 0;
+    border-radius: 0 20px 20px 0;
+    padding: 30px 24px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: linear-gradient(160deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+    backdrop-filter: blur(26px) saturate(165%);
+    -webkit-backdrop-filter: blur(26px) saturate(165%);
+    border: 1px solid rgba(255,255,255,0.14);
+    border-right: none;
+    position: relative;
+  }
+  .drawer-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(125deg,
+      rgba(255,255,255,0) 32%,
+      rgba(255,255,255,0.05) 47%,
+      rgba(255,255,255,0.08) 50%,
+      rgba(255,255,255,0.05) 53%,
+      rgba(255,255,255,0) 68%);
+    background-size: 280% 280%;
+    animation: panelSheen 10s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes panelSheen {
+    0%   { background-position: 0% 0%; }
+    100% { background-position: 100% 100%; }
+  }
+
+  .drawer-tab {
+    position: absolute;
+    right: -36px; top: 50%;
+    transform: translateY(-50%);
+    width: 36px; height: 68px;
+    border-radius: 0 16px 16px 0; 
+    background: linear-gradient(160deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04));
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-left: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+  .drawer-arrow {
+    width: 0; height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 9px solid rgba(232,238,248,0.9);
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .drawer.open .drawer-arrow { transform: rotate(180deg); }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+  }
+
+  /* ===== ВЕРХНИЙ ЗАГОЛОВОК (как в index.html) ===== */
+  .top-header {
+    position: fixed;
+    left: 40px; top: 36px;
+    z-index: 5;
+    max-width: 640px;
+    pointer-events: none;
+  }
+  header {
+    display: flex;
     align-items: center;
-    gap: 8px;
-    color: var(--text-dimmer);
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    margin-bottom: 34px;
-    transition: color 0.2s ease;
+    gap: 16px;
+    margin-bottom: 20px;
   }
-  .back-link:hover { color: var(--text-dim); }
-  .back-link svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; }
 
-  .eyebrow {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--copper);
-    margin-bottom: 10px;
+  /* ===== ЛОГОТИП (3D-эмблема) ===== */
+  .logo-badge {
+    position: relative;
+    width: 76px; height: 76px;
+    flex-shrink: 0;
+    perspective: 640px;
+    pointer-events: auto;
   }
-  h1 {
-    font-size: 30px;
-    font-weight: 600;
-    margin: 0 0 10px;
-    letter-spacing: -0.01em;
+  .badge-dome {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background:
+      radial-gradient(64% 60% at 30% 24%, rgba(255,255,255,0.40), rgba(255,255,255,0.04) 55%),
+      radial-gradient(90% 90% at 72% 82%, rgba(0,0,0,0.30), rgba(0,0,0,0) 60%),
+      linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+    backdrop-filter: blur(9px) saturate(160%);
+    -webkit-backdrop-filter: blur(9px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.22);
+    box-shadow:
+      inset 0 3px 7px rgba(255,255,255,0.30),
+      inset 0 -7px 15px rgba(0,0,0,0.50),
+      inset 5px 0 10px rgba(0,0,0,0.18),
+      inset -5px 0 10px rgba(0,0,0,0.18),
+      0 8px 20px rgba(0,0,0,0.38);
   }
-  .lede {
-    font-size: 15px;
+  .badge-rim {
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+  .logo-coin {
+    position: absolute;
+    inset: 8px;
+    transform-style: preserve-3d;
+    animation: coinSpin 60s linear infinite;
+  }
+  @keyframes coinSpin {
+    0%   { transform: rotateY(0deg); }
+    7%   { transform: rotateY(720deg); }
+    100% { transform: rotateY(720deg); }
+  }
+  .coin-face {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+  }
+  .coin-front { transform: rotateY(0deg) translateZ(0.6px); }
+  .coin-back  { transform: rotateY(180deg) translateZ(0.6px); }
+  .coin-face svg {
+    width: 86%; height: 86%;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.45));
+  }
+  .coin-sheen {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 24%, rgba(255,255,255,0.55), transparent 55%);
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .title-placeholder {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.005em;
+    color: transparent;
+    background: linear-gradient(100deg,
+      #eaf2ff 0%, #dfe7ff 12%, #e6d9ff 24%, #f3d9ee 36%,
+      #ffe0e6 48%, #fff0da 60%, #dff5ea 72%, #dbeeff 86%, #eaf2ff 100%);
+    background-size: 320% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0.4px rgba(255,255,255,0.45);
+    text-shadow:
+      0 1px 0 rgba(255,255,255,0.35),
+      0 2px 0 rgba(255,255,255,0.18),
+      0 3px 2px rgba(0,0,0,0.20),
+      0 6px 16px rgba(0,0,0,0.35);
+    animation: titleSheen 9s ease-in-out infinite alternate;
+    display: inline-block;
+  }
+  @keyframes titleSheen {
+    0%   { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+  .liquid-letter {
+    display: inline-block;
+    animation: liquidLetter 2.8s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.06s);
+    will-change: transform;
+  }
+  @keyframes liquidLetter {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  .tagline {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.45;
     color: var(--text-dim);
-    line-height: 1.6;
-    max-width: 520px;
-    margin: 0 0 40px;
+    margin: 0;
+    text-shadow: 0 2px 18px rgba(0,0,0,0.6);
   }
 
+  /* ===== КАРТОЧКИ ===== */
   .cards {
     display: flex;
     flex-direction: column;
@@ -84,8 +273,12 @@
     gap: 12px;
   }
 
-  /* ===== Капсула-эликсир (тот же компонент, что на главной) ===== */
-  .card-bar-ext { position: relative; width: 26px; flex-shrink: 0; }
+  /* Капсула-эликсир (как в index.html) */
+  .card-bar-ext {
+    position: relative;
+    width: 26px;
+    flex-shrink: 0;
+  }
   .card-bar-ext .elixir-glow {
     position: absolute; inset: -12px;
     border-radius: 999px;
@@ -157,7 +350,10 @@
   .card-bar-ext .bubble.b2 { left: 60%; width: 6px; height: 6px; animation-duration: 8s; animation-delay: 2.4s; }
   .card-bar-ext .bubble.b3 { left: 46%; width: 3px; height: 3px; animation-duration: 5.5s; animation-delay: 4.1s; }
 
-  @keyframes elixirGlowPulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.15; } }
+  @keyframes elixirGlowPulse {
+    0%, 100% { opacity: 0.08; }
+    50%      { opacity: 0.15; }
+  }
   @keyframes elixirBubble {
     0%   { bottom: 4%; opacity: 0; transform: translateX(0); }
     10%  { opacity: 0.7; }
@@ -165,112 +361,773 @@
     100% { bottom: 92%; opacity: 0; transform: translateX(3px); }
   }
 
+  /* Карточка — перламутровое стекло */
   .card {
     position: relative;
     flex: 1;
-    background: linear-gradient(155deg, var(--panel-2), var(--panel));
     border-radius: 14px;
-    padding: 18px 20px;
-    min-height: 78px;
+    padding: 14px 18px;
+    min-height: 66px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 4px;
+    gap: 2px;
     cursor: pointer;
     overflow: visible;
-    border: 1px solid var(--line);
-    transition: transform 0.25s ease, border-color 0.25s ease;
+    background: rgba(255,255,255,0.04);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow:
+      0 8px 32px rgba(0,0,0,0.35),
+      0 2px 8px rgba(0,0,0,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.18),
+      inset 0 -2px 8px rgba(0,0,0,0.12),
+      0 8px 32px rgba(74,143,228,0.06);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.95);
   }
-  .card:hover { transform: translateX(3px); border-color: rgba(255,255,255,0.18); }
   .card-title {
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.35;
-    color: var(--text);
     position: relative;
     z-index: 2;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    letter-spacing: 0.02em;
   }
   .card-desc {
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 300;
-    line-height: 1.5;
-    color: var(--text-dimmer);
+    line-height: 1.4;
+    color: rgba(255,255,255,0.45);
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     position: relative;
     z-index: 2;
   }
-  .card.dim { cursor: default; }
-  .card.dim:hover { transform: none; border-color: var(--line); }
-  .card.dim .card-title { color: var(--text-dimmer); }
-  .card.dim .card-desc { color: rgba(107,118,136,0.6); }
-  .soon-tag {
-    align-self: flex-start;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--line);
-    padding: 2px 8px;
-    border-radius: 20px;
-    margin-top: 6px;
+
+  /* Перламутровая граница */
+  .card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    padding: 1px;
+    background: linear-gradient(135deg,
+      rgba(255,255,255,0.35) 0%,
+      rgba(200,180,255,0.15) 20%,
+      rgba(74,143,228,0.20) 40%,
+      rgba(255,200,220,0.10) 60%,
+      rgba(143,197,255,0.18) 80%,
+      rgba(255,255,255,0.25) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    animation: borderGlow 5s ease-in-out infinite alternate;
+  }
+  @keyframes borderGlow {
+    0% { opacity: 0.4; }
+    100% { opacity: 1; }
   }
 
+  /* Блик */
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background:
+      radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.12), transparent 55%),
+      radial-gradient(ellipse at 75% 80%, rgba(143,197,255,0.06), transparent 50%);
+    pointer-events: none;
+    animation: sheenMove 8s ease-in-out infinite alternate;
+  }
+  @keyframes sheenMove {
+    0% { opacity: 0.4; background-position: 0% 0%, 0% 0%; }
+    100% { opacity: 0.9; background-position: 15% 10%, -10% 15%; }
+  }
+
+  /* Перелив */
+  .card .pearl-shift {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .card .pearl-shift::before {
+    content: '';
+    position: absolute;
+    inset: -100%;
+    background: conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(74,143,228,0.15) 0%,
+      rgba(143,197,255,0.20) 12%,
+      rgba(200,180,255,0.12) 25%,
+      rgba(255,200,220,0.08) 38%,
+      rgba(143,197,255,0.18) 50%,
+      rgba(74,143,228,0.12) 62%,
+      rgba(200,180,255,0.10) 75%,
+      rgba(255,200,220,0.06) 88%,
+      rgba(74,143,228,0.15) 100%
+    );
+    animation: pearlShift 20s linear infinite;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+  @keyframes pearlShift {
+    0% { transform: rotate(0deg) scale(1.8); }
+    100% { transform: rotate(360deg) scale(1.8); }
+  }
+
+  /* Светящийся край */
+  .card .edge-glow {
+    position: absolute;
+    inset: -3px;
+    border-radius: 17px;
+    background:
+      radial-gradient(ellipse at 20% 30%, rgba(74,143,228,0.15), transparent 40%),
+      radial-gradient(ellipse at 80% 70%, rgba(143,197,255,0.10), transparent 35%);
+    filter: blur(10px);
+    opacity: 0.5;
+    pointer-events: none;
+    animation: edgePulse 4s ease-in-out infinite alternate;
+    z-index: -1;
+  }
+  @keyframes edgePulse {
+    0% { opacity: 0.3; transform: scale(1); }
+    100% { opacity: 0.8; transform: scale(1.03); }
+  }
+
+  /* Hover */
+  .card:hover {
+    transform: translateY(-3px) scale(1.005);
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(255,255,255,0.15);
+    box-shadow:
+      0 16px 48px rgba(0,0,0,0.40),
+      0 4px 16px rgba(0,0,0,0.20),
+      inset 0 1px 0 rgba(255,255,255,0.22),
+      inset 0 -2px 8px rgba(0,0,0,0.12),
+      0 12px 40px rgba(74,143,228,0.10);
+  }
+
+  /* Кнопка "На главную" вместо тумблера */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+  }
+
+  .home-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 24px;
+    border-radius: 30px;
+    background: linear-gradient(160deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.85);
+    font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .home-button:hover {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.25);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  .home-icon {
+    font-size: 18px;
+    line-height: 1;
+    opacity: 0.8;
+    transition: transform 0.3s ease;
+  }
+
+  .home-button:hover .home-icon {
+    transform: translateX(-3px);
+  }
+  .toggle-label {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-dimmer);
+  }
+  .toggle-switch {
+    position: relative;
+    width: 42px; height: 24px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.18);
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .toggle-switch.on {
+    background: rgba(159,216,255,0.32);
+    border-color: rgba(159,216,255,0.55);
+  }
+  .toggle-knob {
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #e8eef8;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .toggle-switch.on .toggle-knob {
+    transform: translateX(18px);
+  }
+
+  @media (max-height: 720px) {
+    .drawer { max-height: 94vh; }
+    .drawer-panel { padding: 18px 20px; }
+    header { margin-bottom: 14px; }
+    .cards { gap: 9px; }
+    .card { padding: 10px 14px; min-height: 56px; }
+  }
   @media (max-width: 640px) {
-    .wrap { padding: 40px 18px 60px; }
-    h1 { font-size: 25px; }
+    .drawer { width: min(84vw, 340px); }
+    .top-header { left: 18px; top: 18px; }
+    .title-placeholder { font-size: 18px; }
+    .logo-badge { width: 56px; height: 56px; }
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <a class="back-link" href="index.html">
-    <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    На главную
-  </a>
+<!-- ===== 3D СЦЕНА (волны) ===== -->
+<div id="scene-wrap"></div>
+<div id="bg-glow"></div>
+<div id="vignette"></div>
 
-  <div class="eyebrow">Диалоговые тренажеры</div>
-  <h1>Выберите тренажер</h1>
-  <p class="lede">Живые диалоговые сценарии с реальным собеседником на базе LLM — не дерево заготовленных реплик, а настоящий разговор с разбором по итогам.</p>
-
-  <div class="cards">
-    <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#3EAA6D" data-href="dialog-trainer-v1.html">
-        <div class="card-title">Конструктивная обратная связь · «Дмитрий»</div>
-        <div class="card-desc">Сценарий «снижение вовлеченности», 15 минут, роль — руководитель, текст + голос</div>
+<!-- ===== ВЕРХНИЙ ЗАГОЛОВОК ===== -->
+<div class="top-header">
+  <header>
+    <div class="logo-badge" id="logoBadge">
+      <div class="badge-dome"></div>
+      <div class="badge-rim"></div>
+      <div class="logo-coin">
+        <div class="coin-face coin-front">
+          <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.6353 12C18.9055 12 18.4214 12.7564 18.7271 13.4189L24.0923 25.0342C24.4499 25.8084 25.5501 25.8084 25.9077 25.0342L31.2729 13.4189C31.5786 12.7564 31.0945 12 30.3647 12H36.3999C37.1364 12.0003 37.6197 12.7698 37.3003 13.4336L25.9009 37.127C25.5375 37.8822 24.4625 37.8822 24.0991 37.127L12.6997 13.4336C12.3803 12.7698 12.8635 12.0002 13.6001 12H19.6353Z" fill="#eef1f6"/>
+            <circle cx="25" cy="17" r="2" fill="#eef1f6"/>
+            <path d="M10 16.2361C10 15.1808 11.4225 14.845 11.8944 15.7889L16.8944 25.7889C16.9639 25.9277 17 26.0808 17 26.2361V37C17 37.5523 16.5523 38 16 38H11C10.4477 38 10 37.5523 10 37V16.2361Z" fill="#eef1f6"/>
+            <path d="M40 16.2361C40 15.1808 38.5775 14.845 38.1056 15.7889L33.1056 25.7889C33.0361 25.9277 33 26.0808 33 26.2361V37C33 37.5523 33.4477 38 34 38H39C39.5523 38 40 37.5523 40 37V16.2361Z" fill="#eef1f6"/>
+            <circle opacity="0.25" cx="25" cy="25" r="24.5" fill="none" stroke="#eef1f6" stroke-width="1.5"/>
+          </svg>
+          <div class="coin-sheen"></div>
+        </div>
+        <div class="coin-face coin-back">
+          <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19.6353 12C18.9055 12 18.4214 12.7564 18.7271 13.4189L24.0923 25.0342C24.4499 25.8084 25.5501 25.8084 25.9077 25.0342L31.2729 13.4189C31.5786 12.7564 31.0945 12 30.3647 12H36.3999C37.1364 12.0003 37.6197 12.7698 37.3003 13.4336L25.9009 37.127C25.5375 37.8822 24.4625 37.8822 24.0991 37.127L12.6997 13.4336C12.3803 12.7698 12.8635 12.0002 13.6001 12H19.6353Z" fill="#241a14"/>
+            <circle cx="25" cy="17" r="2" fill="#241a14"/>
+            <path d="M10 16.2361C10 15.1808 11.4225 14.845 11.8944 15.7889L16.8944 25.7889C16.9639 25.9277 17 26.0808 17 26.2361V37C17 37.5523 16.5523 38 16 38H11C10.4477 38 10 37.5523 10 37V16.2361Z" fill="#241a14"/>
+            <path d="M40 16.2361C40 15.1808 38.5775 14.845 38.1056 15.7889L33.1056 25.7889C33.0361 25.9277 33 26.0808 33 26.2361V37C33 37.5523 33.4477 38 34 38H39C39.5523 38 40 37.5523 40 37V16.2361Z" fill="#241a14"/>
+            <circle opacity="0.35" cx="25" cy="25" r="24.5" fill="none" stroke="#b0653a" stroke-width="1.5"/>
+          </svg>
+          <div class="coin-sheen"></div>
+        </div>
       </div>
     </div>
+    <div class="title-placeholder" id="titleText">Лаборатория Метаморфозиса</div>
+  </header>
+</div>
 
-    <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#8B6FE0" data-href="dialog-trainer-argumentation-marina___копия.html">
-        <div class="card-title">Аргументация в переговорах · «Марина»</div>
-        <div class="card-desc">Сценарий «ресурсы под дедлайн» — распределение инженеров между командами</div>
-      </div>
-    </div>
+<!-- ===== FLOATING DRAWER ===== -->
+<div class="drawer open" id="drawer">
+  <div class="drawer-panel">
+    <div class="content">
+      <div class="cards">
 
-    <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#4C7FB0; --c2:#9EC3E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#4C7FB0" data-href="dialog-trainer-narrative-igor___копия.html">
-        <div class="card-title">Нарративное лидерство · «Игорь»</div>
-        <div class="card-desc">Сценарий «признание ошибки» — разговор с сотрудником через сторителлинг</div>
-      </div>
-    </div>
+        <!-- Тренажер 1 -->
+        <div class="card-row">
+          <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="dialog-trainer-v1.html">
+            <div class="card-title">Тренажер · Конструктивная обратная связь</div>
+          </div>
+        </div>
 
-    <div class="card-row">
-      <div class="card-bar-ext" style="--c1:#D9A23E; --c2:#F3D48F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-      <div class="card" data-color="#D9A23E" data-href="Тренаже_р_метафор.html">
-        <div class="card-title">Мастерская образов · тренажер метафор</div>
-        <div class="card-desc">6 шагов конструктора метафоры + тест перед тестовой аудиторией с разбором</div>
+        <!-- Тренажер 2 -->
+        <div class="card-row">
+          <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="dialog-trainer-argumentation-marina___копия.html">
+            <div class="card-title">Тренажер · Аргументация в переговорах</div>
+          </div>
+        </div>
+
+        <!-- Тренажер 3 -->
+        <div class="card-row">
+          <div class="card-bar-ext" style="--c1:#4C7FB0; --c2:#9EC3E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="dialog-trainer-narrative-igor___копия.html">
+            <div class="card-title">Тренажер · Нарративное лидерство</div>
+          </div>
+        </div>
+
+        <!-- Тренажер 4 -->
+        <div class="card-row">
+          <div class="card-bar-ext" style="--c1:#D9A23E; --c2:#F3D48F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="Тренаже_р_метафор.html">
+            <div class="card-title">Тренажер метафон · Мастерская образов</div>
+          </div>
+        </div>
+
+        <!-- Кнопка На главную вместо тумблера -->
+        <div class="toggle-row">
+          <a href="index.html" class="home-button">
+            <span class="home-icon">←</span>
+            На главную
+          </a>
+        </div>
+
       </div>
     </div>
   </div>
-
+  <div class="drawer-tab" id="drawerTab">
+    <div class="drawer-arrow"></div>
+  </div>
 </div>
 
+<!-- ===== THREE.JS ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- ===== 3D ВОЛНЫ (полностью перенесено из wave_field — копия 2.html) ===== -->
 <script>
+(function(){
+
+  // ============================================================
+  //  ФОН — CSS-градиент (#bg-glow) за прозрачным canvas.
+  //  Сцена рендерится с alpha:true, чтобы градиент просвечивал.
+  // ============================================================
+
+  var wrap = document.getElementById('scene-wrap');
+  var W = function(){ return wrap.clientWidth; };
+  var H = function(){ return wrap.clientHeight; };
+
+  var scene = new THREE.Scene();
+  scene.fog = new THREE.FogExp2(0x03050a, 0.0105);
+
+  var camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 500);
+  camera.position.set(0, 11, 76);
+  camera.lookAt(0, 9, 10);
+
+  var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0x000000, 0);
+  wrap.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0x1a2a3a, 1.0));
+
+  // ============================================================
+  //  ГЕОМЕТРИЯ ВОЛНОВОГО ПОЛЯ
+  // ============================================================
+  var SEG_X = 128, SEG_Z = 84;
+  var WIDTH = 168, DEPTH = 118;
+  var Z0 = -22;
+  var vCountX = SEG_X + 1, vCountZ = SEG_Z + 1;
+  var vertCount = vCountX * vCountZ;
+
+  var positions = new Float32Array(vertCount * 3);
+  var colors    = new Float32Array(vertCount * 3);
+  var baseX = new Float32Array(vertCount);
+  var baseZ = new Float32Array(vertCount);
+  var mountainHArr = new Float32Array(vertCount);
+  var glowArr = new Float32Array(vertCount);
+  var CELL_DX = WIDTH / SEG_X;
+  var CELL_DZ = DEPTH / SEG_Z;
+
+  var idx = 0;
+  for (var iz = 0; iz < vCountZ; iz++){
+    for (var ix = 0; ix < vCountX; ix++){
+      var x = -WIDTH/2 + (ix/SEG_X) * WIDTH;
+      var z = Z0 + (iz/SEG_Z) * DEPTH;
+      baseX[idx] = x; baseZ[idx] = z;
+      positions[idx*3+0] = x;
+      positions[idx*3+1] = 0;
+      positions[idx*3+2] = z;
+      idx++;
+    }
+  }
+
+  var triIndex = [];
+  for (var jz = 0; jz < SEG_Z; jz++){
+    for (var jx = 0; jx < SEG_X; jx++){
+      var a = jz*vCountX + jx;
+      var b = a + 1;
+      var c = a + vCountX;
+      var d = c + 1;
+      triIndex.push(a,c,b, b,c,d);
+    }
+  }
+
+  var lineIndex = [];
+  for (var kz = 0; kz < vCountZ; kz++){
+    for (var kx = 0; kx < vCountX; kx++){
+      var p = kz*vCountX + kx;
+      if (kx < SEG_X) lineIndex.push(p, p+1);
+      if (kz < SEG_Z) lineIndex.push(p, p+vCountX);
+      if (kx < SEG_X && kz < SEG_Z && ((kx+kz) % 3 === 0)) lineIndex.push(p, p+vCountX+1);
+    }
+  }
+
+  var waveGroup = new THREE.Group();
+  scene.add(waveGroup);
+
+  var meshGeo = new THREE.BufferGeometry();
+  meshGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  meshGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  meshGeo.setIndex(triIndex);
+  var meshMat = new THREE.MeshBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.5,
+    side: THREE.DoubleSide, depthWrite: true, fog: true
+  });
+  var solidMesh = new THREE.Mesh(meshGeo, meshMat);
+  waveGroup.add(solidMesh);
+
+  var lineGeo = new THREE.BufferGeometry();
+  lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  lineGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  lineGeo.setIndex(lineIndex);
+  var lineMat = new THREE.LineBasicMaterial({
+    vertexColors: true, transparent: true, opacity: 0.8,
+    blending: THREE.AdditiveBlending, depthWrite: false, fog: true
+  });
+  var lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+  waveGroup.add(lineMesh);
+
+  var glowTexCanvas = document.createElement('canvas');
+  glowTexCanvas.width = glowTexCanvas.height = 64;
+  var gctx = glowTexCanvas.getContext('2d');
+  var rg = gctx.createRadialGradient(32,32,0,32,32,32);
+  rg.addColorStop(0, 'rgba(255,255,255,1)');
+  rg.addColorStop(0.35, 'rgba(180,240,255,0.7)');
+  rg.addColorStop(1, 'rgba(180,240,255,0)');
+  gctx.fillStyle = rg;
+  gctx.fillRect(0,0,64,64);
+  var glowTexture = new THREE.CanvasTexture(glowTexCanvas);
+
+  var SAMPLE_STEP = 3;
+  var sampleIndices = [];
+  for (var sz = 0; sz < vCountZ; sz += SAMPLE_STEP){
+    for (var sx = 0; sx < vCountX; sx += SAMPLE_STEP){
+      sampleIndices.push(sz*vCountX + sx);
+    }
+  }
+  var pointCount = sampleIndices.length;
+  var pointPos = new Float32Array(pointCount*3);
+  var pointCol = new Float32Array(pointCount*3);
+  var pointSize = new Float32Array(pointCount);
+
+  var pointGeo = new THREE.BufferGeometry();
+  pointGeo.setAttribute('position', new THREE.BufferAttribute(pointPos, 3));
+  pointGeo.setAttribute('color', new THREE.BufferAttribute(pointCol, 3));
+  var pointMat = new THREE.PointsMaterial({
+    size: 2.4, map: glowTexture, vertexColors: true, transparent: true,
+    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true, fog:true
+  });
+  var pointsMesh = new THREE.Points(pointGeo, pointMat);
+  waveGroup.add(pointsMesh);
+
+  // ============================================================
+  //  ГОРНЫЕ ПИКИ
+  // ============================================================
+  var peaks = [
+    { x:   0, z: 34, h: 15.5, rx: 13, rz: 17, speed: 0.12, phase: 0.0  },
+    { x: -26, z: 18, h:  7.2, rx: 10, rz:  9, speed: 0.16, phase: 1.1  },
+    { x: -44, z: 32, h:  4.8, rx:  9, rz: 10, speed: 0.14, phase: 2.4  },
+    { x:  25, z: 15, h:  8.6, rx:  9, rz:  8, speed: 0.18, phase: 0.6  },
+    { x:  45, z: 26, h:  6.0, rx:  9, rz:  9, speed: 0.15, phase: 3.0  },
+    { x:  60, z: 38, h:  4.2, rx:  8, rz:  9, speed: 0.20, phase: 1.8  }
+  ];
+  var MAX_H = 16.5;
+
+  // ============================================================
+  //  РЯБЬ ОТ КУРСОРА
+  // ============================================================
+  var raycaster = new THREE.Raycaster();
+  var mouseNDC = new THREE.Vector2(-10,-10);
+  var mouseWorld = new THREE.Vector3(0, 0, 0);
+  var localMouse = new THREE.Vector3(0,0,0);
+  var haveMouse = false;
+
+  var RIPPLE_POOL = 10;
+  var ripples = [];
+  for (var r=0;r<RIPPLE_POOL;r++) ripples.push({ x:0, z:0, born:-999, active:false });
+  var rippleCursor = 0;
+  var lastSpawn = -999;
+
+  function updatePointerNDC(clientX, clientY){
+    var rect = renderer.domElement.getBoundingClientRect();
+    mouseNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouseNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
+    haveMouse = true;
+  }
+
+  function updateMouseWorld(){
+    raycaster.setFromCamera(mouseNDC, camera);
+    var origin = raycaster.ray.origin, dir = raycaster.ray.direction;
+    if (Math.abs(dir.y) > 1e-5){
+      var t = -origin.y / dir.y;
+      if (t > 0){
+        mouseWorld.set(origin.x + dir.x*t, 0, origin.z + dir.z*t);
+      }
+    }
+    waveGroup.updateMatrixWorld();
+    localMouse.copy(mouseWorld);
+    waveGroup.worldToLocal(localMouse);
+  }
+
+  // ============================================================
+  //  УПРАВЛЕНИЕ: ПЕРЕТАСКИВАНИЕ — ПОВОРОТ, КОЛЕСО — ЗУМ
+  // ============================================================
+  var dragging = false, lastX = 0, lastY = 0;
+  var autoRotate = true;
+  var targetRotY = -0.06, targetRotX = 0.10;
+  waveGroup.rotation.y = targetRotY;
+  waveGroup.rotation.x = targetRotX;
+
+  function pointerDown(x,y){ dragging = true; autoRotate = false; lastX = x; lastY = y; }
+  function pointerMove(x,y){
+    updatePointerNDC(x,y);
+    if (!dragging) return;
+    var dx = x - lastX, dy = y - lastY;
+    lastX = x; lastY = y;
+    targetRotY += dx * 0.0045;
+    targetRotX += dy * 0.0035;
+    targetRotX = Math.max(-0.5, Math.min(0.55, targetRotX));
+  }
+  function pointerUp(){ dragging = false; }
+
+  renderer.domElement.addEventListener('mousedown', function(e){ pointerDown(e.clientX, e.clientY); });
+  window.addEventListener('mousemove', function(e){ pointerMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', pointerUp);
+  renderer.domElement.addEventListener('mouseleave', function(){ haveMouse = false; });
+
+  renderer.domElement.addEventListener('touchstart', function(e){
+    var t = e.touches[0]; pointerDown(t.clientX, t.clientY); updatePointerNDC(t.clientX,t.clientY);
+  }, { passive:true });
+  renderer.domElement.addEventListener('touchmove', function(e){
+    var t = e.touches[0]; pointerMove(t.clientX, t.clientY);
+  }, { passive:true });
+  renderer.domElement.addEventListener('touchend', pointerUp);
+
+  renderer.domElement.addEventListener('wheel', function(e){
+    e.preventDefault();
+    camera.position.z += e.deltaY * 0.012;
+    camera.position.z = Math.max(38, Math.min(130, camera.position.z));
+  }, { passive:false });
+
+  window.addEventListener('resize', function(){
+    camera.aspect = W()/H();
+    camera.updateProjectionMatrix();
+    renderer.setSize(W(), H());
+  });
+
+  // ============================================================
+  //  ЦВЕТ ПО ВЫСОТЕ
+  // ============================================================
+  var stops = [
+    { t:0.00, c:[0x07,0x0d,0x1a] },
+    { t:0.28, c:[0x0a,0x22,0x30] },
+    { t:0.52, c:[0x0e,0x46,0x5a] },
+    { t:0.75, c:[0x1c,0x8c,0xac] },
+    { t:1.00, c:[0x9f,0xf5,0xff] }
+  ];
+  function colorForT(t, out){
+    t = Math.max(0, Math.min(1, t));
+    var i = 0;
+    while (i < stops.length-2 && t > stops[i+1].t) i++;
+    var s0 = stops[i], s1 = stops[i+1];
+    var span = (s1.t - s0.t) || 1e-6;
+    var f = (t - s0.t) / span;
+    out.r = (s0.c[0] + (s1.c[0]-s0.c[0])*f) / 255;
+    out.g = (s0.c[1] + (s1.c[1]-s0.c[1])*f) / 255;
+    out.b = (s0.c[2] + (s1.c[2]-s0.c[2])*f) / 255;
+  }
+  var tmpColor = { r:0,g:0,b:0 };
+
+  var LIGHT_DIR = (function(){
+    var x = 0.42, y = 0.86, z = 0.30;
+    var len = Math.sqrt(x*x+y*y+z*z);
+    return { x: x/len, y: y/len, z: z/len };
+  })();
+  var AMBIENT = 0.42;
+  var DIFFUSE = 1.05;
+  var SPEC_POW = 5;
+  var SPEC_STRENGTH = 0.55;
+
+  // ============================================================
+  //  ЦИКЛ АНИМАЦИИ
+  // ============================================================
+  var clock = new THREE.Clock();
+  var fpsAcc = 0, fpsCount = 0, fpsTimer = 0;
+  var maxAmpSeen = 0;
+
+  function heightAt(x, z, t){
+    var h = 0;
+    for (var p = 0; p < peaks.length; p++){
+      var pk = peaks[p];
+      var breathing = 1 + Math.sin(t*pk.speed + pk.phase) * 0.06;
+      var dx = (x - pk.x) / pk.rx;
+      var dz = (z - pk.z) / pk.rz;
+      h += pk.h * breathing * Math.exp(-(dx*dx + dz*dz));
+    }
+    return h;
+  }
+
+  function animate(){
+    requestAnimationFrame(animate);
+    var dt = Math.min(clock.getDelta(), 0.05);
+    var t = clock.getElapsedTime();
+
+    if (autoRotate && !dragging){ targetRotY += dt * 0.018; }
+    waveGroup.rotation.y += (targetRotY - waveGroup.rotation.y) * 0.08;
+    waveGroup.rotation.x += (targetRotX - waveGroup.rotation.x) * 0.08;
+
+    if (haveMouse) updateMouseWorld();
+
+    if (haveMouse && (t - lastSpawn) > 0.11){
+      lastSpawn = t;
+      var rp = ripples[rippleCursor];
+      rp.x = localMouse.x; rp.z = localMouse.z; rp.born = t; rp.active = true;
+      rippleCursor = (rippleCursor + 1) % RIPPLE_POOL;
+    }
+
+    var curAmp = 0;
+
+    for (var iz = 0; iz < vCountZ; iz++){
+      for (var ix = 0; ix < vCountX; ix++){
+        var i = iz*vCountX + ix;
+        var x = baseX[i], z = baseZ[i];
+
+        var mountainH = heightAt(x, z, t);
+
+        var fine =
+          0.55 * Math.sin(x*0.15 + t*0.6) * Math.cos(z*0.12 - t*0.5) +
+          0.32 * Math.sin(x*0.34 - t*0.95 + z*0.06) +
+          0.20 * Math.sin((x+z)*0.5 + t*1.35);
+
+        var bump = 0;
+        if (haveMouse){
+          var bdx = x - localMouse.x, bdz = z - localMouse.z;
+          var bd2 = bdx*bdx + bdz*bdz;
+          bump = 2.1 * Math.exp(-bd2 / (2*4.2*4.2));
+        }
+
+        var ringSum = 0;
+        for (var r2 = 0; r2 < RIPPLE_POOL; r2++){
+          var rp2 = ripples[r2];
+          if (!rp2.active) continue;
+          var age = t - rp2.born;
+          if (age > 2.4){ rp2.active = false; continue; }
+          var rdx = x - rp2.x, rdz = z - rp2.z;
+          var dist = Math.sqrt(rdx*rdx + rdz*rdz);
+          var front = age * 13.5;
+          var env = Math.exp(-Math.pow(dist - front, 2) / 30) * Math.exp(-age / 1.1);
+          ringSum += 1.6 * env * Math.sin(dist*1.0 - age*8);
+        }
+
+        var y = mountainH + fine + bump + ringSum;
+        positions[i*3+1] = y;
+
+        var amp = Math.abs(y);
+        if (amp > curAmp) curAmp = amp;
+
+        mountainHArr[i] = mountainH;
+        glowArr[i] = Math.min(0.4, (Math.abs(fine)+Math.abs(bump)*0.6+Math.abs(ringSum)*0.7) / 3.2);
+      }
+    }
+
+    for (var iz2 = 0; iz2 < vCountZ; iz2++){
+      for (var ix2 = 0; ix2 < vCountX; ix2++){
+        var i2 = iz2*vCountX + ix2;
+
+        var ixL = ix2 > 0 ? ix2-1 : ix2, ixR = ix2 < SEG_X ? ix2+1 : ix2;
+        var izU = iz2 > 0 ? iz2-1 : iz2, izD = iz2 < SEG_Z ? iz2+1 : iz2;
+        var hL = positions[(iz2*vCountX+ixL)*3+1];
+        var hR = positions[(iz2*vCountX+ixR)*3+1];
+        var hU = positions[(izU*vCountX+ix2)*3+1];
+        var hD = positions[(izD*vCountX+ix2)*3+1];
+        var spanX = (ixR-ixL) * CELL_DX || 1;
+        var spanZ = (izD-izU) * CELL_DZ || 1;
+
+        var nx = -(hR-hL)/spanX;
+        var nz = -(hD-hU)/spanZ;
+        var nlen = Math.sqrt(nx*nx + 1 + nz*nz);
+        var normY = 1/nlen;
+        nx /= nlen; nz /= nlen;
+
+        var NdotL = nx*LIGHT_DIR.x + normY*LIGHT_DIR.y + nz*LIGHT_DIR.z;
+        if (NdotL < 0) NdotL = 0;
+
+        var lightFactor = AMBIENT + DIFFUSE * NdotL;
+        var spec = Math.pow(NdotL, SPEC_POW) * SPEC_STRENGTH;
+
+        var tNorm = Math.max(0, mountainHArr[i2]) / MAX_H;
+        colorForT(Math.min(1, tNorm + glowArr[i2]), tmpColor);
+
+        colors[i2*3+0] = Math.min(1, tmpColor.r * lightFactor + spec);
+        colors[i2*3+1] = Math.min(1, tmpColor.g * lightFactor + spec);
+        colors[i2*3+2] = Math.min(1, tmpColor.b * lightFactor + spec);
+      }
+    }
+
+    meshGeo.attributes.position.needsUpdate = true;
+    meshGeo.attributes.color.needsUpdate = true;
+    lineGeo.attributes.position.needsUpdate = true;
+    lineGeo.attributes.color.needsUpdate = true;
+
+    for (var s = 0; s < pointCount; s++){
+      var si = sampleIndices[s];
+      pointPos[s*3+0] = positions[si*3+0];
+      pointPos[s*3+1] = positions[si*3+1];
+      pointPos[s*3+2] = positions[si*3+2];
+      pointCol[s*3+0] = colors[si*3+0];
+      pointCol[s*3+1] = colors[si*3+1];
+      pointCol[s*3+2] = colors[si*3+2];
+    }
+    pointGeo.attributes.position.needsUpdate = true;
+    pointGeo.attributes.color.needsUpdate = true;
+
+    maxAmpSeen = Math.max(maxAmpSeen*0.98, curAmp);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+
+})();
+</script>
+
+<!-- ===== СКРИПТЫ ДЛЯ УПРАВЛЕНИЯ ===== -->
+<script>
+  // Переключение drawer
+  (function(){
+    var drawer = document.getElementById('drawer');
+    var tab = document.getElementById('drawerTab');
+    tab.addEventListener('click', function(){
+      drawer.classList.toggle('open');
+    });
+  })();
+
+  // Переход по клику на карточки
   (function(){
     document.querySelectorAll('.card[data-href]').forEach(function(card){
       card.addEventListener('click', function(){
@@ -278,6 +1135,54 @@
       });
     });
   })();
+
+  // Разбивка названия на буквы для эффекта "жидкого" волнового покачивания
+  (function(){
+    var el = document.getElementById('titleText');
+    if(!el) return;
+    var text = el.textContent.trim();
+    el.textContent = '';
+    Array.from(text).forEach(function(ch, i){
+      var span = document.createElement('span');
+      span.className = 'liquid-letter';
+      span.style.setProperty('--i', i);
+      span.textContent = (ch === ' ') ? '\u00A0' : ch;
+      el.appendChild(span);
+    });
+  })();
+
+  // Случайная палитра для капсул
+  (function() {
+    const colorPalette = [
+      { c1: '#3EC6E0', c2: '#8FE3FF' },
+      { c1: '#3EAA6D', c2: '#8FE3B0' },
+      { c1: '#D6A93B', c2: '#F3D98A' },
+      { c1: '#C1554A', c2: '#EE9A8E' },
+      { c1: '#8B6FE0', c2: '#C4B4FF' },
+      { c1: '#B0653A', c2: '#E3A26F' },
+      { c1: '#D9B26A', c2: '#F0D9A0' },
+      { c1: '#4A8FE4', c2: '#8FC5FF' },
+      { c1: '#D97A9B', c2: '#F2B8CC' },
+      { c1: '#6ABF7A', c2: '#A8E0B5' },
+      { c1: '#E88A5A', c2: '#F5C8A8' },
+      { c1: '#7A9EC4', c2: '#B8D4E8' },
+      { c1: '#C49A6C', c2: '#E8D0B8' },
+      { c1: '#A87AC4', c2: '#D4B8E8' },
+      { c1: '#6CB8A0', c2: '#B8E8D4' },
+    ];
+    const capsuleWrappers = document.querySelectorAll('.card-bar-ext');
+    const shuffled = [...colorPalette];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    capsuleWrappers.forEach((el, index) => {
+      const color = shuffled[index % shuffled.length];
+      el.style.setProperty('--c1', color.c1);
+      el.style.setProperty('--c2', color.c2);
+    });
+  })();
 </script>
+
 </body>
 </html>
