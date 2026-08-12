@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Диалоговые тренажеры — Лаборатория Метаморфозиса</title>
+<title>Management — Лаборатория Метаморфозиса</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -38,6 +38,8 @@
     z-index: 0;
   }
   #scene-wrap canvas { display: block; touch-action: none; }
+  #scene-wrap { cursor: grab; }
+  #scene-wrap.dragging { cursor: grabbing; }
 
   #bg-glow {
     position: fixed; inset: -10%; pointer-events: none; z-index: 1;
@@ -656,39 +658,30 @@
     <div class="content">
       <div class="cards">
 
-        <!-- Тренажер 1 -->
+        <!-- Талант-менеджмент -->
         <div class="card-row">
-          <div class="card-bar-ext" style="--c1:#3EAA6D; --c2:#8FE3B0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-          <div class="card" data-href="dialog-trainer-v1.html">
-            <div class="card-title">Тренажер · Конструктивная обратная связь</div>
+          <div class="card-bar-ext" style="--c1:#2D7A5A; --c2:#8BC8A8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="talent-management.html">
+            <div class="card-title">Талант-менеджмент</div>
           </div>
         </div>
 
-        <!-- Тренажер 2 -->
+        <!-- Перформенс-ревью -->
         <div class="card-row">
-          <div class="card-bar-ext" style="--c1:#8B6FE0; --c2:#C4B4FF;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-          <div class="card" data-href="dialog-trainer-argumentation-marina___копия.html">
-            <div class="card-title">Тренажер · Аргументация в переговорах</div>
+          <div class="card-bar-ext" style="--c1:#3B7A9E; --c2:#A8D0E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="performance-review.html">
+            <div class="card-title">Перформенс-ревью</div>
           </div>
         </div>
 
-        <!-- Тренажер 3 -->
+        <!-- Перформенс-менеджмент -->
         <div class="card-row">
-          <div class="card-bar-ext" style="--c1:#4C7FB0; --c2:#9EC3E8;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-          <div class="card" data-href="dialog-trainer-narrative-igor___копия.html">
-            <div class="card-title">Тренажер · Нарративное лидерство</div>
+          <div class="card-bar-ext" style="--c1:#b5652d; --c2:#f2dfd0;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
+          <div class="card" data-href="performance-management.html">
+            <div class="card-title">Перформенс-менеджмент</div>
           </div>
         </div>
 
-        <!-- Тренажер 4 -->
-        <div class="card-row">
-          <div class="card-bar-ext" style="--c1:#D9A23E; --c2:#F3D48F;"><div class="elixir-glow"></div><div class="capsule-body"><div class="bubble b1"></div><div class="bubble b2"></div><div class="bubble b3"></div><div class="elixir-sheen"></div><div class="elixir-rim"></div></div></div>
-          <div class="card" data-href="Тренаже_р_метафор.html">
-            <div class="card-title">Тренажер · Мастерская метафор</div>
-          </div>
-        </div>
-
-        <!-- Кнопка На главную вместо тумблера -->
         <div class="toggle-row">
           <a href="index.html" class="home-button">
             <span class="home-icon">←</span>
@@ -712,228 +705,33 @@
 (function(){
 
   // ============================================================
-  //  ФОН — CSS-градиент (#bg-glow) за прозрачным canvas.
-  //  Сцена рендерится с alpha:true, чтобы градиент просвечивал.
+  //  3D СЦЕНА — концепт «Диалог»: две сферы, переливающийся пучок
+  //  нитей между ними, вращение курсором + авто-вращение.
+  //  Перенесено из Концепт_диалог_Three_js.html, без изменений в
+  //  логике — только точка монтирования (#scene-wrap вместо
+  //  #canvas-wrap, чтобы встать в уже готовый фон/виньетку страницы).
   // ============================================================
 
+  init();
+
+  function init(){
   var wrap = document.getElementById('scene-wrap');
-  var W = function(){ return wrap.clientWidth; };
-  var H = function(){ return wrap.clientHeight; };
+  function W(){ return window.innerWidth; }
+  function H(){ return window.innerHeight; }
 
   var scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x03050a, 0.0105);
 
-  var camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 500);
-  camera.position.set(0, 11, 76);
-  camera.lookAt(0, 9, 10);
+  var camera = new THREE.PerspectiveCamera(38, W()/H(), 0.1, 200);
+  camera.position.set(0, 4, 62);
+  camera.lookAt(0,0,0);
 
   var renderer = new THREE.WebGLRenderer({ antialias:true, alpha:true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(W(), H());
   renderer.setClearColor(0x000000, 0);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.setSize(W(), H());
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
   wrap.appendChild(renderer.domElement);
-
-  scene.add(new THREE.AmbientLight(0x1a2a3a, 1.0));
-
-  // ============================================================
-  //  ГЕОМЕТРИЯ ВОЛНОВОГО ПОЛЯ
-  // ============================================================
-  var SEG_X = 128, SEG_Z = 84;
-  var WIDTH = 168, DEPTH = 118;
-  var Z0 = -22;
-  var vCountX = SEG_X + 1, vCountZ = SEG_Z + 1;
-  var vertCount = vCountX * vCountZ;
-
-  var positions = new Float32Array(vertCount * 3);
-  var colors    = new Float32Array(vertCount * 3);
-  var baseX = new Float32Array(vertCount);
-  var baseZ = new Float32Array(vertCount);
-  var mountainHArr = new Float32Array(vertCount);
-  var glowArr = new Float32Array(vertCount);
-  var CELL_DX = WIDTH / SEG_X;
-  var CELL_DZ = DEPTH / SEG_Z;
-
-  var idx = 0;
-  for (var iz = 0; iz < vCountZ; iz++){
-    for (var ix = 0; ix < vCountX; ix++){
-      var x = -WIDTH/2 + (ix/SEG_X) * WIDTH;
-      var z = Z0 + (iz/SEG_Z) * DEPTH;
-      baseX[idx] = x; baseZ[idx] = z;
-      positions[idx*3+0] = x;
-      positions[idx*3+1] = 0;
-      positions[idx*3+2] = z;
-      idx++;
-    }
-  }
-
-  var triIndex = [];
-  for (var jz = 0; jz < SEG_Z; jz++){
-    for (var jx = 0; jx < SEG_X; jx++){
-      var a = jz*vCountX + jx;
-      var b = a + 1;
-      var c = a + vCountX;
-      var d = c + 1;
-      triIndex.push(a,c,b, b,c,d);
-    }
-  }
-
-  var lineIndex = [];
-  for (var kz = 0; kz < vCountZ; kz++){
-    for (var kx = 0; kx < vCountX; kx++){
-      var p = kz*vCountX + kx;
-      if (kx < SEG_X) lineIndex.push(p, p+1);
-      if (kz < SEG_Z) lineIndex.push(p, p+vCountX);
-      if (kx < SEG_X && kz < SEG_Z && ((kx+kz) % 3 === 0)) lineIndex.push(p, p+vCountX+1);
-    }
-  }
-
-  var waveGroup = new THREE.Group();
-  scene.add(waveGroup);
-
-  var meshGeo = new THREE.BufferGeometry();
-  meshGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  meshGeo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  meshGeo.setIndex(triIndex);
-  var meshMat = new THREE.MeshBasicMaterial({
-    vertexColors: true, transparent: true, opacity: 0.5,
-    side: THREE.DoubleSide, depthWrite: true, fog: true
-  });
-  var solidMesh = new THREE.Mesh(meshGeo, meshMat);
-  waveGroup.add(solidMesh);
-
-  var lineGeo = new THREE.BufferGeometry();
-  lineGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  var lineColors = new Float32Array(vertCount * 3); // separate from `colors` so edges can fade independently
-  lineGeo.setAttribute('color', new THREE.BufferAttribute(lineColors, 3));
-  lineGeo.setIndex(lineIndex);
-  var lineMat = new THREE.LineBasicMaterial({
-    vertexColors: true, transparent: true, opacity: 0.8,
-    blending: THREE.AdditiveBlending, depthWrite: false, fog: true
-  });
-  var lineMesh = new THREE.LineSegments(lineGeo, lineMat);
-  waveGroup.add(lineMesh);
-
-  var glowTexCanvas = document.createElement('canvas');
-  glowTexCanvas.width = glowTexCanvas.height = 64;
-  var gctx = glowTexCanvas.getContext('2d');
-  var rg = gctx.createRadialGradient(32,32,0,32,32,32);
-  rg.addColorStop(0, 'rgba(255,255,255,1)');
-  rg.addColorStop(0.35, 'rgba(180,240,255,0.7)');
-  rg.addColorStop(1, 'rgba(180,240,255,0)');
-  gctx.fillStyle = rg;
-  gctx.fillRect(0,0,64,64);
-  var glowTexture = new THREE.CanvasTexture(glowTexCanvas);
-
-  var SAMPLE_STEP = 3;
-  var sampleIndices = [];
-  for (var sz = 0; sz < vCountZ; sz += SAMPLE_STEP){
-    for (var sx = 0; sx < vCountX; sx += SAMPLE_STEP){
-      sampleIndices.push(sz*vCountX + sx);
-    }
-  }
-  var pointCount = sampleIndices.length;
-  var pointPos = new Float32Array(pointCount*3);
-  var pointCol = new Float32Array(pointCount*3);
-  var pointSize = new Float32Array(pointCount);
-
-  var pointGeo = new THREE.BufferGeometry();
-  pointGeo.setAttribute('position', new THREE.BufferAttribute(pointPos, 3));
-  pointGeo.setAttribute('color', new THREE.BufferAttribute(pointCol, 3));
-  var pointMat = new THREE.PointsMaterial({
-    size: 2.4, map: glowTexture, vertexColors: true, transparent: true,
-    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true, fog:true
-  });
-  var pointsMesh = new THREE.Points(pointGeo, pointMat);
-  waveGroup.add(pointsMesh);
-
-  // ============================================================
-  //  ГОРНЫЕ ПИКИ
-  // ============================================================
-  var peaks = [
-    { x:   0, z: 34, h: 15.5, rx: 13, rz: 17, speed: 0.12, phase: 0.0  },
-    { x: -26, z: 18, h:  7.2, rx: 10, rz:  9, speed: 0.16, phase: 1.1  },
-    { x: -44, z: 32, h:  4.8, rx:  9, rz: 10, speed: 0.14, phase: 2.4  },
-    { x:  25, z: 15, h:  8.6, rx:  9, rz:  8, speed: 0.18, phase: 0.6  },
-    { x:  45, z: 26, h:  6.0, rx:  9, rz:  9, speed: 0.15, phase: 3.0  },
-    { x:  60, z: 38, h:  4.2, rx:  8, rz:  9, speed: 0.20, phase: 1.8  }
-  ];
-  var MAX_H = 16.5;
-
-  // ============================================================
-  //  РЯБЬ ОТ КУРСОРА
-  // ============================================================
-  var raycaster = new THREE.Raycaster();
-  var mouseNDC = new THREE.Vector2(-10,-10);
-  var mouseWorld = new THREE.Vector3(0, 0, 0);
-  var localMouse = new THREE.Vector3(0,0,0);
-  var haveMouse = false;
-
-  var RIPPLE_POOL = 10;
-  var ripples = [];
-  for (var r=0;r<RIPPLE_POOL;r++) ripples.push({ x:0, z:0, born:-999, active:false });
-  var rippleCursor = 0;
-  var lastSpawn = -999;
-
-  function updatePointerNDC(clientX, clientY){
-    var rect = renderer.domElement.getBoundingClientRect();
-    mouseNDC.x = ((clientX - rect.left) / rect.width) * 2 - 1;
-    mouseNDC.y = -((clientY - rect.top) / rect.height) * 2 + 1;
-    haveMouse = true;
-  }
-
-  function updateMouseWorld(){
-    raycaster.setFromCamera(mouseNDC, camera);
-    var origin = raycaster.ray.origin, dir = raycaster.ray.direction;
-    if (Math.abs(dir.y) > 1e-5){
-      var t = -origin.y / dir.y;
-      if (t > 0){
-        mouseWorld.set(origin.x + dir.x*t, 0, origin.z + dir.z*t);
-      }
-    }
-    waveGroup.updateMatrixWorld();
-    localMouse.copy(mouseWorld);
-    waveGroup.worldToLocal(localMouse);
-  }
-
-  // ============================================================
-  //  УПРАВЛЕНИЕ: ПЕРЕТАСКИВАНИЕ — ПОВОРОТ, КОЛЕСО — ЗУМ
-  // ============================================================
-  var dragging = false, lastX = 0, lastY = 0;
-  var autoRotate = true;
-  var targetRotY = -0.06, targetRotX = 0.10;
-  waveGroup.rotation.y = targetRotY;
-  waveGroup.rotation.x = targetRotX;
-
-  function pointerDown(x,y){ dragging = true; autoRotate = false; lastX = x; lastY = y; }
-  function pointerMove(x,y){
-    updatePointerNDC(x,y);
-    if (!dragging) return;
-    var dx = x - lastX, dy = y - lastY;
-    lastX = x; lastY = y;
-    targetRotY += dx * 0.0045;
-    targetRotX += dy * 0.0035;
-    targetRotX = Math.max(-0.5, Math.min(0.55, targetRotX));
-  }
-  function pointerUp(){ dragging = false; }
-
-  renderer.domElement.addEventListener('mousedown', function(e){ pointerDown(e.clientX, e.clientY); });
-  window.addEventListener('mousemove', function(e){ pointerMove(e.clientX, e.clientY); });
-  window.addEventListener('mouseup', pointerUp);
-  renderer.domElement.addEventListener('mouseleave', function(){ haveMouse = false; });
-
-  renderer.domElement.addEventListener('touchstart', function(e){
-    var t = e.touches[0]; pointerDown(t.clientX, t.clientY); updatePointerNDC(t.clientX,t.clientY);
-  }, { passive:true });
-  renderer.domElement.addEventListener('touchmove', function(e){
-    var t = e.touches[0]; pointerMove(t.clientX, t.clientY);
-  }, { passive:true });
-  renderer.domElement.addEventListener('touchend', pointerUp);
-
-  renderer.domElement.addEventListener('wheel', function(e){
-    e.preventDefault();
-    camera.position.z += e.deltaY * 0.012;
-    camera.position.z = Math.max(38, Math.min(130, camera.position.z));
-  }, { passive:false });
 
   window.addEventListener('resize', function(){
     camera.aspect = W()/H();
@@ -941,206 +739,420 @@
     renderer.setSize(W(), H());
   });
 
-  // ============================================================
-  //  ЦВЕТ ПО ВЫСОТЕ
-  // ============================================================
-  var stops = [
-    { t:0.00, c:[0x07,0x0d,0x1a] },
-    { t:0.28, c:[0x0a,0x22,0x30] },
-    { t:0.52, c:[0x0e,0x46,0x5a] },
-    { t:0.75, c:[0x1c,0x8c,0xac] },
-    { t:1.00, c:[0x9f,0xf5,0xff] }
+  // ---------------- lighting ----------------
+  var ambientLight = new THREE.AmbientLight(0x2a3a5a, 1.5);
+  scene.add(ambientLight);
+
+  var hemi = new THREE.HemisphereLight(0x8fe3ff, 0x0a1020, 0.55);
+  scene.add(hemi);
+
+  var keyLight = new THREE.PointLight(0xffffff, 1.6, 120, 2);
+  keyLight.position.set(20, 24, 40);
+  scene.add(keyLight);
+
+  var backLightA = new THREE.PointLight(0x6fe0ff, 1.6, 100, 2);
+  backLightA.position.set(-30, 10, -30);
+  scene.add(backLightA);
+
+  var backLightB = new THREE.PointLight(0x9c3b4a, 1.2, 100, 2);
+  backLightB.position.set(30, -6, -30);
+  scene.add(backLightB);
+
+  var fillLight = new THREE.DirectionalLight(0x4a7aaa, 0.5);
+  fillLight.position.set(-10, -10, 20);
+  scene.add(fillLight);
+
+  // ---------------- colour / tension state (identical logic to the SVG prototype) ----------------
+  var COLORS = {
+    green:    [95, 174, 126],
+    blue:     [79, 168, 220],
+    burgundy: [156, 59, 74],
+  };
+  var TENSION_VALUE = { green: 0.25, blue: 0.55, burgundy: 1.2 }; // drives wave amplitude: calm = small, tense = large
+  function lerp(a,b,t){ return a + (b-a)*t; }
+  function lerpColor(c1,c2,t){ return [lerp(c1[0],c2[0],t), lerp(c1[1],c2[1],t), lerp(c1[2],c2[2],t)]; }
+
+  var tensionSchedule = [
+    { dur:3.0, a:'green',    b:'green' },
+    { dur:3.0, a:'blue',     b:'green' },
+    { dur:3.0, a:'burgundy', b:'blue' },
+    { dur:3.0, a:'burgundy', b:'burgundy' },
+    { dur:3.0, a:'blue',     b:'burgundy' },
+    { dur:3.0, a:'green',    b:'blue' },
   ];
-  function colorForT(t, out){
-    t = Math.max(0, Math.min(1, t));
-    var i = 0;
-    while (i < stops.length-2 && t > stops[i+1].t) i++;
-    var s0 = stops[i], s1 = stops[i+1];
-    var span = (s1.t - s0.t) || 1e-6;
-    var f = (t - s0.t) / span;
-    out.r = (s0.c[0] + (s1.c[0]-s0.c[0])*f) / 255;
-    out.g = (s0.c[1] + (s1.c[1]-s0.c[1])*f) / 255;
-    out.b = (s0.c[2] + (s1.c[2]-s0.c[2])*f) / 255;
-  }
-  var tmpColor = { r:0,g:0,b:0 };
-
-  var LIGHT_DIR = (function(){
-    var x = 0.42, y = 0.86, z = 0.30;
-    var len = Math.sqrt(x*x+y*y+z*z);
-    return { x: x/len, y: y/len, z: z/len };
-  })();
-  var AMBIENT = 0.42;
-  var DIFFUSE = 1.05;
-  var SPEC_POW = 5;
-  var SPEC_STRENGTH = 0.55;
-
-  // ============================================================
-  //  ЦИКЛ АНИМАЦИИ
-  // ============================================================
-  var clock = new THREE.Clock();
-  var fpsAcc = 0, fpsCount = 0, fpsTimer = 0;
-  var maxAmpSeen = 0;
-
-  function heightAt(x, z, t){
-    var h = 0;
-    for (var p = 0; p < peaks.length; p++){
-      var pk = peaks[p];
-      var breathing = 1 + Math.sin(t*pk.speed + pk.phase) * 0.06;
-      var dx = (x - pk.x) / pk.rx;
-      var dz = (z - pk.z) / pk.rz;
-      h += pk.h * breathing * Math.exp(-(dx*dx + dz*dz));
+  var tensionTotal = tensionSchedule.reduce(function(s,x){return s+x.dur;},0);
+  function targetColors(t){
+    var tt = t % tensionTotal;
+    for (var i=0;i<tensionSchedule.length;i++){
+      var seg = tensionSchedule[i];
+      if (tt < seg.dur) return { a:COLORS[seg.a], b:COLORS[seg.b], ta:TENSION_VALUE[seg.a], tb:TENSION_VALUE[seg.b] };
+      tt -= seg.dur;
     }
-    return h;
+    return { a:COLORS.green, b:COLORS.green, ta:TENSION_VALUE.green, tb:TENSION_VALUE.green };
   }
+  var curColorA = COLORS.green.slice();
+  var curColorB = COLORS.green.slice();
+  var curTensionA = TENSION_VALUE.green, curTensionB = TENSION_VALUE.green;
 
-  function smoothstep(edge0, edge1, x){
-    var t = Math.max(0, Math.min(1, (x - edge0) / (edge1 - edge0)));
-    return t*t*(3 - 2*t);
-  }
-  var localCamPos = new THREE.Vector3();
-
-  // distance band (in local scene units) where the grid lines are fully visible;
-  // outside it they fade smoothly instead of popping — this is what removes the
-  // "faceted" look both when zooming in close and when pulling far back
-  var EDGE_NEAR_HIDE = 10, EDGE_NEAR_SHOW = 30;
-  var EDGE_FAR_SHOW = 92, EDGE_FAR_HIDE = 150;
-
-  function animate(){
-    requestAnimationFrame(animate);
-    var dt = Math.min(clock.getDelta(), 0.05);
-    var t = clock.getElapsedTime();
-
-    if (autoRotate && !dragging){ targetRotY += dt * 0.018; }
-    waveGroup.rotation.y += (targetRotY - waveGroup.rotation.y) * 0.08;
-    waveGroup.rotation.x += (targetRotX - waveGroup.rotation.x) * 0.08;
-
-    if (haveMouse) updateMouseWorld();
-
-    waveGroup.updateMatrixWorld();
-    localCamPos.copy(camera.position);
-    waveGroup.worldToLocal(localCamPos);
-
-    if (haveMouse && (t - lastSpawn) > 0.11){
-      lastSpawn = t;
-      var rp = ripples[rippleCursor];
-      rp.x = localMouse.x; rp.z = localMouse.z; rp.born = t; rp.active = true;
-      rippleCursor = (rippleCursor + 1) % RIPPLE_POOL;
+  var speakSchedule = [
+    { dur:2.0, who:'a' }, { dur:0.5, who:'pause' },
+    { dur:1.6, who:'b' }, { dur:0.5, who:'pause' },
+    { dur:1.2, who:'a' }, { dur:0.4, who:'pause' },
+    { dur:2.2, who:'b' }, { dur:0.6, who:'pause' },
+  ];
+  var speakTotal = speakSchedule.reduce(function(s,x){return s+x.dur;},0);
+  function currentSpeaker(t){
+    var tt = t % speakTotal;
+    for (var i=0;i<speakSchedule.length;i++){
+      var seg = speakSchedule[i];
+      if (tt < seg.dur) return { who:seg.who, progress: tt/seg.dur };
+      tt -= seg.dur;
     }
+    return { who:'pause', progress:0 };
+  }
+  function envelope(p){ return Math.sin(Math.PI * Math.min(Math.max(p,0),1)); }
+  var smoothA = 0, smoothB = 0;
 
-    var curAmp = 0;
+  // ---------------- geometry set up ----------------
+  var AX = 16;              // half-distance between the two spheres along X
+  var SPHERE_R = 3.64;      // was 5.2 — 30% smaller
+  var FLOOR_Y = -12;
 
-    for (var iz = 0; iz < vCountZ; iz++){
-      for (var ix = 0; ix < vCountX; ix++){
-        var i = iz*vCountX + ix;
-        var x = baseX[i], z = baseZ[i];
+  var group = new THREE.Group();
+  scene.add(group);
 
-        var mountainH = heightAt(x, z, t);
+  // glass sphere material — clean and very transparent, no separate "pearlescent" overlay layer:
+  // softness comes from lighting response (clearcoat + roughness), not from an extra texture
+  function makeSphereMaterial(emissiveHex){
+    return new THREE.MeshPhysicalMaterial({
+      color: 0x5fae7e,
+      transparent: true,
+      opacity: 0.16,
+      roughness: 0.28,
+      metalness: 0.0,
+      clearcoat: 0.55,
+      clearcoatRoughness: 0.35,
+      emissive: emissiveHex,
+      emissiveIntensity: 0.09,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+  }
+  var sphereGeo = new THREE.SphereGeometry(SPHERE_R, 64, 48);
+  var matA = makeSphereMaterial(0x2f5a3f);
+  var matB = makeSphereMaterial(0x1a4a63);
+  var sphereA = new THREE.Mesh(sphereGeo, matA);
+  var sphereB = new THREE.Mesh(sphereGeo, matB);
+  group.add(sphereA);
+  group.add(sphereB);
 
-        var fine =
-          0.55 * Math.sin(x*0.15 + t*0.6) * Math.cos(z*0.12 - t*0.5) +
-          0.32 * Math.sin(x*0.34 - t*0.95 + z*0.06) +
-          0.20 * Math.sin((x+z)*0.5 + t*1.35);
+  // faceted wireframe shell — same technique as the molecular model's satellite zones,
+  // gives a genuine "this sphere is rotating" cue without a floating highlight blob
+  function makeWireframe(baseColorHex){
+    var geo = new THREE.SphereGeometry(SPHERE_R*1.008, 40, 30);
+    var mat = new THREE.MeshBasicMaterial({
+      color: baseColorHex,
+      transparent: true,
+      opacity: 0.14,
+      wireframe: true,
+      depthWrite: false,
+    });
+    return new THREE.Mesh(geo, mat);
+  }
+  var wireA = makeWireframe(0x5fae7e);
+  var wireB = makeWireframe(0x4fa8dc);
+  group.add(wireA); group.add(wireB);
 
-        var bump = 0;
-        if (haveMouse){
-          var bdx = x - localMouse.x, bdz = z - localMouse.z;
-          var bd2 = bdx*bdx + bdz*bdz;
-          bump = 2.1 * Math.exp(-bd2 / (2*4.2*4.2));
-        }
+  // soft contact-shadow discs on the floor (canvas radial-gradient texture)
+  function makeShadowTexture(){
+    var c = document.createElement('canvas'); c.width = 128; c.height = 128;
+    var ctx = c.getContext('2d');
+    var g = ctx.createRadialGradient(64,64,0,64,64,64);
+    g.addColorStop(0, 'rgba(0,0,0,0.55)');
+    g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,128,128);
+    return new THREE.CanvasTexture(c);
+  }
+  var shadowTex = makeShadowTexture();
+  function makeShadowDisc(){
+    var geo = new THREE.PlaneGeometry(SPHERE_R*2.6, SPHERE_R*2.6);
+    var mat = new THREE.MeshBasicMaterial({ map:shadowTex, transparent:true, depthWrite:false });
+    var mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -Math.PI/2;
+    return mesh;
+  }
+  var shadowA = makeShadowDisc(); var shadowB = makeShadowDisc();
+  group.add(shadowA); group.add(shadowB);
 
-        var ringSum = 0;
-        for (var r2 = 0; r2 < RIPPLE_POOL; r2++){
-          var rp2 = ripples[r2];
-          if (!rp2.active) continue;
-          var age = t - rp2.born;
-          if (age > 2.4){ rp2.active = false; continue; }
-          var rdx = x - rp2.x, rdz = z - rp2.z;
-          var dist = Math.sqrt(rdx*rdx + rdz*rdz);
-          var front = age * 13.5;
-          var env = Math.exp(-Math.pow(dist - front, 2) / 30) * Math.exp(-age / 1.1);
-          ringSum += 1.6 * env * Math.sin(dist*1.0 - age*8);
-        }
+  // impact glow (colour flash on contact) — additive disc, same placement as shadow
+  function makeGlowTexture(){
+    var c = document.createElement('canvas'); c.width = 128; c.height = 128;
+    var ctx = c.getContext('2d');
+    var g = ctx.createRadialGradient(64,64,0,64,64,64);
+    g.addColorStop(0, 'rgba(255,255,255,0.9)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0,0,128,128);
+    return new THREE.CanvasTexture(c);
+  }
+  var glowTex = makeGlowTexture();
+  function makeGlowDisc(){
+    var geo = new THREE.PlaneGeometry(SPHERE_R*3.0, SPHERE_R*3.0);
+    var mat = new THREE.MeshBasicMaterial({ map:glowTex, color:0x5fae7e, transparent:true, opacity:0, blending:THREE.AdditiveBlending, depthWrite:false });
+    var mesh = new THREE.Mesh(geo, mat);
+    mesh.rotation.x = -Math.PI/2;
+    mesh.position.y = FLOOR_Y + 0.02;
+    return mesh;
+  }
+  var glowA = makeGlowDisc(); var glowB = makeGlowDisc();
+  group.add(glowA); group.add(glowB);
 
-        var y = mountainH + fine + bump + ringSum;
-        positions[i*3+1] = y;
+  // energy-bundle glow at the point where the strands converge (small offset from each sphere)
+  function makeOriginGlow(colorHex){
+    var mat = new THREE.SpriteMaterial({
+      map: glowTex, color: colorHex, blending: THREE.AdditiveBlending,
+      transparent: true, depthWrite: false,
+    });
+    var spr = new THREE.Sprite(mat);
+    spr.scale.set(2.6, 2.6, 1);
+    group.add(spr);
+    return spr;
+  }
+  var originGlowA = makeOriginGlow(0x5fae7e);
+  var originGlowB = makeOriginGlow(0x4fa8dc);
 
-        var amp = Math.abs(y);
-        if (amp > curAmp) curAmp = amp;
+  // thin floor line (very subtle, just enough to read "surface")
+  var floorGeo = new THREE.PlaneGeometry(80, 40);
+  var floorMat = new THREE.MeshBasicMaterial({ color:0x8fb3c0, transparent:true, opacity:0.035, side:THREE.DoubleSide });
+  var floorPlane = new THREE.Mesh(floorGeo, floorMat);
+  floorPlane.rotation.x = -Math.PI/2;
+  floorPlane.position.y = FLOOR_Y;
+  group.add(floorPlane);
 
-        mountainHArr[i] = mountainH;
-        glowArr[i] = Math.min(0.4, (Math.abs(fine)+Math.abs(bump)*0.6+Math.abs(ringSum)*0.7) / 3.2);
+  // ---------------- 20 strands, arranged around the A-B axis in real 3D ----------------
+  var STRAND_COUNT = 30, SEGMENTS = 90, RADIAL_SEGMENTS = 8;
+  var STRAND_GAP = 1.1; // small offset from the sphere surface where strands converge to one point
+  var STRAND_X0 = -AX + SPHERE_R + STRAND_GAP;
+  var STRAND_X1 =  AX - SPHERE_R - STRAND_GAP;
+  function rand(seed){ return function(){ seed = (seed*16807) % 2147483647; return (seed-1)/2147483646; }; }
+  var rnd = rand(42);
+  var strands = [];
+  for (var i=0;i<STRAND_COUNT;i++){
+    // half the bundle fans toward +Y ("up"), the other half toward -Y ("down") — two opposing wings,
+    // but loosely, not braided: wide jitter so each wing spreads into a messy fan, not a tight pair of ropes
+    var wingSign = (i < STRAND_COUNT/2) ? 1 : -1;
+    var wingJitter = (rnd()-0.5) * 2.3;
+    var angle0 = wingSign * Math.PI/2 + wingJitter;
+
+    var pts0 = [];
+    for (var k=0;k<=SEGMENTS;k++) pts0.push(new THREE.Vector3(lerp(STRAND_X0,STRAND_X1,k/SEGMENTS), 0, 0));
+    var curve0 = new THREE.CatmullRomCurve3(pts0);
+    var tubeRadius = 0.045 + rnd()*0.035;
+    var geo = new THREE.TubeGeometry(curve0, SEGMENTS, tubeRadius, RADIAL_SEGMENTS, false);
+    var ringCount = SEGMENTS+1, vertsPerRing = RADIAL_SEGMENTS+1;
+    var colorArray = new Float32Array(ringCount*vertsPerRing*3);
+    geo.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+    var mat = new THREE.MeshStandardMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.62,
+      roughness: 0.45,
+      metalness: 0.0,
+      emissiveIntensity: 0.0,
+      depthWrite: false,
+    });
+    var mesh = new THREE.Mesh(geo, mat);
+    group.add(mesh);
+    strands.push({
+      angle0: angle0,
+      baseRadius: 1.3 + rnd()*1.5,     // wider spread — no longer a tight braided pair
+      freq: 1.8 + rnd()*3.6,           // more undulations — livelier
+      speed: 0.7 + rnd()*2.1,          // faster drift — more motion
+      freq2: 3 + rnd()*5,              // secondary faster wobble layered on top — less mechanical, more chaotic
+      speed2: 1.5 + rnd()*3,
+      phase2: rnd()*Math.PI*2,
+      chatterPhase: rnd()*Math.PI*2,
+      chatterSpeed: 8 + rnd()*9,       // fast micro-flicker, like syllables in speech
+      phase: rnd()*Math.PI*2,
+      ampMul: 1.0 + rnd()*1.6,         // stronger amplitude overall — aggression
+      wA: 0.3 + rnd()*0.9,
+      wB: 0.3 + rnd()*0.9,
+      hum: 0.14 + rnd()*0.14,
+      tubeRadius: tubeRadius,
+      ringCount: ringCount,
+      vertsPerRing: vertsPerRing,
+      mesh: mesh,
+      pointsCache: pts0,
+    });
+  }
+
+  // ---------------- rotation: same drag pattern as the molecular model ----------------
+  var dragging = false, lastX = 0, lastY = 0;
+  var AUTO_SPIN = 0.0009; // rad/frame idle turntable spin (slow, ~full turn in ~110s)
+
+  function pointerDown(x,y){ dragging = true; lastX = x; lastY = y; wrap.classList.add('dragging'); }
+  function pointerMove(x,y){
+    if (!dragging) return;
+    var dx = x - lastX, dy = y - lastY;
+    lastX = x; lastY = y;
+    group.rotation.y += dx * 0.0055;
+    group.rotation.x += dy * 0.0055;
+    group.rotation.x = Math.max(-1.1, Math.min(1.1, group.rotation.x));
+  }
+  function pointerUp(){ dragging = false; wrap.classList.remove('dragging'); }
+
+  wrap.addEventListener('mousedown', function(e){ pointerDown(e.clientX, e.clientY); });
+  window.addEventListener('mousemove', function(e){ pointerMove(e.clientX, e.clientY); });
+  window.addEventListener('mouseup', pointerUp);
+  wrap.addEventListener('touchstart', function(e){ var t=e.touches[0]; pointerDown(t.clientX, t.clientY); }, {passive:true});
+  wrap.addEventListener('touchmove', function(e){ var t=e.touches[0]; pointerMove(t.clientX, t.clientY); }, {passive:true});
+  wrap.addEventListener('touchend', pointerUp);
+
+  // ---------------- animation loop ----------------
+  var startTime = performance.now();
+  var bobPhaseA = rnd()*Math.PI*2, bobPhaseB = rnd()*Math.PI*2;
+  var bobSpeedA = 0.55 + rnd()*0.25, bobSpeedB = 0.5 + rnd()*0.25;
+  var HOP_AMP = 2.3;
+
+  function colToHex(c){ return (Math.round(c[0])<<16) | (Math.round(c[1])<<8) | Math.round(c[2]); }
+
+  function animate(now){
+    var t = (now - startTime)/1000;
+
+    if (!dragging){ group.rotation.y += AUTO_SPIN; }
+
+    var tgt = targetColors(t);
+    curColorA = lerpColor(curColorA, tgt.a, 0.02);
+    curColorB = lerpColor(curColorB, tgt.b, 0.02);
+    curTensionA = lerp(curTensionA, tgt.ta, 0.02);
+    curTensionB = lerp(curTensionB, tgt.tb, 0.02);
+    matA.color.setHex(colToHex(curColorA));
+    matB.color.setHex(colToHex(curColorB));
+    matA.emissive.setHex(colToHex(lerpColor(curColorA,[0,0,0],0.55)));
+    matB.emissive.setHex(colToHex(lerpColor(curColorB,[0,0,0],0.55)));
+
+    var sp = currentSpeaker(t);
+    var env = envelope(sp.progress);
+    var targetSmoothA = sp.who==='a' ? env : 0;
+    var targetSmoothB = sp.who==='b' ? env : 0;
+    smoothA += (targetSmoothA - smoothA)*0.10;
+    smoothB += (targetSmoothB - smoothB)*0.10;
+
+    // continuous glow via emissiveIntensity pulse (no hard on/off — avoids blinking)
+    matA.emissiveIntensity = 0.08 + smoothA*0.5;
+    matB.emissiveIntensity = 0.08 + smoothB*0.5;
+
+    // bounce (gravity-like hop) + squash/stretch, real 3D translation & scale
+    var rawA = Math.sin(t*bobSpeedA + bobPhaseA);
+    var rawB = Math.sin(t*bobSpeedB + bobPhaseB);
+    var bobA = Math.pow(Math.abs(rawA), 0.72) * HOP_AMP;
+    var bobB = Math.pow(Math.abs(rawB), 0.72) * HOP_AMP;
+    var yA = FLOOR_Y + SPHERE_R + bobA;
+    var yB = FLOOR_Y + SPHERE_R + bobB;
+
+    var impactA = Math.max(0, 1 - Math.abs(rawA)*5);
+    var impactB = Math.max(0, 1 - Math.abs(rawB)*5);
+    var scaleYA = 1 - impactA*0.16, scaleXZA = 1 + impactA*0.12;
+    var scaleYB = 1 - impactB*0.16, scaleXZB = 1 + impactB*0.12;
+
+    sphereA.position.set(-AX, yA, 0);
+    sphereB.position.set(AX, yB, 0);
+    sphereA.scale.set(scaleXZA, scaleYA, scaleXZA);
+    sphereB.scale.set(scaleXZB, scaleYB, scaleXZB);
+
+    shadowA.position.set(-AX, FLOOR_Y+0.01, 0);
+    shadowB.position.set(AX, FLOOR_Y+0.01, 0);
+    shadowA.material.opacity = 0.5 * (1 - Math.min(1,bobA/HOP_AMP)*0.6);
+    shadowB.material.opacity = 0.5 * (1 - Math.min(1,bobB/HOP_AMP)*0.6);
+
+    glowA.position.set(-AX, FLOOR_Y+0.02, 0);
+    glowB.position.set(AX, FLOOR_Y+0.02, 0);
+    glowA.material.color.setHex(colToHex(curColorA));
+    glowB.material.color.setHex(colToHex(curColorB));
+    glowA.material.opacity = impactA*0.75;
+    glowB.material.opacity = impactB*0.75;
+
+    // energy-bundle glow at the strand origin points — brighter when that side speaks or tension is high
+    originGlowA.position.set(STRAND_X0, yA, 0);
+    originGlowB.position.set(STRAND_X1, yB, 0);
+    originGlowA.material.color.setHex(colToHex(curColorA));
+    originGlowB.material.color.setHex(colToHex(curColorB));
+    var pulseA = 0.55 + smoothA*0.6 + (curTensionA-0.25)*0.18;
+    var pulseB = 0.55 + smoothB*0.6 + (curTensionB-0.25)*0.18;
+    originGlowA.material.opacity = Math.min(1, pulseA);
+    originGlowB.material.opacity = Math.min(1, pulseB);
+    originGlowA.scale.setScalar(2.2 + smoothA*0.9);
+    originGlowB.scale.setScalar(2.2 + smoothB*0.9);
+
+    // wireframe shells follow their sphere's position/scale, spin slowly on their own axis
+    wireA.position.copy(sphereA.position);
+    wireB.position.copy(sphereB.position);
+    wireA.scale.copy(sphereA.scale);
+    wireB.scale.copy(sphereB.scale);
+    wireA.rotation.y += 0.0022; wireA.rotation.x += 0.0009;
+    wireB.rotation.y -= 0.0018; wireB.rotation.x += 0.0011;
+    wireA.material.color.setHex(colToHex(curColorA));
+    wireB.material.color.setHex(colToHex(curColorB));
+
+    // strands: soft 3D bundle between the two spheres, rebuilt as smooth tubes each frame,
+    // colour genuinely flows from A's current colour to B's current colour along the length
+    for (var s=0; s<strands.length; s++){
+      var st = strands[s];
+      var pts = st.pointsCache;
+      for (var seg=0; seg<=SEGMENTS; seg++){
+        var f = seg/SEGMENTS;
+        var x = lerp(STRAND_X0, STRAND_X1, f);
+        var baseY = lerp(yA, yB, f);
+
+        var falloffA = Math.max(0, 1 - f*1.2);
+        var falloffB = Math.max(0, 1 - (1-f)*1.2);
+        var speakAmp = (smoothA*st.wA*falloffA + smoothB*st.wB*falloffB) * 1.3;
+
+        // voice-like micro-flicker on top of the slow drift — bursts, not a clean sine
+        var chatter = 0.6 + 0.4*Math.abs(Math.sin(t*st.chatterSpeed + st.chatterPhase + f*5));
+
+        // amplitude follows the tension colour along the strand: calm/green = small, tense/burgundy = large
+        var tensionAtF = lerp(curTensionA, curTensionB, f);
+
+        var wobble1 = Math.sin(f*st.freq*Math.PI*2 + st.phase + t*st.speed);
+        var wobble2 = Math.sin(f*st.freq2*Math.PI*2 + st.phase2 + t*st.speed2) * 0.55;
+        var wobble = (wobble1 + wobble2)
+                     * (st.hum + speakAmp) * st.ampMul * chatter * tensionAtF;
+        var radius = st.baseRadius * (0.6 + 0.4*tensionAtF) + wobble;
+
+        var angle = st.angle0;
+        var envShape = Math.sin(f*Math.PI); // 0 at both ends — strands truly converge to a single point
+        var py = baseY + radius * Math.sin(angle) * envShape;
+        var pz = radius * Math.cos(angle) * envShape;
+
+        pts[seg].set(x, py, pz);
       }
-    }
+      var curve = new THREE.CatmullRomCurve3(pts);
+      var newGeo = new THREE.TubeGeometry(curve, SEGMENTS, st.tubeRadius, RADIAL_SEGMENTS, false);
 
-    for (var iz2 = 0; iz2 < vCountZ; iz2++){
-      for (var ix2 = 0; ix2 < vCountX; ix2++){
-        var i2 = iz2*vCountX + ix2;
-
-        var ixL = ix2 > 0 ? ix2-1 : ix2, ixR = ix2 < SEG_X ? ix2+1 : ix2;
-        var izU = iz2 > 0 ? iz2-1 : iz2, izD = iz2 < SEG_Z ? iz2+1 : iz2;
-        var hL = positions[(iz2*vCountX+ixL)*3+1];
-        var hR = positions[(iz2*vCountX+ixR)*3+1];
-        var hU = positions[(izU*vCountX+ix2)*3+1];
-        var hD = positions[(izD*vCountX+ix2)*3+1];
-        var spanX = (ixR-ixL) * CELL_DX || 1;
-        var spanZ = (izD-izU) * CELL_DZ || 1;
-
-        var nx = -(hR-hL)/spanX;
-        var nz = -(hD-hU)/spanZ;
-        var nlen = Math.sqrt(nx*nx + 1 + nz*nz);
-        var normY = 1/nlen;
-        nx /= nlen; nz /= nlen;
-
-        var NdotL = nx*LIGHT_DIR.x + normY*LIGHT_DIR.y + nz*LIGHT_DIR.z;
-        if (NdotL < 0) NdotL = 0;
-
-        var lightFactor = AMBIENT + DIFFUSE * NdotL;
-        var spec = Math.pow(NdotL, SPEC_POW) * SPEC_STRENGTH;
-
-        var tNorm = Math.max(0, mountainHArr[i2]) / MAX_H;
-        colorForT(Math.min(1, tNorm + glowArr[i2]), tmpColor);
-
-        colors[i2*3+0] = Math.min(1, tmpColor.r * lightFactor + spec);
-        colors[i2*3+1] = Math.min(1, tmpColor.g * lightFactor + spec);
-        colors[i2*3+2] = Math.min(1, tmpColor.b * lightFactor + spec);
-
-        // fade the grid lines out both up close (so zooming in doesn't reveal huge blocky cells)
-        // and far away (so zooming out doesn't turn them into moiré noise) — the solid surface
-        // underneath is untouched, only the wireframe overlay responds to this
-        var vx = baseX[i2], vy = positions[i2*3+1], vz = baseZ[i2];
-        var cdx = vx - localCamPos.x, cdy = vy - localCamPos.y, cdz = vz - localCamPos.z;
-        var camDist = Math.sqrt(cdx*cdx + cdy*cdy + cdz*cdz);
-        var edgeFade = smoothstep(EDGE_NEAR_HIDE, EDGE_NEAR_SHOW, camDist)
-                     * (1 - smoothstep(EDGE_FAR_SHOW, EDGE_FAR_HIDE, camDist));
-        lineColors[i2*3+0] = colors[i2*3+0] * edgeFade;
-        lineColors[i2*3+1] = colors[i2*3+1] * edgeFade;
-        lineColors[i2*3+2] = colors[i2*3+2] * edgeFade;
+      // paint a smooth colour gradient along the tube: A's colour -> B's colour
+      var colorArray = new Float32Array(st.ringCount*st.vertsPerRing*3);
+      newGeo.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+      var arr = colorArray;
+      for (var ring=0; ring<st.ringCount; ring++){
+        var f2 = ring/(st.ringCount-1);
+        var mixT = 0.5 + (f2-0.5)*0.94; // mostly A at the start, mostly B at the end
+        var c = lerpColor(curColorA, curColorB, mixT);
+        var r = c[0]/255, g = c[1]/255, b = c[2]/255;
+        for (var vv=0; vv<st.vertsPerRing; vv++){
+          var idx = (ring*st.vertsPerRing + vv)*3;
+          arr[idx]=r; arr[idx+1]=g; arr[idx+2]=b;
+        }
       }
+
+      st.mesh.geometry.dispose();
+      st.mesh.geometry = newGeo;
     }
-
-    meshGeo.attributes.position.needsUpdate = true;
-    meshGeo.attributes.color.needsUpdate = true;
-    lineGeo.attributes.position.needsUpdate = true;
-    lineGeo.attributes.color.needsUpdate = true;
-
-    for (var s = 0; s < pointCount; s++){
-      var si = sampleIndices[s];
-      pointPos[s*3+0] = positions[si*3+0];
-      pointPos[s*3+1] = positions[si*3+1];
-      pointPos[s*3+2] = positions[si*3+2];
-      pointCol[s*3+0] = colors[si*3+0];
-      pointCol[s*3+1] = colors[si*3+1];
-      pointCol[s*3+2] = colors[si*3+2];
-    }
-    pointGeo.attributes.position.needsUpdate = true;
-    pointGeo.attributes.color.needsUpdate = true;
-
-    maxAmpSeen = Math.max(maxAmpSeen*0.98, curAmp);
 
     renderer.render(scene, camera);
+    requestAnimationFrame(animate);
   }
-
-  animate();
+  requestAnimationFrame(animate);
+  }
 
 })();
 </script>
